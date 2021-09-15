@@ -270,7 +270,7 @@
 
   <Usuarios_Ver>
     <UsuarioPuedeVer User="jaguero" NumeroCuenta="11000001" />
-    <UsuarioPuedeVer User="abrenes" NumeroCuenta="11326139" />
+    <UsuarioPuedeVer User="alebrenes" NumeroCuenta="11326139" />
     <UsuarioPuedeVer User="vmata" NumeroCuenta="11656323" />
   </Usuarios_Ver>
 </Datos>
