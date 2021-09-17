@@ -24,6 +24,7 @@ CREATE TABLE TipoCuentaAhorro
   Nombre VARCHAR(32) NOT NULL,
   SaldoMinimo MONEY NOT NULL,
   MultaSaldoMinimo MONEY NOT NULL,
+  CargoAnual MONEY NOT NULL,
   NumRetiros_Humanos INT NOT NULL,
   NumRetiros_Automaticos INT NOT NULL,
   ComisionHumano MONEY NOT NULL,
@@ -56,9 +57,7 @@ CREATE TABLE Cuenta
   FechaCreacion DATE NOT NULL,
   Saldo MONEY NOT NULL,
 
-  ID_TDoc INT NOT NULL,
   ID_TCuenta INT NOT NULL,
-  FOREIGN KEY (ID_TDoc) REFERENCES TipoDocIdentidad(ID_TDoc),
   FOREIGN KEY (ID_TCuenta) REFERENCES TipoCuentaAhorro(ID_TCuenta)
 );
 
@@ -71,17 +70,18 @@ CREATE TABLE Beneficiario
 
   ID_Parentezco INT NOT NULL,
   FOREIGN KEY (ID_Parentezco) REFERENCES Parentezcos(ID_Parentezco)
+
 );
 
-CREATE TABLE Beneficiario_Cuenta
-(
-  ID_BC INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+--CREATE TABLE Beneficiario_Cuenta
+--(
+--  ID_BC INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
   
-  ID_Beneficiario INT NOT NULL,
-  ID_Cuenta INT NOT NULL,
-  FOREIGN KEY (ID_Beneficiario) REFERENCES Beneficiario(ID_Beneficiario),
-  FOREIGN KEY (ID_Cuenta) REFERENCES Cuenta(ID_Cuenta)
-);
+--  ID_Beneficiario INT NOT NULL,
+--  ID_Cuenta INT NOT NULL,
+--  FOREIGN KEY (ID_Beneficiario) REFERENCES Beneficiario(ID_Beneficiario),
+--  FOREIGN KEY (ID_Cuenta) REFERENCES Cuenta(ID_Cuenta)
+--);
 
 CREATE TABLE Usuario
 (
