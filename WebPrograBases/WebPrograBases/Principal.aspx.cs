@@ -41,10 +41,7 @@ namespace WebPrograBases
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@in_username", SqlDbType.NVarChar).Value = txtUserName.Text.Trim();
                 sql_cmnd.Parameters.AddWithValue("@in_Pass", SqlDbType.NVarChar).Value = txtPassword.Text.Trim();
-                int count = Convert.ToInt32(sql_cmnd.ExecuteNonQuery());
-                Console.WriteLine("\n Count: ");
-                Console.WriteLine(count);
-                Console.WriteLine("\n");
+                int count = Convert.ToInt32(sql_cmnd.ExecuteScalar());
                 sqlCon.Close();
                 if (count == 1)
                 {
