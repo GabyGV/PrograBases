@@ -81,7 +81,7 @@ CREATE TABLE Usuario
   Pass VARCHAR(16) NOT NULL,
   EsAdministrador INT NOT NULL,
 
-  IDValorDocIdentidad INT NOT NULL,
+  IDValorDocIdentidad INT,
   FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ValorDocIdentidad)
 );
 
