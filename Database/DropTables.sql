@@ -3,7 +3,6 @@ USE [PrograBases]
 DROP TABLE Usuario
 DROP TABLE Usuarios_Ver
 
-DROP TABLE Beneficiario_Cuenta
 DROP TABLE Beneficiario
 DROP TABLE Cuenta
 DROP TABLE Persona

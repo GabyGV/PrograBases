@@ -117,7 +117,7 @@ BEGIN
 			SELECT Username, Pass, ValorDocumentoIdentidad, EsAdministrador
 			FROM OPENXML (@hdoc,'Datos/Usuarios/Usuario', 2)
 				WITH(
-					Username VARCHAR(16) '@User', 
+					Username VARCHAR(16) '@Usuario', 
 					Pass VARCHAR(16) '@Pass',
 					ValorDocumentoIdentidad INT '@ValorDocumentoIdentidad', 
 					EsAdministrador INT '@EsAdministrador'
@@ -131,7 +131,7 @@ BEGIN
 			SELECT Username, NumeroCuenta
 			FROM OPENXML (@hdoc,'Datos/Usuarios_Ver/UsuarioPuedeVer', 2)
 				WITH(
-					Username VARCHAR(16) '@User', 
+					Username VARCHAR(16) '@Usuario', 
 					NumeroCuenta INT '@NumeroCuenta'
 				);
 
@@ -163,10 +163,30 @@ BEGIN
 
 	--Beneficiarios---------------------------------------------------------
 
-	        INSERT INTO [dbo].Beneficiario(Porcentaje, 
+			INSERT INTO [dbo].Persona(IDTDoc, 
+									  Nombre, 
+									  ValorDocIdentidad, 
+									  FechaNacimiento, 
+									  Email, 
+									  Telefono1, 
+									  Telefono2)
+			SELECT  1,
+					'No Conocido',
+					valorDicIdBene,
+					'1990-01-01',
+					'na@na.com',
+					'00000000',
+					'00000000'
+			FROM @TemporalBeneficiario B
+			WHERE NOT EXISTS(
+							SELECT *
+							FROM Persona Pe
+							WHERE (Pe.ValorDocIdentidad = B.valorDicIdBene))
+
+	        INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
 										   IDValorDocIdentidad, 
-										   IDNumeroCuenta, 
-										   IDParentezco )
+										   IDParentezco,
+										   Porcentaje)
 			SELECT numeroCuenta, valorDicIdBene, parentezcoID, porcentaje  FROM @TemporalBeneficiario;
 
 	--Usuarios---------------------------------------------------------
