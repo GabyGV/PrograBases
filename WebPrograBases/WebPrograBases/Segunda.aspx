@@ -19,6 +19,7 @@
         <br />
             <asp:Label ID="lblIdUsuario" runat="server" Text=""></asp:Label>
         <br />
+            <asp:Label ID="lblNumCuenta" runat="server" Text=""></asp:Label>
         </div>
         <div>
             <p>

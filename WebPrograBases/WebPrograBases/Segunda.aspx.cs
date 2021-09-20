@@ -18,7 +18,8 @@ namespace WebPrograBases
             lblUserDetails.Text = "Username : " + Session["username"];
             Session["idPersona"] = optenerIDPersona();
             lblIdUsuario.Text = "ID : " + Session["idPersona"];
-            //Session["numCuenta"] = optenerNumCuenta();
+            Session["numCuenta"] = optenerNumCuenta();
+            lblNumCuenta.Text = "Cuenta : " + Session["numCuenta"];
         }
 
         protected void btnEstadosCuenta_Click(object sender, EventArgs e)
@@ -45,20 +46,20 @@ namespace WebPrograBases
             }
             return numID;
         }
-        /*
+        
         protected int optenerNumCuenta()
         {
             int numCuenta = 0;
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
-                SqlCommand sql_cmnd = new SqlCommand("VerDocumentoIdentidad", sqlCon);
+                SqlCommand sql_cmnd = new SqlCommand("VerNumeroCuenta", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inUsuario", SqlDbType.NVarChar).Value = Session["idPersona"].ToString();
+                sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Session["idPersona"].ToString();
                 numCuenta = Convert.ToInt32(sql_cmnd.ExecuteScalar());
                 sqlCon.Close();
             }
             return numCuenta;
-        }*/
+        }
     }
 }
