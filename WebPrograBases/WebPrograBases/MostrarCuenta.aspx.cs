@@ -13,15 +13,17 @@ namespace WebPrograBases
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Using(SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            using(SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM PhoneBook", sqlCon);
+                SqlCommand sql_cmnd = new SqlCommand("VerCuenta", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inDocumentoIdentidad", SqlDbType.Int).Value = Session["idPersona"];
                 DataTable dtbl = new DataTable();
-                sqlDa.Fill(dtbl);
+                dtbl.Load(sql_cmnd.ExecuteReader());
                 Cuentas.DataSource = dtbl;
                 Cuentas.DataBind();
-            }
-        }
+            } 
+        } 
     }
 }

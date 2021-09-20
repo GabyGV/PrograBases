@@ -16,8 +16,9 @@ namespace WebPrograBases
             if (Session["username"] == null)
                 Response.Redirect("login.aspx");
             lblUserDetails.Text = "Username : " + Session["username"];
-
-            Session["idPersona"] = ;
+            Session["idPersona"] = optenerIDPersona();
+            lblIdUsuario.Text = "ID : " + Session["idPersona"];
+            //Session["numCuenta"] = optenerNumCuenta();
         }
 
         protected void btnEstadosCuenta_Click(object sender, EventArgs e)
@@ -32,12 +33,32 @@ namespace WebPrograBases
 
         protected int optenerIDPersona()
         {
-            sqlCon.Open();
-            SqlCommand sql_cmnd = new SqlCommand("loginUsuario", sqlCon);
-            sql_cmnd.CommandType = CommandType.StoredProcedure;
-            sql_cmnd.Parameters.AddWithValue("@in_username", SqlDbType.NVarChar).Value = txtUserName.Text.Trim();
-            sql_cmnd.Parameters.AddWithValue("@in_Pass", SqlDbType.NVarChar).Value = txtPassword.Text.Trim();
-            return 0;
+            int numID = 0;
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("VerDocumentoIdentidad", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inUsuario", SqlDbType.NVarChar).Value = Session["username"].ToString();
+                numID = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                sqlCon.Close();
+            }
+            return numID;
         }
+        /*
+        protected int optenerNumCuenta()
+        {
+            int numCuenta = 0;
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("VerDocumentoIdentidad", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inUsuario", SqlDbType.NVarChar).Value = Session["idPersona"].ToString();
+                numCuenta = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                sqlCon.Close();
+            }
+            return numCuenta;
+        }*/
     }
 }

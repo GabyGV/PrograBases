@@ -18,16 +18,11 @@
             <div>
                 <asp:GridView ID="Cuentas" runat="server" AutoGenerateColumns="false">
                     <Columns>
-                        <asp:BoundField DataField="NumCuenta" HeaderText ="Número de cuenta" />
-                        <asp:BoundField DataField="Fecha" HeaderText ="Fecha de Creación" />
+                        <asp:BoundField DataField="IDValorDocIdentidad" HeaderText ="Documento de identidad" />
+                        <asp:BoundField DataField="IDTCuenta" HeaderText ="Tipo de Cuenta" />
+                        <asp:BoundField DataField="NumeroCuenta" HeaderText ="Número de Cuenta" />
+                        <asp:BoundField DataField="FechaCreacion" HeaderText ="Fecha de Creación" />
                         <asp:BoundField DataField="Saldo" HeaderText ="Saldo" />
-                        <asp:BoundField DataField="DocIdent" HeaderText ="Documento de Identidad" />
-                        <asp:BoundField DataField="TipoCuenta" HeaderText ="Tipo de Cuenta" />
-                        <asp:TemplateField>
-                            <ItemTemplate>
-                                <asp:LinkButton ID="lnkSelect" Text="Select" runat="server" CommandArgument='<%# Eval("PhoneBookID") %>' OnClick="lnkSelect_Click"/>
-                            </ItemTemplate>
-                        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
             </div>
