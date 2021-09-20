@@ -329,6 +329,35 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 
+Procedimiento SumarPorcentajes
+Objetivo: Dar a saber si una persona existe o no en la base de datos 
+	Entradas : Valor Documento de identidad
+	Salidas  : Contador con resultado de 1 si es que la encontro
+*/
+IF OBJECT_ID('SumarPorcentajes') IS NOT NULL
+BEGIN 
+DROP PROC SumarPorcentajes 
+END
+GO
+CREATE PROCEDURE SumarPorcentajes
+	 @inNumeroCuenta INT
+AS
+BEGIN TRY 
+	SELECT SUM(B.Porcentaje)
+	FROM Beneficiario B
+	WHERE (B.IDNumeroCuenta = @inNumeroCuenta)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
 Procedimiento ActualizarPorcentaje
 Objetivo: Actualizar porcentajes de los beneficiarios 
 	Entradas : ID's de los mismo junto con su porcentaje
