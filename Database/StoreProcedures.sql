@@ -341,11 +341,10 @@ END
 GO
 CREATE PROCEDURE SumarPorcentajes
 	 @inNumeroCuenta INT,
-	 @inPorcentaje INT,
 	 @inValorDocIndentidad INT
 AS
 BEGIN TRY 
-	SELECT SUM(B.Porcentaje + @inPorcentaje)
+	SELECT SUM(B.Porcentaje)
 	FROM Beneficiario B
 	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.IDValorDocIdentidad != @inValorDocIndentidad)
 
@@ -356,6 +355,7 @@ BEGIN CATCH
 	return -1
 END CATCH
 GO
+
 
 
 --------------------------------------------------------------------------------------------------------------------------
