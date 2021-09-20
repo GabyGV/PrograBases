@@ -7,7 +7,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-Alter PROC loginUsuario (@in_username VARCHAR(16), @in_Pass VARCHAR(16))
+CREATE PROC loginUsuario (@in_username VARCHAR(16), @in_Pass VARCHAR(16))
 AS
 
 BEGIN
