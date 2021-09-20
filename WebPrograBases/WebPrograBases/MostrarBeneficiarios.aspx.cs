@@ -102,34 +102,41 @@ namespace WebPrograBases
 
         protected void tblBeneficiarios_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-
-            try
+            int porcen = validarPorcentaje();
+            if (porcen < 100)
             {
-                using (SqlConnection sqlCon = new SqlConnection(connectionString))
-                {
-                    sqlCon.Open();
-                    SqlCommand sql_cmnd = new SqlCommand("ActualizarBeneficiarios", sqlCon);
-                    sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                    sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
-                    sql_cmnd.Parameters.AddWithValue("@inNombre", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtNombre") as TextBox).Text.Trim());
-                    sql_cmnd.Parameters.AddWithValue("@inIDParentezco", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtIDParentezco") as TextBox).Text.Trim()));
-                    sql_cmnd.Parameters.AddWithValue("@inPorcentaje", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtPorcentaje") as TextBox).Text.Trim()));
-                    sql_cmnd.Parameters.AddWithValue("@inFechaNacimiento", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtFechaNacimiento") as TextBox).Text.Trim());
-                    sql_cmnd.Parameters.AddWithValue("@inValorDocIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
-                    sql_cmnd.Parameters.AddWithValue("@inEmail", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtEmail") as TextBox).Text.Trim());
-                    sql_cmnd.Parameters.AddWithValue("@inTelefono1", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtTelefono1") as TextBox).Text.Trim());
-                    sql_cmnd.Parameters.AddWithValue("@inTelefono2", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtTelefono2") as TextBox).Text.Trim());
-                    sql_cmnd.ExecuteNonQuery();
-                    tblBeneficiarios.EditIndex = -1;
-                    PopulateGridview();
-                    lblSuccessMessage.Text = "Información actualizada correctamente";
-                    lblErrorMessage.Text = "";
-                }
+                lblPorcentaje.Text = "Su porcentaje total es " + porcen.ToString() + " por favor corregirlo y volver a intentar.";
             }
-            catch (Exception ex)
+            else
             {
-                lblSuccessMessage.Text = "";
-                lblErrorMessage.Text = ex.Message;
+                try
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(connectionString))
+                    {
+                        sqlCon.Open();
+                        SqlCommand sql_cmnd = new SqlCommand("ActualizarBeneficiarios", sqlCon);
+                        sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
+                        sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inNombre", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtNombre") as TextBox).Text.Trim());
+                        sql_cmnd.Parameters.AddWithValue("@inIDParentezco", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtIDParentezco") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inPorcentaje", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtPorcentaje") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inFechaNacimiento", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtFechaNacimiento") as TextBox).Text.Trim());
+                        sql_cmnd.Parameters.AddWithValue("@inValorDocIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inEmail", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtEmail") as TextBox).Text.Trim());
+                        sql_cmnd.Parameters.AddWithValue("@inTelefono1", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtTelefono1") as TextBox).Text.Trim());
+                        sql_cmnd.Parameters.AddWithValue("@inTelefono2", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtTelefono2") as TextBox).Text.Trim());
+                        sql_cmnd.ExecuteNonQuery();
+                        tblBeneficiarios.EditIndex = -1;
+                        PopulateGridview();
+                        lblSuccessMessage.Text = "Información actualizada correctamente";
+                        lblErrorMessage.Text = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblSuccessMessage.Text = "";
+                    lblErrorMessage.Text = ex.Message;
+                }
             }
         }
 
@@ -165,11 +172,10 @@ namespace WebPrograBases
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
-                SqlCommand sql_cmnd = new SqlCommand("loginUsuario", sqlCon);
+                SqlCommand sql_cmnd = new SqlCommand("SumarPorcentajes", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@in_username", SqlDbType.NVarChar).Value = txtUserName.Text.Trim();
-                sql_cmnd.Parameters.AddWithValue("@in_Pass", SqlDbType.NVarChar).Value = txtPassword.Text.Trim();
-                int count = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.NVarChar).Value = Session["numCuenta"];
+                porcentaje = Convert.ToInt32(sql_cmnd.ExecuteScalar());
                 sqlCon.Close();
             }
 
