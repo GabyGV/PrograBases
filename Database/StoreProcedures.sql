@@ -1,5 +1,13 @@
 USE [PrograBases]
 
+
+/* 
+Procedimiento VerCuenta
+Objetivo: Encontrar las cuentas a las que el usuario esta ligado y a la vez mostrar todas si es administrador
+	Entradas : Id de la persona
+	Salidas  : Datos de cuentas
+*/
+
 IF OBJECT_ID('VerCuenta') IS NOT NULL
 BEGIN 
 DROP PROC VerCuenta 
@@ -34,6 +42,14 @@ BEGIN CATCH
 END CATCH
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerDocumentoIdentidad
+Objetivo: Ver el Documento de identidad ligado al usuario que accedio al sistema
+	Entradas : Usuario 
+	Salidas  : Documento de Identidad
+*/
 IF OBJECT_ID('VerDocumentoIdentidad') IS NOT NULL
 BEGIN 
 DROP PROC VerDocumentoIdentidad 
@@ -55,6 +71,14 @@ BEGIN CATCH
 END CATCH
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerNumeroCuenta
+Objetivo: Ver el numero de cuenta ligado a un documento de identidad
+	Entradas : Documento de identidad 
+	Salidas  : El numero de cuenta ligado a la persona
+*/
 IF OBJECT_ID('VerNumeroCuenta') IS NOT NULL
 BEGIN 
 DROP PROC VerNumeroCuenta 
@@ -77,6 +101,13 @@ END CATCH
 GO
 
 
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerBeneficiarios
+Objetivo: Retornar los datos de los beneficiarios asociados a la cuenta
+	Entradas : El numero de la cuenta con el cual buscar los beneficiarios 
+	Salidas  : Los datos solicitados de las tablas Beneficiarios y Persona
+*/
 IF OBJECT_ID('VerBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC VerBeneficiarios 
@@ -107,6 +138,14 @@ BEGIN CATCH
 END CATCH
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento EliminarBeneficiario
+Objetivo: Cambia el valor activo en el beneficiario solicitado
+	Entradas : Valor documento identidad
+	Salidas  : Cambio directo en la base
+*/
 IF OBJECT_ID('EliminarBeneficiario') IS NOT NULL
 BEGIN 
 DROP PROC EliminarBeneficiario 
@@ -128,6 +167,14 @@ BEGIN CATCH
 END CATCH
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ActualizarBeneficiarios
+Objetivo: SP encargado de actualizar los datos de los beneficiarios en las tablas de Beneficiario y Persona
+	Entradas : Los parametros a cambiar
+	Salidas  : Actualizacion en la base
+*/
 IF OBJECT_ID('ActualizarBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC ActualizarBeneficiarios 
@@ -168,6 +215,14 @@ BEGIN CATCH
 END CATCH
 GO
 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento AgregarBeneficiario
+Objetivo: Agregar un nuevo beneficiario
+	Entradas : Datos necesarios para la creacion del beneficiario 
+	Salidas  : Nuevo beneficiario o -1 en caso de error
+*/
 IF OBJECT_ID('AgregarBeneficiario') IS NOT NULL
 BEGIN 
 DROP PROC AgregarBeneficiario 
@@ -200,6 +255,13 @@ END CATCH
 GO
 
 
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento AgregarPersona
+Objetivo Agregar una nueva persona a la base de datos 
+	Entradas : Datos de la persona
+	Salidas  : Insercion de datos en la tabla
+*/
 IF OBJECT_ID('AgregarPersona') IS NOT NULL
 BEGIN 
 DROP PROC AgregarPersona 
@@ -236,6 +298,13 @@ END CATCH
 GO
 
 
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento BuscarPersona
+Objetivo: Dar a saber si una persona existe o no en la base de datos 
+	Entradas : Valor Documento de identidad
+	Salidas  : Contador con resultado de 1 si es que la encontro
+*/
 IF OBJECT_ID('BuscarPersona') IS NOT NULL
 BEGIN 
 DROP PROC BuscarPersona 
@@ -256,3 +325,32 @@ BEGIN CATCH
 	return -1
 END CATCH
 GO
+
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ActualizarPorcentaje
+Objetivo: Actualizar porcentajes de los beneficiarios 
+	Entradas : ID's de los mismo junto con su porcentaje
+	Salidas  : Confirmacion de cambios aplicados
+*/
+--IF OBJECT_ID('ActualizarPorcentaje') IS NOT NULL
+--BEGIN 
+--DROP PROC EliminarBeneficiario 
+--END
+--GO
+--CREATE PROCEDURE EliminarBeneficiario
+--	 @inValorDocumentoIdentidad INT
+--AS
+--BEGIN TRY 
+--	UPDATE Beneficiario
+--	SET Activo = 0
+--	WHERE (IDValorDocIdentidad = @inValorDocumentoIdentidad)
+
+--END TRY
+--BEGIN CATCH
+--	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
+--	PRINT error_message()
+--	return -1
+--END CATCH
+--GO
