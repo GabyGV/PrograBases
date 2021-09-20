@@ -330,9 +330,9 @@ GO
 --------------------------------------------------------------------------------------------------------------------------
 /* 
 Procedimiento SumarPorcentajes
-Objetivo: Dar a saber si una persona existe o no en la base de datos 
-	Entradas : Valor Documento de identidad
-	Salidas  : Contador con resultado de 1 si es que la encontro
+Objetivo: Dar a saber la suma de porcentajes 
+	Entradas : Numero de Cuenta
+	Salidas  : Suma total de los datos a sumar
 */
 IF OBJECT_ID('SumarPorcentajes') IS NOT NULL
 BEGIN 
