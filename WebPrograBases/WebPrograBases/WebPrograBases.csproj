@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AgregarBeneficiario.aspx" />
     <Content Include="Global.asax" />
     <Content Include="MostrarBeneficiarios.aspx" />
     <Content Include="MostrarCuenta.aspx" />
@@ -75,6 +76,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AgregarBeneficiario.aspx.cs">
+      <DependentUpon>AgregarBeneficiario.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AgregarBeneficiario.aspx.designer.cs">
+      <DependentUpon>AgregarBeneficiario.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

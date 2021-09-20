@@ -74,6 +74,36 @@ GO
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 
+Procedimiento CountBeneficiarios
+Objetivo: Contador de Beneficiarios
+	Entradas : Cuenta 
+	Salidas  : Cantidad de Beneficiarios
+*/
+IF OBJECT_ID('CountBeneficiarios') IS NOT NULL
+BEGIN 
+DROP PROC CountBeneficiarios 
+END
+GO
+CREATE PROCEDURE CountBeneficiarios
+	 @inNumCuenta INT
+AS
+BEGIN TRY 
+	SELECT COUNT(B.ID_Beneficiario)
+	FROM Beneficiario B
+	WHERE (B.IDNumeroCuenta = @inNumCuenta AND B.Activo = 1)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
 Procedimiento VerNumeroCuenta
 Objetivo: Ver el numero de cuenta ligado a un documento de identidad
 	Entradas : Documento de identidad 
@@ -128,6 +158,38 @@ BEGIN TRY
 	FROM Beneficiario B
 	INNER JOIN Persona P
 	ON P.ValorDocIdentidad = B.IDValorDocIdentidad
+	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.Activo = 1)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerBeneficiarios
+Objetivo: Retornar los datos de los beneficiarios asociados a la cuenta
+	Entradas : El numero de la cuenta con el cual buscar los beneficiarios 
+	Salidas  : Los datos solicitados de las tablas Beneficiarios
+*/
+IF OBJECT_ID('VerBeneficiariosMini') IS NOT NULL
+BEGIN 
+DROP PROC VerBeneficiariosMini 
+END
+GO
+CREATE PROCEDURE VerBeneficiariosMini
+	 @inNumeroCuenta INT
+AS
+BEGIN TRY 
+	SELECT B.Porcentaje,
+		   B.IDValorDocIdentidad,
+		   B.IDNumeroCuenta,
+		   B.IDParentezco
+	FROM Beneficiario B
 	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.Activo = 1)
 
 END TRY
@@ -273,7 +335,8 @@ CREATE PROCEDURE AgregarPersona
 	@inFechaNacimiento DATE,
 	@inEmail VARCHAR(64),
 	@inTelefono1 VARCHAR(64),
-	@inTelefono2 VARCHAR(64)
+	@inTelefono2 VARCHAR(64),
+	@inTDocumento INT
 AS
 BEGIN TRY 
 	INSERT Persona(ValorDocIdentidad,
@@ -281,13 +344,15 @@ BEGIN TRY
 				   FechaNacimiento,
 				   Email,
 				   Telefono1,
-				   Telefono2)
+				   Telefono2,
+				   IDTDoc)
 	VALUES(@inValorDocumentoIdentidad,
 		   @inNombre,
 		   @inFechaNacimiento,
 		   @inEmail,
 		   @inTelefono1,
-		   @inTelefono2)
+		   @inTelefono2,
+		   @inTDocumento)
 
 END TRY
 BEGIN CATCH
