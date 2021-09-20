@@ -15,15 +15,15 @@
     <form id="form1" runat="server">
         <div>
             <h1>Beneficiarios</h1>
-            <asp:GridView ID="tblBeneficiarios" runat="server" AutoGenerateColumns="false" ShowFooter="true" DataKeyNames="tblBeneficiariosID"
+            <asp:GridView ID="tblBeneficiarios" runat="server" AutoGenerateColumns="false"
                 ShowHeaderWhenEmpty="true"
 
-                OnRowCommand="tblBeneficiarios_RowCommand" OnRowEditing="tblBeneficiarios_RowEditing" OnRowCancelingEdit="tblBeneficiarios_RowCancelingEdit"
+                OnRowEditing="tblBeneficiarios_RowEditing" OnRowCancelingEdit="tblBeneficiarios_RowCancelingEdit"
                 OnRowUpdating="tblBeneficiarios_RowUpdating" OnRowDeleting="tblBeneficiarios_RowDeleting"
 
                 BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3">
                 <%-- Theme Properties --%>
-                <FooterStyle BackColor="White" ForeColor="#000066" />
+                <%--<FooterStyle BackColor="White" ForeColor="#000066" />--%>
                 <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
                 <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
                 <RowStyle ForeColor="#000066" />
@@ -41,9 +41,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtNombre" Text='<%# Eval("Nombre") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtNombreFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Parentezco">
                         <ItemTemplate>
@@ -52,9 +49,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtIDParentezco" Text='<%# Eval("IDParentezco") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtIDParentezcoFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Porcentaje">
                         <ItemTemplate>
@@ -63,9 +57,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtPorcentaje" Text='<%# Eval("Porcentaje") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtPorcentajeFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Fecha Nacimiento">
                         <ItemTemplate>
@@ -74,9 +65,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtFechaNacimiento" Text='<%# Eval("FechaNacimiento") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtFechaNacimientoFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Valor Documento de Identidad">
                         <ItemTemplate>
@@ -85,9 +73,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtValorDocIdentidad" Text='<%# Eval("ValorDocIdentidad") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtValorDocIdentidadFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Email">
                         <ItemTemplate>
@@ -96,9 +81,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtEmail" Text='<%# Eval("Email") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtEmailFooter" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Telefono 1">
                         <ItemTemplate>
@@ -107,9 +89,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtTelefono1" Text='<%# Eval("Telefono1") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtTelefono1Footer" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Telefono 2">
                         <ItemTemplate>
@@ -118,9 +97,6 @@
                         <EditItemTemplate>
                             <asp:TextBox ID="txtTelefono2" Text='<%# Eval("Telefono2") %>' runat="server" />
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:TextBox ID="txtTelefono2Footer" runat="server" />
-                        </FooterTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField>
                         <ItemTemplate>
@@ -131,9 +107,6 @@
                             <asp:ImageButton ImageUrl="~/Images/save.png" runat="server" CommandName="Update" ToolTip="Update" Width="20px" Height="20px"/>
                             <asp:ImageButton ImageUrl="~/Images/cancel.png" runat="server" CommandName="Cancel" ToolTip="Cancel" Width="20px" Height="20px"/>
                         </EditItemTemplate>
-                        <FooterTemplate>
-                            <asp:ImageButton ImageUrl="~/Images/addnew.png" runat="server" CommandName="AddNew" ToolTip="Add New" Width="20px" Height="20px"/>
-                        </FooterTemplate>
                     </asp:TemplateField>
                 </Columns>
             </asp:GridView>
