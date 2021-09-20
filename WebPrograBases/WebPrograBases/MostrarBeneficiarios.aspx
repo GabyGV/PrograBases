@@ -114,6 +114,8 @@
             <asp:Label ID="lblSuccessMessage" Text="" runat="server" ForeColor="Green" />
             <br />
             <asp:Label ID="lblErrorMessage" Text="" runat="server" ForeColor="Red" />
+            <br />
+            <asp:Label ID="lblPorcentaje" Text="" runat="server" ForeColor="Red" />
         </div>
     </form>
 </body>
