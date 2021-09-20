@@ -15,6 +15,8 @@
     <form id="form1" runat="server">
         <div>
             <h1>Bienvenido(a)</h1>
+            <asp:Label ID="lblUserDetails" runat="server" Text=""></asp:Label>
+        <br />
         </div>
         <div>
             <p>

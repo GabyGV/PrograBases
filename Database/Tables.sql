@@ -79,6 +79,7 @@ CREATE TABLE Beneficiario
   IDValorDocIdentidad INT NOT NULL,
   IDNumeroCuenta INT NOT NULL,
   IDParentezco INT NOT NULL,
+  Activo INT NOT NULL,
   FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ValorDocIdentidad),
   FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(NumeroCuenta),
   FOREIGN KEY (IDParentezco) REFERENCES Parentezcos(ID_Parentezco)

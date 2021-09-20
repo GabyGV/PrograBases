@@ -186,8 +186,9 @@ BEGIN
 	        INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
 										   IDValorDocIdentidad, 
 										   IDParentezco,
-										   Porcentaje)
-			SELECT numeroCuenta, valorDicIdBene, parentezcoID, porcentaje  FROM @TemporalBeneficiario;
+										   Porcentaje,
+										   Activo)
+			SELECT numeroCuenta, valorDicIdBene, parentezcoID, porcentaje, 1  FROM @TemporalBeneficiario;
 
 	--Usuarios---------------------------------------------------------
 

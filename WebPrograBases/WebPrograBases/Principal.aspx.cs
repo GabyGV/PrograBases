@@ -11,6 +11,7 @@ namespace WebPrograBases
 {
     public partial class Principal : System.Web.UI.Page
     {
+        public static int Usuario;
         protected void Page_Load(object sender, EventArgs e)
         {
             lblErrorMessage.Visible = false;
@@ -45,6 +46,7 @@ namespace WebPrograBases
                 sqlCon.Close();
                 if (count == 1)
                 {
+                    //Usuario = txtUserName.Text.Trim();
                     Session["username"] = txtUserName.Text.Trim();
                     Response.Redirect("Segunda.aspx");
                 }
