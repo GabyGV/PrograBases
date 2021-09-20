@@ -62,9 +62,9 @@ namespace WebPrograBases
             return numCuenta;
         }
 
-        protected void btnAgregarBeneficiarios_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("AgregarBeneficiario.aspx");
-        }
+        //protected void btnAgregarBeneficiarios_Click(object sender, EventArgs e)
+        //{
+        //    Response.Redirect("AgregarBeneficiario.aspx");
+        //}
     }
 }
