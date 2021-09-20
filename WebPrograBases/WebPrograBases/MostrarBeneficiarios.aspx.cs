@@ -51,40 +51,7 @@ namespace WebPrograBases
 
         }
 
-        /*
-        protected void tblBeneficiarios_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            try
-            {
-                if (e.CommandName.Equals("AddNew"))
-                {
-                    using (SqlConnection sqlCon = new SqlConnection(connectionString)) 
-                    {
-                        sqlCon.Open();
-                        SqlCommand sql_cmnd = new SqlCommand("AgregarBeneficiario", sqlCon); //insert
-                        sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                        sql_cmnd.Parameters.AddWithValue("@FirstName", (tblBeneficiarios.FooterRow.FindControl("txtNombreFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@LastName", (tblBeneficiarios.FooterRow.FindControl("txtIDParentezcoFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Contact", (tblBeneficiarios.FooterRow.FindControl("txtPorcentajeFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Email", (tblBeneficiarios.FooterRow.FindControl("txtFechaNacimientoFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Email", (tblBeneficiarios.FooterRow.FindControl("txtValorDocIdentidadFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Email", (tblBeneficiarios.FooterRow.FindControl("txtEmailFooter") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Email", (tblBeneficiarios.FooterRow.FindControl("txtTelefono1Footer") as TextBox).Text.Trim());
-                        sql_cmnd.Parameters.AddWithValue("@Email", (tblBeneficiarios.FooterRow.FindControl("txtTelefono2Footer") as TextBox).Text.Trim());
-                        sql_cmnd.ExecuteNonQuery();
-                        PopulateGridview();
-                        lblSuccessMessage.Text = "Nuevo beneficiario agregado";
-                        lblErrorMessage.Text = "";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                lblSuccessMessage.Text = "";
-                lblErrorMessage.Text = ex.Message;
-            }
-        }
-        */
+        
 
         protected void tblBeneficiarios_RowEditing(object sender, GridViewEditEventArgs e)
         {
@@ -102,13 +69,24 @@ namespace WebPrograBases
 
         protected void tblBeneficiarios_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            int porcen = validarPorcentaje();
-            if (porcen < 100)
+            int doc = Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim());
+            int entrada = Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtPorcentaje") as TextBox).Text.Trim());
+            int porcen = validarPorcentaje(entrada, doc);
+            
+            if (porcen > 100)
             {
-                lblPorcentaje.Text = "Su porcentaje total es " + porcen.ToString() + " por favor corregirlo y volver a intentar.";
+                lblPorcentaje.Text = "Su porcentaje total no debe ser mayor que 100 por favor corregirlo y volver a intentar.";
             }
             else
             {
+                if (porcen < 100)
+                {
+                    lblPorcentaje.Text = "Como recomendación, su porcentaje total no debe ser menor que 100.";
+                }
+                else
+                {
+                    lblPorcentaje.Text = "";
+                }
                 try
                 {
                     using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -165,7 +143,7 @@ namespace WebPrograBases
             }
         }
 
-        private int validarPorcentaje()
+        private int validarPorcentaje(int entrada, int doc)
         {
             int porcentaje = 0;
 
@@ -175,12 +153,23 @@ namespace WebPrograBases
                 SqlCommand sql_cmnd = new SqlCommand("SumarPorcentajes", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.NVarChar).Value = Session["numCuenta"];
-                porcentaje = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.NVarChar).Value = entrada;
+                sql_cmnd.Parameters.AddWithValue("@inValorDocIndentidad", SqlDbType.NVarChar).Value = doc;
+                try
+                {
+                    porcentaje = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                    porcentaje = porcentaje + entrada;
+                }
+                catch (Exception ex)
+                {
+                    porcentaje = entrada;
+                }
                 sqlCon.Close();
             }
 
             return porcentaje;
         }
+
     }
 
     
