@@ -36,7 +36,7 @@
                 <Columns>
                     <asp:TemplateField HeaderText="Nombre">
                         <ItemTemplate>
-                            <asp:Label ID="Label1" Text='<%# Bind("Nombre") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label1" Text='<%# Bind("Nombre") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtNombre" Text='<%# Bind("Nombre") %>' runat="server" />
@@ -44,7 +44,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Parentezco">
                         <ItemTemplate>
-                            <asp:Label ID="Label2" Text='<%# Bind("IDParentezco") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label2" Text='<%# Bind("IDParentezco") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtIDParentezco" Text='<%# Bind("IDParentezco") %>' runat="server" />
@@ -52,7 +52,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Porcentaje">
                         <ItemTemplate>
-                            <asp:Label ID="Label3" Text='<%# Bind("Porcentaje") %>' runat="server" ></asp:Label>/>
+                            <asp:Label ID="Label3" Text='<%# Bind("Porcentaje") %>' runat="server" ></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtPorcentaje" Text='<%# Bind("Porcentaje") %>' runat="server" />
@@ -60,7 +60,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Fecha Nacimiento">
                         <ItemTemplate>
-                            <asp:Label ID="Label4" Text='<%# Bind("FechaNacimiento") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label4" Text='<%# Bind("FechaNacimiento") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtFechaNacimiento" Text='<%# Bind("FechaNacimiento") %>' runat="server" />
@@ -68,7 +68,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Valor Documento de Identidad">
                         <ItemTemplate>
-                            <asp:Label ID="Label5" Text='<%# Bind("ValorDocIdentidad") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label5" Text='<%# Bind("ValorDocIdentidad") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtValorDocIdentidad" Text='<%# Bind("ValorDocIdentidad") %>' runat="server" />
@@ -76,7 +76,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Email">
                         <ItemTemplate>
-                            <asp:Label ID="Label6" Text='<%# Bind("Email") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label6" Text='<%# Bind("Email") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtEmail" Text='<%# Bind("Email") %>' runat="server" />
@@ -84,7 +84,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Telefono 1">
                         <ItemTemplate>
-                            <asp:Label ID="Label7" Text='<%# Bind("Telefono1") %>' runat="server" ></asp:Label>/>
+                            <asp:Label ID="Label7" Text='<%# Bind("Telefono1") %>' runat="server" ></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtTelefono1" Text='<%# Bind("Telefono1") %>' runat="server" />
@@ -92,7 +92,7 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Telefono 2">
                         <ItemTemplate>
-                            <asp:Label ID="Label8" Text='<%# Bind("Telefono2") %>' runat="server"></asp:Label> />
+                            <asp:Label ID="Label8" Text='<%# Bind("Telefono2") %>' runat="server"></asp:Label> 
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtTelefono2" Text='<%# Bind("Telefono2") %>' runat="server" />
