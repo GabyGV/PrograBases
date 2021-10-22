@@ -87,6 +87,20 @@ BEGIN
 					Interes INT '@Interes'
 				);
 
+--Tipo_Movimiento----
+
+			INSERT INTO [dbo].Tipo_Movimiento(ID,
+											  Descripcion,
+											  Operacion)
+
+			SELECT id, descripcion, operacion
+			FROM OPENXML (@hdoc,'Datos/Tipo_Movimientos/TipoMovimiento', 2)
+				WITH(
+					id INT '@Id' ,
+					descripcion VARCHAR(128) '@Descripcion',
+					operacion INT '@Operacion'
+				);
+
 		COMMIT
 	END TRY
 

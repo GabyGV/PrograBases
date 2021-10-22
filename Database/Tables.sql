@@ -8,9 +8,11 @@ GO
 CREATE PROCEDURE CargarTablas
 AS
 BEGIN TRY 
+
 	DROP TABLE Usuario
 	DROP TABLE Usuarios_Ver
 
+	DROP TABLE Movimientos
 	DROP TABLE Beneficiario
 	DROP TABLE Cuenta
 	DROP TABLE Persona
@@ -18,6 +20,8 @@ BEGIN TRY
 	DROP TABLE Parentezcos
 	DROP TABLE Tipo_Moneda
 	DROP TABLE TipoDocIdentidad
+	DROP TABLE Tipo_Movimiento
+	DROP TABLE Tipo_CambioDolar
 
 	CREATE TABLE TipoDocIdentidad
 	(
@@ -56,12 +60,14 @@ BEGIN TRY
 
 	CREATE TABLE Persona
 	(
-	  ValorDocIdentidad INT PRIMARY KEY NOT NULL,
+      ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  ValorDocIdentidad INT NOT NULL,
 	  Nombre VARCHAR(64) NOT NULL,
 	  FechaNacimiento DATE NOT NULL,
 	  Email VARCHAR(64) NOT NULL,
 	  Telefono1 VARCHAR(16) NOT NULL,
 	  Telefono2 VARCHAR(16) NOT NULL,
+	  Fecha DATE NOT NULL,
 
 	  IDTDoc INT NOT NULL,
 	  FOREIGN KEY (IDTDoc) REFERENCES TipoDocIdentidad(ID_TDoc)
@@ -69,27 +75,29 @@ BEGIN TRY
 
 	CREATE TABLE Cuenta
 	(
-	  NumeroCuenta INT PRIMARY KEY NOT NULL,
-	  FechaCreacion DATE NOT NULL,
+	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  NumeroCuenta INT NOT NULL,
 	  Saldo MONEY NOT NULL,
+	  Fecha DATE NOT NULL,
 
 	  IDValorDocIdentidad INT NOT NULL,
 	  IDTCuenta INT NOT NULL,
 	  FOREIGN KEY (IDTCuenta) REFERENCES TipoCuentaAhorro(ID_TCuenta),
-	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ValorDocIdentidad)
+	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ID)
 	);
 
 	CREATE TABLE Beneficiario
 	(
 	  ID_Beneficiario INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	  Porcentaje INT NOT NULL,
+	  Fecha DATE NOT NULL,
 
 	  IDValorDocIdentidad INT NOT NULL,
 	  IDNumeroCuenta INT NOT NULL,
 	  IDParentezco INT NOT NULL,
 	  Activo INT NOT NULL,
-	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ValorDocIdentidad),
-	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(NumeroCuenta),
+	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ID),
+	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
 	  FOREIGN KEY (IDParentezco) REFERENCES Parentezcos(ID_Parentezco)
 	);
 
@@ -102,7 +110,7 @@ BEGIN TRY
 	  EsAdministrador INT NOT NULL,
 
 	  IDValorDocIdentidad INT NOT NULL,
-	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ValorDocIdentidad)
+	  FOREIGN KEY (IDValorDocIdentidad) REFERENCES Persona(ID)
 	);
 
 	CREATE TABLE Usuarios_Ver
@@ -111,7 +119,36 @@ BEGIN TRY
 	  Username VARCHAR(16) NOT NULL,
 
 	  IDNumeroCuenta INT NOT NULL,
-	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(NumeroCuenta)
+	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID)
+	);
+
+	CREATE TABLE Tipo_Movimiento
+	(
+      ID INT PRIMARY KEY NOT NULL,
+	  Descripcion VARCHAR(128) NOT NULL,
+	  Operacion INT NOT NULL
+	);
+
+	CREATE TABLE Movimientos
+	(
+	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  Descripcion VARCHAR(128) NOT NULL,
+	  Monto MONEY NOT NULL,
+	  Fecha DATE NOT NULL,
+
+	  IDMoneda INT NOT NULL,
+	  IDNumeroCuenta INT NOT NULL,
+	  IDTMovimiento INT NOT NULL,
+	  FOREIGN KEY (IDMoneda) REFERENCES Tipo_Moneda(ID_TMoneda),
+	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
+	  FOREIGN KEY (IDTMovimiento) REFERENCES Tipo_Movimiento(ID)
+	);
+
+	CREATE TABLE Tipo_CambioDolar
+	(
+	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  Compra INT NOT NULL,
+	  Venta INT NOT NULL
 	);
 
 END TRY
