@@ -13,7 +13,19 @@ namespace WebPrograBases
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            using(SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            
+        }
+
+        protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            int numCuenta = 0;
+            //agregar el resultado del número de cuenta
+            this.cargarTabla(numCuenta);
+        }
+
+        protected void cargarTabla(int numCuenta)
+        {
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("VerCuenta", sqlCon);
@@ -23,7 +35,7 @@ namespace WebPrograBases
                 dtbl.Load(sql_cmnd.ExecuteReader());
                 Cuentas.DataSource = dtbl;
                 Cuentas.DataBind();
-            } 
-        } 
+            }
+        }
     }
 }

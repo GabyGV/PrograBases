@@ -14,6 +14,11 @@
 <body>
     <form id="form1" runat="server">
         <div>
+            <h1>Elija su cuenta:</h1>
+            <asp:DropDownList ID="numCuenta" runat="server" Height="27px" Width="207px"></asp:DropDownList>
+            <asp:Button ID="btnConsultar" runat="server" Text="Realizar consulta" OnClick="btnConsultar_Click" Width="156px" />
+        </div>
+        <div>
             <h1>Su estado de cuenta:</h1>
             <div>
                 <asp:GridView ID="Cuentas" runat="server" AutoGenerateColumns="false">
