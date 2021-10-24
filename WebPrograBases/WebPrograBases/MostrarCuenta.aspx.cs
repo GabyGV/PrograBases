@@ -34,6 +34,7 @@ namespace WebPrograBases
 
         protected void cargarTabla(int numCuenta)
         {
+            //modificar para aceptar numCuenta
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
