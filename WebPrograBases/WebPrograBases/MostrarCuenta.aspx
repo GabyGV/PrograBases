@@ -15,7 +15,7 @@
     <form id="form1" runat="server">
         <div>
             <h1>Elija su cuenta:</h1>
-            <asp:DropDownList ID="numCuenta" runat="server" Height="27px" Width="207px"></asp:DropDownList>
+            <asp:DropDownList ID="ddnumCuenta" runat="server" Height="27px" Width="207px"></asp:DropDownList>
             <asp:Button ID="btnConsultar" runat="server" Text="Realizar consulta" OnClick="btnConsultar_Click" Width="156px" />
         </div>
         <div>

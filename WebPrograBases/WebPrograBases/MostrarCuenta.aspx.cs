@@ -13,14 +13,23 @@ namespace WebPrograBases
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            ddFill();
         }
 
         protected void btnConsultar_Click(object sender, EventArgs e)
         {
             int numCuenta = 0;
             //agregar el resultado del número de cuenta
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue);
             this.cargarTabla(numCuenta);
+        }
+
+        protected void ddFill()
+        {
+            //Hacer llamada a la base
+            //devolver lista
+            //con un for agregar al dropdwon
+            //DropDownList1.Items.Insert(0, new ListItem("Add New", ""));
         }
 
         protected void cargarTabla(int numCuenta)
