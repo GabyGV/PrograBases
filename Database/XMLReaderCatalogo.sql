@@ -1,9 +1,10 @@
 USE [PrograBases]
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
+IF OBJECT_ID('CargarXMLCatalogo') IS NOT NULL
+BEGIN 
+DROP PROC CargarXMLCatalogo 
+END
 GO
 Create PROCEDURE [dbo].[CargarXMLCatalogo]
 
@@ -79,7 +80,7 @@ BEGIN
 					IdTipoMoneda INT '@IdTipoMoneda',
 					SaldoMinimo MONEY '@SaldoMinimo',					
 					MultaSaldoMin MONEY '@MultaSaldoMin', 
-					CargoAnual MONEY '@CargoAnual', 
+					CargoAnual MONEY '@CargoMensual', 
 					NumRetirosHumano INT '@NumRetirosHumano',
 					NumRetirosAutomatico INT '@NumRetirosAutomatico', 
 					ComisionHumano MONEY '@ComisionHumano', 
