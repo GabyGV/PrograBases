@@ -13,6 +13,7 @@ BEGIN TRY
 	DROP TABLE Usuarios_Ver
 
 	DROP TABLE Movimientos
+	DROP TABLE EstadoCuenta
 	DROP TABLE Beneficiario
 	DROP TABLE Cuenta
 	DROP TABLE Persona
@@ -79,6 +80,7 @@ BEGIN TRY
 	  NumeroCuenta INT NOT NULL,
 	  Saldo MONEY NOT NULL,
 	  Fecha DATE NOT NULL,
+	  Activo INT NOT NULL,
 
 	  IDValorDocIdentidad INT NOT NULL,
 	  IDTCuenta INT NOT NULL,
@@ -129,26 +131,44 @@ BEGIN TRY
 	  Operacion INT NOT NULL
 	);
 
+	CREATE TABLE EstadoCuenta
+	(
+	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  Fecha DATE NOT NULL,
+	  SaldoMinimo MONEY NOT NULL,
+	  SaldoInicio MONEY NOT NULL,
+	  SaldoFinal MONEY NOT NULL,
+	  CantOperacionesATM INT NOT NULL,
+	  CantOperacionesCajeroHumano INT NOT NULL,
+
+	  IDNumeroCuenta INT NOT NULL,
+	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
+	);
+		
 	CREATE TABLE Movimientos
 	(
 	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	  Descripcion VARCHAR(128) NOT NULL,
-	  Monto MONEY NOT NULL,
+	  MontoMovimiento MONEY NOT NULL,
+	  MontoCuenta MONEY NOT NULL,
 	  Fecha DATE NOT NULL,
 
 	  IDMoneda INT NOT NULL,
 	  IDNumeroCuenta INT NOT NULL,
 	  IDTMovimiento INT NOT NULL,
+	  IDEstadoCuenta INT NOT NULL,
 	  FOREIGN KEY (IDMoneda) REFERENCES Tipo_Moneda(ID_TMoneda),
 	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
-	  FOREIGN KEY (IDTMovimiento) REFERENCES Tipo_Movimiento(ID)
+	  FOREIGN KEY (IDTMovimiento) REFERENCES Tipo_Movimiento(ID),
+	  FOREIGN KEY (IDEstadoCuenta) REFERENCES EstadoCuenta(ID)
 	);
 
 	CREATE TABLE Tipo_CambioDolar
 	(
 	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	  Compra INT NOT NULL,
-	  Venta INT NOT NULL
+	  Venta INT NOT NULL,
+	  Fecha DATE NOT NULL
 	);
 
 END TRY

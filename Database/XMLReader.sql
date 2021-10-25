@@ -125,8 +125,6 @@ BEGIN
 					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
-				SELECT * FROM @TemporalCuenta;
-
 --Beneficiarios----
 
 			INSERT INTO @TemporalBeneficiario (numeroCuenta, 
@@ -220,14 +218,17 @@ BEGIN
 
 	--Cuenta---------------------------------------------------------
 
-					--INSERT INTO [dbo].Cuenta(IDValorDocIdentidad, 
-					--						 IDTCuenta, 
-					--						 NumeroCuenta,  
-					--						 Saldo,
-					--						 Fecha)
-					--SELECT valorDocID, tipoCuentaID, numeroCuenta, saldo, FechaTemp
-					--FROM @TemporalCuenta
-					--WHERE [@TemporalCuenta].[FechaTemp] = @fechaActual;
+					INSERT INTO [dbo].Cuenta(IDValorDocIdentidad, 
+											 IDTCuenta, 
+											 NumeroCuenta,  
+											 Saldo,
+											 Fecha,
+											 Activo)
+					SELECT P.ID, tipoCuentaID, numeroCuenta, saldo, FechaTemp, 1
+					FROM @TemporalCuenta
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalCuenta].valorDocID
+					WHERE [@TemporalCuenta].[FechaTemp] = @fechaActual;
 
 	--Beneficiarios---------------------------------------------------------
 
@@ -253,29 +254,39 @@ BEGIN
 					--				FROM Persona Pe
 					--				WHERE (Pe.ValorDocIdentidad = B.valorDicIdBene))
 
-					--INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
-					--							   IDValorDocIdentidad, 
-					--							   IDParentezco,
-					--							   Porcentaje,
-					--							   Activo,
-					--							   Fecha)
-					--SELECT numeroCuenta, valorDicIdBene, parentezcoID, porcentaje, 1, FechaTemp
-					--FROM @TemporalBeneficiario
-					--WHERE [@TemporalBeneficiario].[FechaTemp] = @fechaActual;
+					INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
+												   IDValorDocIdentidad, 
+												   IDParentezco,
+												   Porcentaje,
+												   Activo,
+												   Fecha)
+					SELECT C.ID, P.ID, parentezcoID, porcentaje, 1, FechaTemp
+					FROM @TemporalBeneficiario
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalBeneficiario].valorDicIdBene
+					INNER JOIN Cuenta C
+					ON C.NumeroCuenta = [@TemporalBeneficiario].numeroCuenta
+					WHERE [@TemporalBeneficiario].[FechaTemp] = @fechaActual;
 
 	--Usuarios---------------------------------------------------------
 
-					--INSERT INTO [dbo].Usuario(Username, 
-					--						  Pass, 
-					--						  IDValorDocIdentidad, 
-					--						  EsAdministrador)
-					--SELECT usuario, pass, valorDocId, esAdmin  FROM @TemporalUsuario;
+					INSERT INTO [dbo].Usuario(Username, 
+											  Pass, 
+											  IDValorDocIdentidad, 
+											  EsAdministrador)
+					SELECT usuario, pass, P.ID, esAdmin  
+					FROM @TemporalUsuario
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalUsuario].valorDocId;
 
 	--Usuarios_Ver---------------------------------------------------------
 
-					--INSERT INTO [dbo].Usuarios_Ver(Username, 
-					--							   IDNumeroCuenta)
-					--SELECT usuario, numCuenta  FROM @TemporalUsuarioVer;
+					INSERT INTO [dbo].Usuarios_Ver(Username, 
+												   IDNumeroCuenta)
+					SELECT usuario, C.ID  
+					FROM @TemporalUsuarioVer
+					INNER JOIN Cuenta C
+					ON C.NumeroCuenta = [@TemporalUsuarioVer].numCuenta;
 
 
 				SELECT @fechaActual = DATEADD(DAY,1,@fechaActual);
