@@ -27,15 +27,6 @@ namespace WebPrograBases
             
         }
 
-        protected void btnConsultar_Click(object sender, EventArgs e)
-        {
-            int numCuenta = 0;
-            //agregar el resultado del número de cuenta
-            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue);
-            this.cuentaActual = numCuenta;
-            this.cargarTablaEst(numCuenta);
-        }
-
         protected void ddFill()
         {
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
@@ -90,6 +81,7 @@ namespace WebPrograBases
 
         protected void cargarTablaMov(string fecha)
         {
+            this.lblMov.Visible = true;
             //modificar para aceptar numCuenta
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
@@ -115,5 +107,14 @@ namespace WebPrograBases
             cargarTablaMov(fecha);
 
         }
+
+        protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            int numCuenta = 0;
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue.Trim());
+            this.cuentaActual = numCuenta;
+            this.cargarTablaEst(numCuenta);
+        }
+
     }
 }

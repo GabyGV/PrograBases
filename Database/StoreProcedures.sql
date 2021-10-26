@@ -531,7 +531,7 @@ BEGIN TRY
 		, E. CantOperacionesCajeroHumano
 	FROM EstadoCuenta E
 	INNER JOIN Cuenta C
-	ON C.NumeroCuenta = E.IDNumeroCuenta
+	ON C.ID = E.IDNumeroCuenta
 	WHERE (C.NumeroCuenta = @inNumCuenta)
 
 END TRY
@@ -573,4 +573,32 @@ BEGIN CATCH
 	return -1
 END CATCH
 GO */
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento esAdmin
+Objetivo: Retornar si el usuario es admin
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('esAdmin') IS NOT NULL
+BEGIN 
+DROP PROC esAdmin 
+END
+GO
+CREATE PROCEDURE esAdmin
+	 @inUserName VARCHAR(16)
+AS
+BEGIN TRY 
+	SELECT U.EsAdministrador
+	FROM Usuario U
+	WHERE (U.Username = @inUserName)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar el administrador', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
 
