@@ -21,7 +21,25 @@
         <div>
             <h1>Su estado de cuenta:</h1>
             <div>
-                <asp:GridView ID="EstadoCuenta" runat="server" AutoGenerateColumns="false">
+                <asp:GridView ID="EstadoCuenta" runat="server" AutoGenerateColumns="false" AutoGenerateSelectButton="True" >
+                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />  
+                    <Columns>
+                        <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
+                        <asp:BoundField DataField="SaldoMinimo" HeaderText ="Saldo Minimo" />
+                        <asp:BoundField DataField="SaldoInicio" HeaderText ="Saldo Inicial" />
+                        <asp:BoundField DataField="SaldoFinal" HeaderText ="Saldo Final" />
+                        <asp:BoundField DataField="CantOperacionesATM" HeaderText ="OperacionesATM" />
+                        <asp:BoundField DataField="CantOperacionesCajeroHumano" HeaderText ="Operaciones Cajero Humano" />
+                    </Columns>
+                </asp:GridView>
+            </div>
+        </div>
+        <div>
+            <h1></h1>
+            <asp:Label ID="lblMov" runat="server" Text="Detalles de Movimientos:"></asp:Label>
+            <div>
+                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AutoGenerateSelectButton="True" >
+                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />  
                     <Columns>
                         <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
                         <asp:BoundField DataField="SaldoMinimo" HeaderText ="Saldo Minimo" />
