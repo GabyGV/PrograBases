@@ -450,3 +450,127 @@ Objetivo: Actualizar porcentajes de los beneficiarios
 --	return -1
 --END CATCH
 --GO
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerNumCuentas
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('VerNumCuentas') IS NOT NULL
+BEGIN 
+DROP PROC VerNumCuentas 
+END
+GO
+CREATE PROCEDURE VerNumCuentas
+	 @inIDPersona INT
+AS
+BEGIN TRY 
+	SELECT C.numeroCuenta
+	FROM Cuenta C
+	INNER JOIN Persona P
+	ON P.ID = C.IDValorDocIdentidad
+	WHERE (C.IDValorDocIdentidad = @inIDPersona)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar numeros de cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerNumCuentasAdmin
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('VerNumCuentasAdmin') IS NOT NULL
+BEGIN 
+DROP PROC VerNumCuentasAdmin 
+END
+GO
+CREATE PROCEDURE VerNumCuentasAdmin
+AS
+BEGIN TRY 
+	SELECT C.numeroCuenta
+	FROM Cuenta C
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar numeros de cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerEstadosCuenta
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('VerEstadosCuenta') IS NOT NULL
+BEGIN 
+DROP PROC VerEstadosCuenta 
+END
+GO
+CREATE PROCEDURE VerEstadosCuenta
+	 @inNumCuenta INT
+AS
+BEGIN TRY 
+	SELECT E.Fecha
+		, E.SaldoMinimo
+		, E.SaldoInicio
+		, E.SaldoFinal
+		, E.CantOperacionesATM
+		, E. CantOperacionesCajeroHumano
+	FROM EstadoCuenta E
+	INNER JOIN Cuenta C
+	ON C.NumeroCuenta = E.IDNumeroCuenta
+	WHERE (C.NumeroCuenta = @inNumCuenta)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar estados de cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento VerMovimientos
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+
+IF OBJECT_ID('VerMovimientos') IS NOT NULL
+BEGIN 
+DROP PROC VerMovimientos 
+END
+GO
+CREATE PROCEDURE VerMovimientos
+	 @inNumCuenta INT,
+	 @inFecha DATE
+AS
+BEGIN TRY 
+	SELECT M.Fecha
+		, M. 
+	FROM Movimientos M
+	INNER JOIN Cuenta C
+	ON C.NumeroCuenta = E.IDNumeroCuenta
+	WHERE (C.NumeroCuenta = @inNumCuenta)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar estados de cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO */
+

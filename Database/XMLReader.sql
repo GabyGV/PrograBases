@@ -1,9 +1,10 @@
 USE [PrograBases]
 GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
+IF OBJECT_ID('CargarXML') IS NOT NULL
+BEGIN 
+DROP PROC CargarXML 
+END
 GO
 Create PROCEDURE [dbo].[CargarXML]
 
@@ -15,24 +16,34 @@ BEGIN
 ----Declaramos las tablas temporales-----------------------------------------------------------
 
 			DECLARE @Varios XML
+			DECLARE @TemporalFechas table (fecha date);
 			DECLARE @TemporalPersona table (TipoDocId INT, 
 											nombre VARCHAR(64), 
 											valorDocId INT,
 											fechaNaci DATE, 
 											email VARCHAR(64), 
 											telofono1 VARCHAR(16),
-											telefono2 VARCHAR(16)); 
+											telefono2 VARCHAR(16),
+											FechaTemp DATE); 
 
 			DECLARE @TemporalCuenta table (valorDocID INT, 
 										   tipoCuentaID INT, 
 										   numeroCuenta INT,
-										   fechaCreacion DATE, 
-										   saldo MONEY);
+										   saldo MONEY,
+										   FechaTemp DATE);
 
 			DECLARE @TemporalBeneficiario table (numeroCuenta INT, 
 												 valorDicIdBene INT, 
 												 parentezcoID INT, 
-												 porcentaje INT);
+												 porcentaje INT,
+												 FechaTemp DATE);
+
+			DECLARE @TemporalMovimientos table (descripcion VARCHAR(128),
+												idMoneda INT,
+												monto MONEY,
+												numeroCuenta INT,
+												tipo INT,
+												FechaTemp DATE);
 
 			DECLARE @TemporalUsuario table (usuario VARCHAR(16), 
 											pass VARCHAR(16),
@@ -41,7 +52,13 @@ BEGIN
 
 			DECLARE @TemporalUsuarioVer table (usuario VARCHAR(16), 
 											   numCuenta INT);
+
+
 			SET NOCOUNT ON 
+
+			DECLARE @fechaMinima DATE
+			DECLARE @fechaMaxima DATE
+			DECLARE @DiaDeCobro INT
 
 			SELECT @Varios = C
 			FROM OPENROWSET (BULK 'C:\Recursos\Datos.xml', SINGLE_BLOB) AS Varios(C)
@@ -49,6 +66,21 @@ BEGIN
 			EXEC sp_xml_preparedocument @hdoc OUTPUT, @Varios
 
 ----Insercion de datos a las tablas temporales ----------------------------------------------
+
+----Guardo las fechas a la tabla temporal----------------------------------------------
+
+			INSERT INTO @TemporalFechas (fecha)
+			SELECT convert(date, fechaInsercion, 121) [fechaInsercion]
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion', 1)
+
+			WITH([fechaInsercion] VARCHAR (16) '@Fecha');
+
+			SELECT @fechaMaxima = MAX(fecha) FROM @TemporalFechas 
+			SELECT @fechaMinima = MIN(fecha) FROM @TemporalFechas 
+			
+			Declare @cont int
+			DECLARE @fechaActual date
+			SET @fechaActual = @fechaMinima;
 
 
 --Persona----
@@ -59,10 +91,11 @@ BEGIN
 										  fechaNaci, 
 										  email, 
 										  telofono1,
-										  telefono2)
+										  telefono2,
+										  FechaTemp)
 
-			SELECT TipoDocuIdentidad, Nombre, ValorDocumentoIdentidad, FechaNacimiento, Email, Telefono1, Telefono2
-			FROM OPENXML (@hdoc,'Datos/Personas/Persona', 2)
+			SELECT TipoDocuIdentidad, Nombre, ValorDocumentoIdentidad, FechaNacimiento, Email, Telefono1, Telefono2, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/AgregarPersona', 2)
 				WITH(
 					TipoDocuIdentidad INT '@TipoDocuIdentidad' ,
 					Nombre  VARCHAR(64) '@Nombre',
@@ -70,7 +103,8 @@ BEGIN
 					FechaNacimiento DATE '@FechaNacimiento',  
 					Email VARCHAR(64) '@Email', 
 					Telefono1 VARCHAR(16) '@Telefono1',
-					Telefono2 VARCHAR(16) '@Telefono2'
+					Telefono2 VARCHAR(16) '@Telefono2',
+					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
 --Cuenta----
@@ -78,17 +112,17 @@ BEGIN
 			INSERT INTO @TemporalCuenta (valorDocID, 
 										 tipoCuentaID, 
 										 numeroCuenta,
-										 fechaCreacion, 
-										 saldo)
+										 saldo,
+										 FechaTemp)
 
-			SELECT ValorDocumentoIdentidadDelCliente, TipoCuentaId, NumeroCuenta, FechaCreacion, Saldo
-			FROM OPENXML (@hdoc,'Datos/Cuentas/Cuenta', 2)
+			SELECT ValorDocumentoIdentidadDelCliente, TipoCuentaId, NumeroCuenta, Saldo, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/AgregarCuenta', 2)
 				WITH(
 					ValorDocumentoIdentidadDelCliente VARCHAR(16) '@ValorDocumentoIdentidadDelCliente' ,
 					TipoCuentaId  INT '@TipoCuentaId',
-					NumeroCuenta INT '@NumeroCuenta', 
-				    FechaCreacion DATE '@FechaCreacion', 
-					Saldo MONEY '@Saldo'
+					NumeroCuenta INT '@NumeroCuenta',  
+					Saldo MONEY '@Saldo',
+					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
 --Beneficiarios----
@@ -96,16 +130,39 @@ BEGIN
 			INSERT INTO @TemporalBeneficiario (numeroCuenta, 
 			                                   valorDicIdBene, 
 											   parentezcoID,
-											   porcentaje)
+											   porcentaje,
+											   FechaTemp)
 
-			SELECT NumeroCuenta, ValorDocumentoIdentidadBeneficiario, ParentezcoId, Porcentaje
-			FROM OPENXML (@hdoc,'Datos/Beneficiarios/Beneficiario', 2)
+			SELECT NumeroCuenta, ValorDocumentoIdentidadBeneficiario, ParentezcoId, Porcentaje, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/AgregarBeneficiario', 2)
 				WITH(
 					NumeroCuenta INT '@NumeroCuenta', 
 					ValorDocumentoIdentidadBeneficiario INT '@ValorDocumentoIdentidadBeneficiario', 
 					ParentezcoId INT '@ParentezcoId', 
-					Porcentaje INT '@Porcentaje'
+					Porcentaje INT '@Porcentaje',
+					fechaLeida VARCHAR(40) '../@Fecha'
 				);
+
+--Movimiento----
+
+			INSERT INTO @TemporalMovimientos (descripcion,
+											  idMoneda,
+											  monto,
+											  numeroCuenta,
+											  tipo,
+											  FechaTemp)
+
+			SELECT Descripcion, IDMoneda, Monto, NumeroCuenta, Tipo, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/Movimientos', 2)
+				WITH(
+					Descripcion VARCHAR(128) '@Descripcion',
+					IDMoneda INT '@IdMoneda',
+					Monto MONEY '@Monto',
+					NumeroCuenta INT '@NumeroCuenta',
+					Tipo INT '@Tipo',
+					fechaLeida VARCHAR(40) '../@Fecha'
+				);
+
 
 --Usuarios----
 
@@ -140,71 +197,102 @@ BEGIN
 
 -----Inicio del ciclo para insertar los archivos a las tablas reales ------------------------
 
+			WHILE (@fechaActual <= @fechaMaxima)
+				BEGIN
+					SET NOCOUNT ON 
 
+					SET @DiaDeCobro = Day(@fechaActual);
 	--Persona---------------------------------------------------------
 
-	        INSERT INTO [dbo].Persona(IDTDoc, 
-									  Nombre, 
-									  ValorDocIdentidad, 
-									  FechaNacimiento, 
-									  Email, 
-									  Telefono1, 
-									  Telefono2)
-			SELECT TipoDocId, nombre, valorDocId, fechaNaci, email, telofono1, telefono2  FROM @TemporalPersona;
+					INSERT INTO [dbo].Persona(IDTDoc, 
+											  Nombre, 
+											  ValorDocIdentidad, 
+											  FechaNacimiento, 
+											  Email, 
+											  Telefono1, 
+											  Telefono2,
+											  Fecha)
+					SELECT TipoDocId, nombre, valorDocId, fechaNaci, email, telofono1, telefono2, FechaTemp  
+					FROM @TemporalPersona
+					WHERE [@TemporalPersona].FechaTemp = @fechaActual;
 
 	--Cuenta---------------------------------------------------------
 
-	        INSERT INTO [dbo].Cuenta(IDValorDocIdentidad, 
-									 IDTCuenta, 
-									 NumeroCuenta, 
-									 FechaCreacion, 
-									 Saldo)
-			SELECT valorDocID, tipoCuentaID, numeroCuenta, fechaCreacion, saldo  FROM @TemporalCuenta;
+					INSERT INTO [dbo].Cuenta(IDValorDocIdentidad, 
+											 IDTCuenta, 
+											 NumeroCuenta,  
+											 Saldo,
+											 Fecha,
+											 Activo)
+					SELECT P.ID, tipoCuentaID, numeroCuenta, saldo, FechaTemp, 1
+					FROM @TemporalCuenta
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalCuenta].valorDocID
+					WHERE [@TemporalCuenta].[FechaTemp] = @fechaActual;
 
 	--Beneficiarios---------------------------------------------------------
 
-			INSERT INTO [dbo].Persona(IDTDoc, 
-									  Nombre, 
-									  ValorDocIdentidad, 
-									  FechaNacimiento, 
-									  Email, 
-									  Telefono1, 
-									  Telefono2)
-			SELECT  1,
-					'No Conocido',
-					valorDicIdBene,
-					'1990-01-01',
-					'na@na.com',
-					'00000000',
-					'00000000'
-			FROM @TemporalBeneficiario B
-			WHERE NOT EXISTS(
-							SELECT *
-							FROM Persona Pe
-							WHERE (Pe.ValorDocIdentidad = B.valorDicIdBene))
+					--INSERT INTO [dbo].Persona(IDTDoc, 
+					--						  Nombre, 
+					--						  ValorDocIdentidad, 
+					--						  FechaNacimiento, 
+					--						  Email, 
+					--						  Telefono1, 
+					--						  Telefono2,
+					--						  Fecha)
+					--SELECT  1,
+					--		'No Conocido',
+					--		valorDicIdBene,
+					--		'1990-01-01',
+					--		'na@na.com',
+					--		'00000000',
+					--		'00000000',
+					--		@fechaActual
+					--FROM @TemporalBeneficiario B
+					--WHERE NOT EXISTS(
+					--				SELECT *
+					--				FROM Persona Pe
+					--				WHERE (Pe.ValorDocIdentidad = B.valorDicIdBene))
 
-	        INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
-										   IDValorDocIdentidad, 
-										   IDParentezco,
-										   Porcentaje,
-										   Activo)
-			SELECT numeroCuenta, valorDicIdBene, parentezcoID, porcentaje, 1  FROM @TemporalBeneficiario;
+					INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
+												   IDValorDocIdentidad, 
+												   IDParentezco,
+												   Porcentaje,
+												   Activo,
+												   Fecha)
+					SELECT C.ID, P.ID, parentezcoID, porcentaje, 1, FechaTemp
+					FROM @TemporalBeneficiario
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalBeneficiario].valorDicIdBene
+					INNER JOIN Cuenta C
+					ON C.NumeroCuenta = [@TemporalBeneficiario].numeroCuenta
+					WHERE [@TemporalBeneficiario].[FechaTemp] = @fechaActual;
 
 	--Usuarios---------------------------------------------------------
 
-	        INSERT INTO [dbo].Usuario(Username, 
-									  Pass, 
-									  IDValorDocIdentidad, 
-									  EsAdministrador)
-			SELECT usuario, pass, valorDocId, esAdmin  FROM @TemporalUsuario;
+					INSERT INTO [dbo].Usuario(Username, 
+											  Pass, 
+											  IDValorDocIdentidad, 
+											  EsAdministrador)
+					SELECT usuario, pass, P.ID, esAdmin  
+					FROM @TemporalUsuario
+					INNER JOIN Persona P
+					ON P.ValorDocIdentidad = [@TemporalUsuario].valorDocId;
 
 	--Usuarios_Ver---------------------------------------------------------
 
-	        INSERT INTO [dbo].Usuarios_Ver(Username, 
-										   IDNumeroCuenta)
-			SELECT usuario, numCuenta  FROM @TemporalUsuarioVer;
+					INSERT INTO [dbo].Usuarios_Ver(Username, 
+												   IDNumeroCuenta)
+					SELECT usuario, C.ID  
+					FROM @TemporalUsuarioVer
+					INNER JOIN Cuenta C
+					ON C.NumeroCuenta = [@TemporalUsuarioVer].numCuenta;
 
 
+				SELECT @fechaActual = DATEADD(DAY,1,@fechaActual);
+
+
+			END
 		COMMIT
 	END TRY
 
