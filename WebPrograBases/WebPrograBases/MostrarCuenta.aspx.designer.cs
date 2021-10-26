@@ -42,12 +42,12 @@ namespace WebPrograBases
         protected global::System.Web.UI.WebControls.Button btnConsultar;
 
         /// <summary>
-        /// Cuentas control.
+        /// EstadoCuenta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView Cuentas;
+        protected global::System.Web.UI.WebControls.GridView EstadoCuenta;
     }
 }

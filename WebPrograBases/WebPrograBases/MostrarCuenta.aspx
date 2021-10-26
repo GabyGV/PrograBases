@@ -21,13 +21,14 @@
         <div>
             <h1>Su estado de cuenta:</h1>
             <div>
-                <asp:GridView ID="Cuentas" runat="server" AutoGenerateColumns="false">
+                <asp:GridView ID="EstadoCuenta" runat="server" AutoGenerateColumns="false">
                     <Columns>
-                        <asp:BoundField DataField="IDValorDocIdentidad" HeaderText ="Documento de identidad" />
-                        <asp:BoundField DataField="IDTCuenta" HeaderText ="Tipo de Cuenta" />
-                        <asp:BoundField DataField="NumeroCuenta" HeaderText ="Número de Cuenta" />
-                        <asp:BoundField DataField="FechaCreacion" HeaderText ="Fecha de Creación" />
-                        <asp:BoundField DataField="Saldo" HeaderText ="Saldo" />
+                        <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
+                        <asp:BoundField DataField="SaldoMinimo" HeaderText ="Saldo Minimo" />
+                        <asp:BoundField DataField="SaldoInicio" HeaderText ="Saldo Inicial" />
+                        <asp:BoundField DataField="SaldoFinal" HeaderText ="Saldo Final" />
+                        <asp:BoundField DataField="CantOperacionesATM" HeaderText ="OperacionesATM" />
+                        <asp:BoundField DataField="CantOperacionesCajeroHumano" HeaderText ="Operaciones Cajero Humano" />
                     </Columns>
                 </asp:GridView>
             </div>
