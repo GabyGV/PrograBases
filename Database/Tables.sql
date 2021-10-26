@@ -140,6 +140,7 @@ BEGIN TRY
 	  SaldoFinal MONEY NOT NULL,
 	  CantOperacionesATM INT NOT NULL,
 	  CantOperacionesCajeroHumano INT NOT NULL,
+	  Activo INT NOT NULL,
 
 	  IDNumeroCuenta INT NOT NULL,
 	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
