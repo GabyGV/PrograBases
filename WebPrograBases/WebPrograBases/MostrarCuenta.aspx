@@ -38,15 +38,14 @@
             <h1></h1>
             <asp:Label ID="lblMov" runat="server" Text="Detalles de Movimientos:"></asp:Label>
             <div>
-                <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="false" AutoGenerateSelectButton="True" >
-                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />  
+                <asp:GridView ID="tblMovimientos" runat="server" AutoGenerateColumns="false" >
                     <Columns>
                         <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
-                        <asp:BoundField DataField="SaldoMinimo" HeaderText ="Saldo Minimo" />
-                        <asp:BoundField DataField="SaldoInicio" HeaderText ="Saldo Inicial" />
-                        <asp:BoundField DataField="SaldoFinal" HeaderText ="Saldo Final" />
-                        <asp:BoundField DataField="CantOperacionesATM" HeaderText ="OperacionesATM" />
-                        <asp:BoundField DataField="CantOperacionesCajeroHumano" HeaderText ="Operaciones Cajero Humano" />
+                        <asp:BoundField DataField="TipoCambio" HeaderText ="Tipo de Cambio" />
+                        <asp:BoundField DataField="MontoMovimiento" HeaderText ="Monto en la Moneda del Movimiento" />
+                        <asp:BoundField DataField="MontoCuenta" HeaderText ="Monto en la Moneda de la cuenta" />
+                        <asp:BoundField DataField="Descripcion" HeaderText ="Descripcion" />
+                        <asp:BoundField DataField="SaldoNuevo" HeaderText ="Saldo Nuevo" />
                     </Columns>
                 </asp:GridView>
             </div>
