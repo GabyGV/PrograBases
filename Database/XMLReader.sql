@@ -163,7 +163,6 @@ BEGIN
 					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
-
 --Usuarios----
 
 			INSERT INTO @TemporalUsuario (usuario, 
@@ -268,31 +267,51 @@ BEGIN
 					ON C.NumeroCuenta = [@TemporalBeneficiario].numeroCuenta
 					WHERE [@TemporalBeneficiario].[FechaTemp] = @fechaActual;
 
-	--Usuarios---------------------------------------------------------
+	--Movimientos------------------------------------------------------
 
-					INSERT INTO [dbo].Usuario(Username, 
-											  Pass, 
-											  IDValorDocIdentidad, 
-											  EsAdministrador)
-					SELECT usuario, pass, P.ID, esAdmin  
-					FROM @TemporalUsuario
-					INNER JOIN Persona P
-					ON P.ValorDocIdentidad = [@TemporalUsuario].valorDocId;
-
-	--Usuarios_Ver---------------------------------------------------------
-
-					INSERT INTO [dbo].Usuarios_Ver(Username, 
-												   IDNumeroCuenta)
-					SELECT usuario, C.ID  
-					FROM @TemporalUsuarioVer
+					INSERT INTO [dbo].Movimientos(Descripcion,
+												  MontoMovimiento, 
+												  MontoCuenta,
+												  Fecha,
+												  IDMoneda,
+												  IDNumeroCuenta,
+												  IDTMovimiento,
+												  IDEstadoCuenta)
+					SELECT T.descripcion, T.monto, T.monto, T.FechaTemp, T.idMoneda, C.ID , T.tipo, E.IDNumeroCuenta
+					FROM @TemporalMovimientos T
 					INNER JOIN Cuenta C
-					ON C.NumeroCuenta = [@TemporalUsuarioVer].numCuenta;
+					ON C.NumeroCuenta = T.numeroCuenta
+					INNER JOIN EstadoCuenta E
+					ON E.IDNumeroCuenta = C.ID
+					WHERE (T.FechaTemp = @fechaActual) AND (E.Activo = 1);
+	
 
 
 				SELECT @fechaActual = DATEADD(DAY,1,@fechaActual);
 
 
 			END
+
+	--Usuarios---------------------------------------------------------
+
+		INSERT INTO [dbo].Usuario(Username, 
+									Pass, 
+									IDValorDocIdentidad, 
+									EsAdministrador)
+		SELECT usuario, pass, P.ID, esAdmin  
+		FROM @TemporalUsuario
+		INNER JOIN Persona P
+		ON P.ValorDocIdentidad = [@TemporalUsuario].valorDocId;
+
+	--Usuarios_Ver---------------------------------------------------------
+
+		INSERT INTO [dbo].Usuarios_Ver(Username, 
+										IDNumeroCuenta)
+		SELECT usuario, C.ID  
+		FROM @TemporalUsuarioVer
+		INNER JOIN Cuenta C
+		ON C.NumeroCuenta = [@TemporalUsuarioVer].numCuenta;
+
 		COMMIT
 	END TRY
 
