@@ -77,6 +77,11 @@ BEGIN
 			DECLARE @Cambio VARCHAR(32);
 			DECLARE @IdTipoCambio INT;
 			DECLARE @TipoMovimiento INT;
+			
+			DECLARE @TipoCuenta INT;
+			DECLARE @Intereses INT;
+			DECLARE @Contador INT;
+
 
 			DECLARE @IdMin INT;
 			DECLARE @IdMax INT;
@@ -277,28 +282,6 @@ BEGIN
 
 	--Beneficiarios---------------------------------------------------------
 
-					--INSERT INTO [dbo].Persona(IDTDoc, 
-					--						  Nombre, 
-					--						  ValorDocIdentidad, 
-					--						  FechaNacimiento, 
-					--						  Email, 
-					--						  Telefono1, 
-					--						  Telefono2,
-					--						  Fecha)
-					--SELECT  1,
-					--		'No Conocido',
-					--		valorDicIdBene,
-					--		'1990-01-01',
-					--		'na@na.com',
-					--		'00000000',
-					--		'00000000',
-					--		@fechaActual
-					--FROM @TemporalBeneficiario B
-					--WHERE NOT EXISTS(
-					--				SELECT *
-					--				FROM Persona Pe
-					--				WHERE (Pe.ValorDocIdentidad = B.valorDicIdBene))
-
 					INSERT INTO [dbo].Beneficiario(IDNumeroCuenta, 
 												   IDValorDocIdentidad, 
 												   IDParentezco,
@@ -480,7 +463,99 @@ BEGIN
 
 	--Store Procedures -------------------------------------------------
 
+					INSERT @Operaciones (id)
+					SELECT E.ID
+					FROM EstadoCuenta E
+					WHERE (E.FechaFin <= @fechaActual) AND (E.Activo = 1);
+
+					SET @IdMin = 1;
+					SET @IdActual = @IdMin;
+					SELECT @IdMax = MAX(O.elemento) FROM @Operaciones O 
 					
+
+					WHILE (@IdActual <= @IdMax)
+						BEGIN
+							
+							SET @IdCuenta = (SELECT E.IDNumeroCuenta 
+											FROM EstadoCuenta E
+											INNER JOIN @Operaciones O
+											ON O.id = E.ID
+											WHERE O.elemento = @IdActual)
+
+							SET @SaldoActual = (SELECT C.Saldo 
+												FROM Cuenta C
+												WHERE C.ID = @IdCuenta)							
+							
+
+							SET @IdEstadoCuenta = (SELECT E.ID 
+												   FROM EstadoCuenta E 
+												   INNER JOIN @Operaciones O
+												   ON O.id = E.ID
+												   WHERE (O.elemento = @IdActual) AND (E.Activo = 1))
+
+							SET @SaldoMinimo = (SELECT E.SaldoMinimo
+												FROM EstadoCuenta E
+												WHERE E.ID = @IdEstadoCuenta)
+
+							SET @TipoCuenta = (SELECT C.IDTCuenta
+											   FROM Cuenta C
+											   WHERE C.ID = @IdCuenta )
+							IF(@SaldoActual) IS NOT NULL
+							BEGIN
+							---- APLICADO DE INTERESES ------------------------------------
+								SET @SaldoActual = (SELECT @SaldoActual -(@SaldoMinimo*(SELECT T.Interes/100 FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta)))
+						
+							---- MULTA SALDO MINIMO ---------------------------------------
+								IF(@SaldoMinimo < (SELECT T.SaldoMinimo FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta))
+									BEGIN
+										SET @SaldoActual = @SaldoActual - (SELECT T.MultaSaldoMinimo FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta)
+									END
+
+							---- MULTA OPERACIONES EN ATM ----------------------------------
+								SET @Contador = (SELECT E.CantOperacionesATM FROM EstadoCuenta E WHERE E.ID = @IdEstadoCuenta)
+								IF(@Contador > (SELECT T.NumRetiros_Automaticos FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta))
+									BEGIN
+										SET @SaldoActual = @SaldoActual - (SELECT T.ComisionAutomatico FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta)
+									END
+
+							---- MULTA OPERACIONES EN CAJERO HUMANO ------------------------
+								SET @Contador = (SELECT E.CantOperacionesCajeroHumano FROM EstadoCuenta E WHERE E.ID = @IdEstadoCuenta)
+								IF(@Contador > (SELECT T.NumRetiros_Humanos FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta))
+									BEGIN
+										SET @SaldoActual = @SaldoActual - (SELECT T.ComisionHumano FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta)
+									END
+
+							---- COBRO DE CARGOS POR SERVICIO ------------------------------
+								SET @SaldoActual = @SaldoActual - (SELECT T.CargoAnual FROM TipoCuentaAhorro T WHERE T.ID_TCuenta = @TipoCuenta)
+						
+							---- CERRAR ESTADO DE CUENTA -----------------------------------
+								UPDATE EstadoCuenta	
+								SET SaldoFinal = @SaldoActual, Activo = 0
+								WHERE EstadoCuenta.ID = @IdEstadoCuenta
+
+								UPDATE Cuenta
+								SET Saldo = @SaldoActual
+								WHERE Cuenta.ID = @IdCuenta
+							
+							---- INSERTAR NUENO ESTADO DE CUENTA ---------------------------
+							
+								INSERT INTO [dbo].EstadoCuenta( Fecha,
+																FechaFin,	
+																SaldoMinimo,
+																SaldoInicio,
+																SaldoFinal,
+																CantOperacionesATM,
+																CantOperacionesCajeroHumano,
+																IDNumeroCuenta,
+																Activo)
+								SELECT @fechaActual, DATEADD(month, 1, @fechaActual), @SaldoActual, @SaldoActual, @SaldoActual, 0, 0, @IdCuenta, 1;
+							END
+
+
+							SET @IdActual = @IdActual + 1
+						END
+					
+					DELETE FROM @Operaciones;
 
 	--------------------------------------------------------------------
 
