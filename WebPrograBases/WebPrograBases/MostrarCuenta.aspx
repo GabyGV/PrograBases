@@ -17,6 +17,7 @@
             <h1>Elija su cuenta:</h1>
             <asp:DropDownList ID="ddnumCuenta" runat="server" Height="27px" Width="207px" ></asp:DropDownList>
             <asp:Button ID="btnConsultar" runat="server" Text="Realizar consulta" Width="156px" CausesValidation="False" OnClick="btnConsultar_Click"/>
+            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar cuenta" OnClick="btnEliminar_Click" />
         </div>
         <div>
             <h1>Su estado de cuenta:</h1>

@@ -116,5 +116,18 @@ namespace WebPrograBases
             this.cargarTablaEst(numCuenta);
         }
 
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("desactivarCuenta", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = this.cuentaActual;
+                sql_cmnd.ExecuteReader();/*
+                DataTable dtbl = new DataTable();
+                dtbl.Load(sql_cmnd.ExecuteReader());*/
+            }
+        }
     }
 }

@@ -471,7 +471,7 @@ BEGIN TRY
 	FROM Cuenta C
 	INNER JOIN Persona P
 	ON P.ID = C.IDValorDocIdentidad
-	WHERE (C.IDValorDocIdentidad = @inIDPersona)
+	WHERE (C.IDValorDocIdentidad = @inIDPersona and C.Activo = 1)
 
 END TRY
 BEGIN CATCH
@@ -597,6 +597,35 @@ BEGIN TRY
 END TRY
 BEGIN CATCH
 	RAISERROR('Error al consultar el administrador', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento desactivarCuenta
+Objetivo: Desactivar una cuenta
+	Entradas : El número de cuenta 
+	Salidas  : NA
+*/
+IF OBJECT_ID('desactivarCuenta') IS NOT NULL
+BEGIN 
+DROP PROC desactivarCuenta 
+END
+GO
+CREATE PROCEDURE desactivarCuenta
+	 @inNumCuenta INT
+AS
+BEGIN TRY 
+	UPDATE Cuenta 
+	SET Activo = 0
+	WHERE (Cuenta.NumeroCuenta = @inNumCuenta)
+
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al desactivar Cuenta', 16, 1) WITH NOWAIT;
 	PRINT error_message()
 	return -1
 END CATCH
