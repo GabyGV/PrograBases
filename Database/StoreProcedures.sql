@@ -471,7 +471,7 @@ BEGIN TRY
 	FROM Cuenta C
 	INNER JOIN Persona P
 	ON P.ID = C.IDValorDocIdentidad
-	WHERE (C.IDValorDocIdentidad = @inIDPersona)
+	WHERE (C.IDValorDocIdentidad = @inIDPersona and C.Activo = 1)
 
 END TRY
 BEGIN CATCH
@@ -531,7 +531,7 @@ BEGIN TRY
 		, E. CantOperacionesCajeroHumano
 	FROM EstadoCuenta E
 	INNER JOIN Cuenta C
-	ON C.NumeroCuenta = E.IDNumeroCuenta
+	ON C.ID = E.IDNumeroCuenta
 	WHERE (C.NumeroCuenta = @inNumCuenta)
 
 END TRY
@@ -548,7 +548,7 @@ Procedimiento VerMovimientos
 Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
-
+*/
 IF OBJECT_ID('VerMovimientos') IS NOT NULL
 BEGIN 
 DROP PROC VerMovimientos 
@@ -559,18 +559,86 @@ CREATE PROCEDURE VerMovimientos
 	 @inFecha DATE
 AS
 BEGIN TRY 
+
+	DECLARE @FechaFinal DATE
+	SET @FechaFinal = (SELECT DATEADD (month, 1, @inFecha))
+
 	SELECT M.Fecha
-		, M. 
+		, M.Cambio
+		, T.Compra
+		, T.Venta
+		, M.MontoMovimiento
+		, M.MontoCuenta
+		, M.Descripcion 
 	FROM Movimientos M
 	INNER JOIN Cuenta C
-	ON C.NumeroCuenta = E.IDNumeroCuenta
-	WHERE (C.NumeroCuenta = @inNumCuenta)
+	ON C.ID = M.IDNumeroCuenta
+	INNER JOIN Tipo_CambioDolar T
+	ON T.Fecha = @inFecha
+	WHERE (C.NumeroCuenta = @inNumCuenta and M.Fecha >= @inFecha and M.Fecha < @FechaFinal)
 
 END TRY
 BEGIN CATCH
-	RAISERROR('Error al consultar estados de cuenta', 16, 1) WITH NOWAIT;
+	RAISERROR('Error al consultar los movimientos', 16, 1) WITH NOWAIT;
 	PRINT error_message()
 	return -1
 END CATCH
-GO */
+GO 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento esAdmin
+Objetivo: Retornar si el usuario es admin
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('esAdmin') IS NOT NULL
+BEGIN 
+DROP PROC esAdmin 
+END
+GO
+CREATE PROCEDURE esAdmin
+	 @inUserName VARCHAR(16)
+AS
+BEGIN TRY 
+	SELECT U.EsAdministrador
+	FROM Usuario U
+	WHERE (U.Username = @inUserName)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar el administrador', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento desactivarCuenta
+Objetivo: Desactivar una cuenta
+	Entradas : El número de cuenta 
+	Salidas  : NA
+*/
+IF OBJECT_ID('desactivarCuenta') IS NOT NULL
+BEGIN 
+DROP PROC desactivarCuenta 
+END
+GO
+CREATE PROCEDURE desactivarCuenta
+	 @inNumCuenta INT
+AS
+BEGIN TRY 
+	UPDATE Cuenta 
+	SET Activo = 0
+	WHERE (Cuenta.NumeroCuenta = @inNumCuenta)
+
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al desactivar Cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
 

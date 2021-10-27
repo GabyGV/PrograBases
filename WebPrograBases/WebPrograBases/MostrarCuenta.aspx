@@ -15,8 +15,9 @@
     <form id="form1" runat="server">
         <div>
             <h1>Elija su cuenta:</h1>
-            <asp:DropDownList ID="ddnumCuenta" runat="server" Height="27px" Width="207px"></asp:DropDownList>
-            <asp:Button ID="btnConsultar" runat="server" Text="Realizar consulta" OnClick="btnConsultar_Click" Width="156px" />
+            <asp:DropDownList ID="ddnumCuenta" runat="server" Height="27px" Width="207px" ></asp:DropDownList>
+            <asp:Button ID="btnConsultar" runat="server" Text="Realizar consulta" Width="156px" CausesValidation="False" OnClick="btnConsultar_Click"/>
+            <asp:Button ID="btnEliminar" runat="server" Text="Eliminar cuenta" OnClick="btnEliminar_Click" />
         </div>
         <div>
             <h1>Su estado de cuenta:</h1>
@@ -41,11 +42,12 @@
                 <asp:GridView ID="tblMovimientos" runat="server" AutoGenerateColumns="false" >
                     <Columns>
                         <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
-                        <asp:BoundField DataField="TipoCambio" HeaderText ="Tipo de Cambio" />
+                        <asp:BoundField DataField="Cambio" HeaderText ="Descripcion del cambio" />
+                        <asp:BoundField DataField="Compra" HeaderText ="Tipo de Cambio Compra" />
+                        <asp:BoundField DataField="Venta" HeaderText ="Tipo de Cambio Venta" />
                         <asp:BoundField DataField="MontoMovimiento" HeaderText ="Monto en la Moneda del Movimiento" />
-                        <asp:BoundField DataField="MontoCuenta" HeaderText ="Monto en la Moneda de la cuenta" />
+                        <asp:BoundField DataField="MontoCuenta" HeaderText ="Monto afectado de la cuenta" />
                         <asp:BoundField DataField="Descripcion" HeaderText ="Descripcion" />
-                        <asp:BoundField DataField="SaldoNuevo" HeaderText ="Saldo Nuevo" />
                     </Columns>
                 </asp:GridView>
             </div>

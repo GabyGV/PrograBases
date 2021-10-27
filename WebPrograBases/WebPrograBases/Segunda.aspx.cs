@@ -20,6 +20,7 @@ namespace WebPrograBases
             lblIdUsuario.Text = "ID : " + Session["idPersona"];
             Session["numCuenta"] = optenerNumCuenta();
             lblNumCuenta.Text = "Cuenta : " + Session["numCuenta"];
+            Session["EsAdministrador"] = esAdmin();
         }
 
         protected void btnEstadosCuenta_Click(object sender, EventArgs e)
@@ -65,6 +66,21 @@ namespace WebPrograBases
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             Response.Redirect("AgregarBeneficiario.aspx");
+        }
+
+        protected int esAdmin()
+        {
+            int admin = 0;
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("esAdmin", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inUserName", SqlDbType.VarChar).Value = Session["username"].ToString();
+                admin = Convert.ToInt32(sql_cmnd.ExecuteScalar());
+                sqlCon.Close();
+            }
+            return admin;
         }
     }
 }

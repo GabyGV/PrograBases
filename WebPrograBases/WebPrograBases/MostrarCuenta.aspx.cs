@@ -27,15 +27,6 @@ namespace WebPrograBases
             
         }
 
-        protected void btnConsultar_Click(object sender, EventArgs e)
-        {
-            int numCuenta = 0;
-            //agregar el resultado del número de cuenta
-            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue);
-            this.cuentaActual = numCuenta;
-            this.cargarTablaEst(numCuenta);
-        }
-
         protected void ddFill()
         {
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
@@ -90,6 +81,7 @@ namespace WebPrograBases
 
         protected void cargarTablaMov(string fecha)
         {
+            this.lblMov.Visible = true;
             //modificar para aceptar numCuenta
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
@@ -100,8 +92,8 @@ namespace WebPrograBases
                 sql_cmnd.Parameters.AddWithValue("@inFecha", SqlDbType.NVarChar).Value = fecha;
                 DataTable dtbl = new DataTable();
                 dtbl.Load(sql_cmnd.ExecuteReader());
-                EstadoCuenta.DataSource = dtbl;
-                EstadoCuenta.DataBind();
+                tblMovimientos.DataSource = dtbl;
+                tblMovimientos.DataBind();
             }
         }
 
@@ -114,6 +106,28 @@ namespace WebPrograBases
             this.lblMov.Visible = true;
             cargarTablaMov(fecha);
 
+        }
+
+        protected void btnConsultar_Click(object sender, EventArgs e)
+        {
+            int numCuenta = 0;
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue.Trim());
+            this.cuentaActual = numCuenta;
+            this.cargarTablaEst(numCuenta);
+        }
+
+        protected void btnEliminar_Click(object sender, EventArgs e)
+        {
+            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
+            {
+                sqlCon.Open();
+                SqlCommand sql_cmnd = new SqlCommand("desactivarCuenta", sqlCon);
+                sql_cmnd.CommandType = CommandType.StoredProcedure;
+                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = this.cuentaActual;
+                sql_cmnd.ExecuteReader();/*
+                DataTable dtbl = new DataTable();
+                dtbl.Load(sql_cmnd.ExecuteReader());*/
+            }
         }
     }
 }
