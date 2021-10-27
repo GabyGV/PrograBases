@@ -86,7 +86,6 @@ namespace WebPrograBases
         {
             this.lblMov.Visible = true;
             fecha = fecha.Split(' ')[0];
-            this.lblMov.Text = this.cuentaActual.ToString();
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
