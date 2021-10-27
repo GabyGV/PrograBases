@@ -14,15 +14,18 @@ namespace WebPrograBases
         int cuentaActual;
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.lblMov.Visible = false;
-            int admin = Convert.ToInt32(Session["EsAdministrador"]);
-            if(admin == 1)
+            if (!IsPostBack)
             {
-                ddFillAdmin();
-            }
-            else
-            {
-                ddFill();
+                this.lblMov.Visible = false;
+                int admin = Convert.ToInt32(Session["EsAdministrador"]);
+                if (admin == 1)
+                {
+                    ddFillAdmin();
+                }
+                else
+                {
+                    ddFill();
+                }
             }
             
         }
@@ -79,17 +82,18 @@ namespace WebPrograBases
             }
         }
 
-        protected void cargarTablaMov(string fecha)
+        protected void cargarTablaMov(string fecha, int numCuenta)
         {
             this.lblMov.Visible = true;
-            //modificar para aceptar numCuenta
+            fecha = fecha.Split(' ')[0];
+            this.lblMov.Text = this.cuentaActual.ToString();
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("VerMovimientos", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = this.cuentaActual;
-                sql_cmnd.Parameters.AddWithValue("@inFecha", SqlDbType.NVarChar).Value = fecha;
+                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = numCuenta;
+                sql_cmnd.Parameters.AddWithValue("@inFecha", SqlDbType.DateTime).Value = fecha;
                 DataTable dtbl = new DataTable();
                 dtbl.Load(sql_cmnd.ExecuteReader());
                 tblMovimientos.DataSource = dtbl;
@@ -97,37 +101,47 @@ namespace WebPrograBases
             }
         }
 
-        protected void EstadoCuenta_SelectedIndexChanged(object sender, EventArgs e)
+        protected void lnkSelect_Click(object sender, EventArgs e)
         {
-            /*
-            TextBoxUserID.Text = GridView1.SelectedRow.Cells[1].Text;
-            TextBoxUserName.Text = GridView1.SelectedRow.Cells[2].Text; */
-            string fecha = EstadoCuenta.SelectedRow.Cells[1].Text;
-            this.lblMov.Visible = true;
-            cargarTablaMov(fecha);
+            string fecha = (sender as LinkButton).CommandArgument;
 
+            //this.lblMov.Text = fecha;
+            this.lblMov.Visible = true;
+            int numCuenta = 0;
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedItem.Text);
+            cargarTablaMov(fecha, numCuenta);
         }
 
         protected void btnConsultar_Click(object sender, EventArgs e)
         {
             int numCuenta = 0;
-            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedValue.Trim());
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedItem.Text);
             this.cuentaActual = numCuenta;
             this.cargarTablaEst(numCuenta);
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
         {
+            int numCuenta = 0;
+            numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedItem.Text);
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("desactivarCuenta", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = this.cuentaActual;
-                sql_cmnd.ExecuteReader();/*
-                DataTable dtbl = new DataTable();
-                dtbl.Load(sql_cmnd.ExecuteReader());*/
+                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = numCuenta;
+                sql_cmnd.ExecuteReader();
+            }
+            int admin = Convert.ToInt32(Session["EsAdministrador"]);
+            if (admin == 1)
+            {
+                ddFillAdmin();
+            }
+            else
+            {
+                ddFill();
             }
         }
+
     }
 }

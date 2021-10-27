@@ -585,6 +585,7 @@ BEGIN CATCH
 END CATCH
 GO 
 
+
 --------------------------------------------------------------------------------------------------------------------------
 /* 
 Procedimiento esAdmin
@@ -642,3 +643,18 @@ BEGIN CATCH
 END CATCH
 GO 
 
+----Pruebas
+/*
+USE [PrograBases]
+
+SELECT E.Fecha
+	, E.SaldoMinimo
+	, E.SaldoInicio
+	, E.SaldoFinal
+	, E.CantOperacionesATM
+	, E. CantOperacionesCajeroHumano
+FROM EstadoCuenta E
+INNER JOIN Cuenta C
+ON C.ID = E.IDNumeroCuenta
+WHERE (C.NumeroCuenta = 11024586)
+*/

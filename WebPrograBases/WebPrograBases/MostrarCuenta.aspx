@@ -22,8 +22,7 @@
         <div>
             <h1>Su estado de cuenta:</h1>
             <div>
-                <asp:GridView ID="EstadoCuenta" runat="server" AutoGenerateColumns="false" AutoGenerateSelectButton="True" >
-                    <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />  
+                <asp:GridView ID="EstadoCuenta" runat="server" AutoGenerateColumns="false" >
                     <Columns>
                         <asp:BoundField DataField="Fecha" HeaderText ="Fecha" />
                         <asp:BoundField DataField="SaldoMinimo" HeaderText ="Saldo Minimo" />
@@ -31,6 +30,11 @@
                         <asp:BoundField DataField="SaldoFinal" HeaderText ="Saldo Final" />
                         <asp:BoundField DataField="CantOperacionesATM" HeaderText ="OperacionesATM" />
                         <asp:BoundField DataField="CantOperacionesCajeroHumano" HeaderText ="Operaciones Cajero Humano" />
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lnkSelect" Text="Select" runat="server" CommandArgument='<%# Eval("Fecha") %>' OnClick="lnkSelect_Click"/>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                     </Columns>
                 </asp:GridView>
             </div>
