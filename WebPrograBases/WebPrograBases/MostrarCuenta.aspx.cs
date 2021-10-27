@@ -104,7 +104,6 @@ namespace WebPrograBases
         {
             string fecha = (sender as LinkButton).CommandArgument;
 
-            //this.lblMov.Text = fecha;
             this.lblMov.Visible = true;
             int numCuenta = 0;
             numCuenta = Convert.ToInt32(this.ddnumCuenta.SelectedItem.Text);
