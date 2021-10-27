@@ -16,7 +16,9 @@ BEGIN
 ----Declaramos las tablas temporales-----------------------------------------------------------
 
 			DECLARE @Varios XML
-			DECLARE @TemporalFechas table (fecha date);
+			DECLARE @TemporalFechas table (fecha DATE);
+			DECLARE	@Operaciones table (elemento INT IDENTITY(1,1),
+										id INT);
 			DECLARE @TemporalPersona table (TipoDocId INT, 
 											nombre VARCHAR(64), 
 											valorDocId INT,
@@ -38,12 +40,17 @@ BEGIN
 												 porcentaje INT,
 												 FechaTemp DATE);
 
-			DECLARE @TemporalMovimientos table (descripcion VARCHAR(128),
+			DECLARE @TemporalMovimientos table (id INT IDENTITY(1,1),
+												descripcion VARCHAR(128),
 												idMoneda INT,
 												monto MONEY,
 												numeroCuenta INT,
 												tipo INT,
 												FechaTemp DATE);
+
+			DECLARE @TemporalTipoCambio table (compra INT, 
+											   venta INT,
+											   FechaTemp DATE);
 
 			DECLARE @TemporalUsuario table (usuario VARCHAR(16), 
 											pass VARCHAR(16),
@@ -53,12 +60,36 @@ BEGIN
 			DECLARE @TemporalUsuarioVer table (usuario VARCHAR(16), 
 											   numCuenta INT);
 
+						-- Variables para operaciones-----------------------------
+
+			DECLARE @SaldoActual MONEY;
+			DECLARE @SaldoMinimo MONEY; 
+			DECLARE @IdValorDocumentIdentidad INT;
+			DECLARE @IdTipoOperacion INT;
+			DECLARE @IdCuenta INT;
+			DECLARE @IdMovimiento INT;
+			DECLARE @IdEstadoCuenta INT;
+			DECLARE @IdTipoCuenta INT;
+			DECLARE @MontoMovimiento INT;
+			DECLARE @MontoFinal INT;
+			DECLARE @TipoMonedaCuenta INT;
+			DECLARE @TipoMonedaMovimiento INT ;
+			DECLARE @Cambio VARCHAR(32);
+			DECLARE @IdTipoCambio INT;
+			DECLARE @TipoMovimiento INT;
+
+			DECLARE @IdMin INT;
+			DECLARE @IdMax INT;
+			DECLARE @IdActual INT;
+
+
+			----------------------------------------------------------
 
 			SET NOCOUNT ON 
 
 			DECLARE @fechaMinima DATE
 			DECLARE @fechaMaxima DATE
-			DECLARE @DiaDeCobro INT
+			DECLARE @DiaDeCierre INT
 
 			SELECT @Varios = C
 			FROM OPENROWSET (BULK 'C:\Recursos\Datos.xml', SINGLE_BLOB) AS Varios(C)
@@ -163,6 +194,20 @@ BEGIN
 					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
+--Tipo_Cambio----
+
+			INSERT INTO @TemporalTipoCambio (compra, 
+											 venta,
+											 FechaTemp)
+
+			SELECT Compra, Venta, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/TipoCambioDolares', 2)
+				WITH(
+					Compra INT '@Compra', 
+					Venta INT '@Venta',
+					fechaLeida VARCHAR(40) '../@Fecha'
+				);
+
 --Usuarios----
 
 			INSERT INTO @TemporalUsuario (usuario, 
@@ -196,11 +241,12 @@ BEGIN
 
 -----Inicio del ciclo para insertar los archivos a las tablas reales ------------------------
 
+
 			WHILE (@fechaActual <= @fechaMaxima)
 				BEGIN
 					SET NOCOUNT ON 
 
-					SET @DiaDeCobro = Day(@fechaActual);
+					SET @DiaDeCierre = Day(@fechaActual);
 	--Persona---------------------------------------------------------
 
 					INSERT INTO [dbo].Persona(IDTDoc, 
@@ -267,24 +313,176 @@ BEGIN
 					ON C.NumeroCuenta = [@TemporalBeneficiario].numeroCuenta
 					WHERE [@TemporalBeneficiario].[FechaTemp] = @fechaActual;
 
-	--Movimientos------------------------------------------------------
+    --TipoCambio-------------------------------------------------------
 
-					INSERT INTO [dbo].Movimientos(Descripcion,
-												  MontoMovimiento, 
-												  MontoCuenta,
-												  Fecha,
-												  IDMoneda,
-												  IDNumeroCuenta,
-												  IDTMovimiento,
-												  IDEstadoCuenta)
-					SELECT T.descripcion, T.monto, T.monto, T.FechaTemp, T.idMoneda, C.ID , T.tipo, E.IDNumeroCuenta
+					INSERT INTO [dbo].Tipo_CambioDolar(Compra,
+													   Venta,
+													   Fecha)
+					SELECT T.compra, T.venta, T.FechaTemp
+					FROM @TemporalTipoCambio T
+					WHERE T.FechaTemp = @fechaActual;
+
+	--Movimientos------------------------------------------------------
+					
+					INSERT @Operaciones (id)
+					SELECT T.id
 					FROM @TemporalMovimientos T
-					INNER JOIN Cuenta C
-					ON C.NumeroCuenta = T.numeroCuenta
-					INNER JOIN EstadoCuenta E
-					ON E.IDNumeroCuenta = C.ID
-					WHERE (T.FechaTemp = @fechaActual) AND (E.Activo = 1);
-	
+					WHERE T.FechaTemp = @fechaActual;
+
+					SET @IdMin = 1;
+					SET @IdActual = @IdMin;
+					SELECT @IdMax = MAX(O.elemento) FROM @Operaciones O 
+
+					WHILE (@IdActual <= @IdMax)
+					BEGIN
+		---- Seteo de datos -------------------------------------------------------------------
+						SET @IdMovimiento = (SELECT M.id
+										     FROM @TemporalMovimientos M
+											 INNER JOIN @Operaciones O
+											 ON O.id = M.id
+											 WHERE O.elemento = @IdActual)
+
+						SET @IdCuenta = (SELECT C.ID 
+										FROM Cuenta C
+										INNER JOIN @TemporalMovimientos M
+										ON C.NumeroCuenta = M.numeroCuenta
+										WHERE M.id = @IdMovimiento)
+
+						SET @SaldoActual = (SELECT C.Saldo 
+											FROM Cuenta C
+											WHERE C.ID = @IdCuenta)
+
+						SET @IdEstadoCuenta = (SELECT E.ID 
+											   FROM EstadoCuenta E 
+											   WHERE (E.IDNumeroCuenta = @IdCuenta) AND (E.Activo = 1))
+
+						SET @IdTipoOperacion = (SELECT T.Operacion
+												FROM Tipo_Movimiento T
+												INNER JOIN @TemporalMovimientos M
+												ON M.tipo = T.ID
+												WHERE M.id = @IdMovimiento)
+
+						SET @TipoMonedaCuenta = (SELECT T.IDTMoneda
+												 FROM TipoCuentaAhorro T
+												 INNER JOIN Cuenta C
+												 ON C.IDTCuenta = T.ID_TCuenta
+												 WHERE C.ID = @IdCuenta)
+
+						SET @TipoMonedaMovimiento = (SELECT M.idMoneda
+													 FROM @TemporalMovimientos M
+													 WHERE M.ID = @IdMovimiento)
+
+						SET @MontoMovimiento = (SELECT M.monto
+												FROM @TemporalMovimientos M
+												WHERE M.id = @IdMovimiento)
+
+						SET @IdTipoCambio = (SELECT MAX(T.ID)
+											 FROM Tipo_CambioDolar T)
+
+						SET @SaldoMinimo = (SELECT E.SaldoMinimo 
+											FROM EstadoCuenta E
+											WHERE E.ID = @IdEstadoCuenta)
+						
+						
+						IF ((@TipoMonedaCuenta = 1) AND (@TipoMonedaMovimiento = 2))
+							BEGIN
+								SET @Cambio = 'Dolares a Colones'
+								IF(@IdTipoOperacion = 1)
+									BEGIN
+										SET @MontoFinal = (SELECT (@MontoMovimiento*T.Venta) 
+														   FROM Tipo_CambioDolar T
+														   WHERE T.ID = @IdTipoCambio)
+									END
+								ELSE 
+									BEGIN
+										SET @MontoFinal = (SELECT (@MontoMovimiento*T.Compra)*-1
+														   FROM Tipo_CambioDolar T
+														   WHERE T.ID = @IdTipoCambio)
+									END
+							END		
+						ELSE 
+							BEGIN
+								IF ((@TipoMonedaCuenta = 2) AND (@TipoMonedaMovimiento = 1))
+									BEGIN
+										SET @Cambio = 'Colones a Dolares'
+										IF(@IdTipoOperacion = 1)
+											BEGIN
+												SET @MontoFinal = (SELECT (@MontoMovimiento/T.Compra) 
+																   FROM Tipo_CambioDolar T
+																   WHERE T.ID = @IdTipoCambio)
+											END
+										ELSE 
+											BEGIN
+												SET @MontoFinal = (SELECT (@MontoMovimiento/T.Venta)*-1
+																   FROM Tipo_CambioDolar T
+																   WHERE T.ID = @IdTipoCambio)
+											END
+									END
+								ELSE
+									BEGIN
+										SET @Cambio = 'Sin conversion'
+										SET @MontoFinal = @MontoMovimiento
+									END
+							END
+
+						IF (@SaldoMinimo > @SaldoActual+@MontoFinal)
+							BEGIN
+								SET @SaldoMinimo = @SaldoActual + @MontoFinal
+							END
+		-----------------------------------------------------------------------				
+		---- Ingreso en Movimientos -------------------------------------------
+						INSERT INTO [dbo].Movimientos(Descripcion,
+													  MontoMovimiento, 
+													  MontoCuenta,
+													  Fecha,
+													  Cambio,
+													  IDMoneda,
+													  IDNumeroCuenta,
+													  IDTMovimiento,
+													  IDEstadoCuenta)
+						SELECT T.descripcion, @MontoMovimiento, @MontoFinal, T.FechaTemp, @Cambio, 
+									T.idMoneda, @IdCuenta, T.tipo, @IdEstadoCuenta
+						FROM @TemporalMovimientos T
+						INNER JOIN @Operaciones O
+						ON O.id = T.id
+						WHERE (T.FechaTemp = @fechaActual) AND (O.elemento = @IdActual);
+		
+		-----------------------------------------------------------------------	
+		------ Ajustes en tablas Cuenta y Estado Cuenta -----------------------	
+
+						UPDATE Cuenta
+						SET Saldo = Saldo + @MontoFinal
+						WHERE @IdCuenta = Cuenta.ID
+
+						SET @TipoMovimiento = (SELECT T.tipo FROM @TemporalMovimientos T WHERE T.id = @IdMovimiento)
+
+						IF((@TipoMovimiento = 1) OR (@TipoMovimiento = 7) OR (@TipoMovimiento = 9))
+						BEGIN 
+							UPDATE EstadoCuenta
+							SET SaldoFinal = @SaldoActual + @MontoFinal, SaldoMinimo = @SaldoMinimo, CantOperacionesCajeroHumano = CantOperacionesCajeroHumano + 1
+							WHERE EstadoCuenta.ID = @IdEstadoCuenta
+						END
+						IF((@TipoMovimiento = 2) OR (@TipoMovimiento = 6) OR (@TipoMovimiento = 10))
+						BEGIN 
+							UPDATE EstadoCuenta
+							SET SaldoFinal = @SaldoActual + @MontoFinal, SaldoMinimo = @SaldoMinimo, CantOperacionesATM = CantOperacionesATM + 1
+							WHERE EstadoCuenta.ID = @IdEstadoCuenta
+						END
+		-----------------------------------------------------------------------	
+
+
+					
+						SET @IdActual = @IdActual + 1
+					END
+					
+					DELETE FROM @Operaciones;
+
+
+	--Store Procedures -------------------------------------------------
+
+					
+
+	--------------------------------------------------------------------
 
 
 				SELECT @fechaActual = DATEADD(DAY,1,@fechaActual);

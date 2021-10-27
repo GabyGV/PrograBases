@@ -135,6 +135,7 @@ BEGIN TRY
 	(
 	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 	  Fecha DATE NOT NULL,
+	  FechaFin DATE NOT NULL,
 	  SaldoMinimo MONEY NOT NULL,
 	  SaldoInicio MONEY NOT NULL,
 	  SaldoFinal MONEY NOT NULL,
@@ -153,11 +154,12 @@ BEGIN TRY
 	  MontoMovimiento MONEY NOT NULL,
 	  MontoCuenta MONEY NOT NULL,
 	  Fecha DATE NOT NULL,
+	  Cambio VARCHAR(32) NOT NULL,
 
 	  IDMoneda INT NOT NULL,
 	  IDNumeroCuenta INT NOT NULL,
 	  IDTMovimiento INT NOT NULL,
-	  IDEstadoCuenta INT NOT NULL,
+	  IDEstadoCuenta INT  NOT NULL,
 	  FOREIGN KEY (IDMoneda) REFERENCES Tipo_Moneda(ID_TMoneda),
 	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
 	  FOREIGN KEY (IDTMovimiento) REFERENCES Tipo_Movimiento(ID),
