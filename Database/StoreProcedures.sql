@@ -548,7 +548,7 @@ Procedimiento VerMovimientos
 Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
-
+*/
 IF OBJECT_ID('VerMovimientos') IS NOT NULL
 BEGIN 
 DROP PROC VerMovimientos 
@@ -559,20 +559,31 @@ CREATE PROCEDURE VerMovimientos
 	 @inFecha DATE
 AS
 BEGIN TRY 
+
+	DECLARE @FechaFinal DATE
+	SET @FechaFinal = (SELECT DATEADD (month, 1, @inFecha))
+
 	SELECT M.Fecha
-		, M. 
+		, M.Cambio
+		, T.Compra
+		, T.Venta
+		, M.MontoMovimiento
+		, M.MontoCuenta
+		, M.Descripcion 
 	FROM Movimientos M
 	INNER JOIN Cuenta C
-	ON C.NumeroCuenta = E.IDNumeroCuenta
-	WHERE (C.NumeroCuenta = @inNumCuenta)
+	ON C.ID = M.IDNumeroCuenta
+	INNER JOIN Tipo_CambioDolar T
+	ON T.Fecha = @inFecha
+	WHERE (C.NumeroCuenta = @inNumCuenta and M.Fecha >= @inFecha and M.Fecha < @FechaFinal)
 
 END TRY
 BEGIN CATCH
-	RAISERROR('Error al consultar estados de cuenta', 16, 1) WITH NOWAIT;
+	RAISERROR('Error al consultar los movimientos', 16, 1) WITH NOWAIT;
 	PRINT error_message()
 	return -1
 END CATCH
-GO */
+GO 
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 

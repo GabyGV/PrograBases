@@ -92,8 +92,8 @@ namespace WebPrograBases
                 sql_cmnd.Parameters.AddWithValue("@inFecha", SqlDbType.NVarChar).Value = fecha;
                 DataTable dtbl = new DataTable();
                 dtbl.Load(sql_cmnd.ExecuteReader());
-                EstadoCuenta.DataSource = dtbl;
-                EstadoCuenta.DataBind();
+                tblMovimientos.DataSource = dtbl;
+                tblMovimientos.DataBind();
             }
         }
 
