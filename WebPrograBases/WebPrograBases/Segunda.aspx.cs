@@ -82,5 +82,10 @@ namespace WebPrograBases
             }
             return admin;
         }
+
+        protected void btnConfiguracion_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Configuracion.aspx");
+        }
     }
 }

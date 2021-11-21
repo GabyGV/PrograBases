@@ -29,6 +29,7 @@
                 <td></td>
                 <td>
                 <asp:Button ID="btnEstadosCuenta" runat="server" Text=" Ver estados de cuenta" OnClick="btnEstadosCuenta_Click" />
+                <asp:Button ID="btnConfiguracion" runat="server" Text="  Configuración  " OnClick="btnConfiguracion_Click" />
                 <asp:Button ID="btnBeneficiarios" runat="server" Text="Consultar beneficiarios" OnClick="btnBeneficiarios_Click" /> 
                 <asp:Button ID="btnAgregarBeneficiarios" runat="server" Text="Agregar beneficiarios" OnClick="btnAgregar_Click" /> 
                 </td>

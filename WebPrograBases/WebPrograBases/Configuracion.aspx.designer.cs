@@ -11,7 +11,7 @@ namespace WebPrograBases
 {
 
 
-    public partial class MostrarCuenta
+    public partial class Configuracion
     {
 
         /// <summary>
@@ -33,39 +33,12 @@ namespace WebPrograBases
         protected global::System.Web.UI.WebControls.DropDownList ddnumCuenta;
 
         /// <summary>
-        /// btnConsultar control.
+        /// btnEliminar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConsultar;
-
-        /// <summary>
-        /// EstadoCuenta control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView EstadoCuenta;
-
-        /// <summary>
-        /// lblMov control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMov;
-
-        /// <summary>
-        /// tblMovimientos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView tblMovimientos;
+        protected global::System.Web.UI.WebControls.Button btnEliminar;
     }
 }
