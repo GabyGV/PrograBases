@@ -102,6 +102,34 @@ BEGIN
 					operacion INT '@Operacion'
 				);
 
+
+--Tipo_MovimientoCO----
+
+			INSERT INTO [dbo].TipoMovimientoCO(ID,
+											  Operacion,
+											  Nombre)
+
+			SELECT id, operacion, nombre
+			FROM OPENXML (@hdoc,'Datos/TipoMovimientosCO/TipoMovimientoCO', 2)
+				WITH(
+					id INT '@Id' ,
+					operacion INT '@Operacion',
+					nombre VARCHAR(64) '@Descripcion'
+				);
+
+
+--TasaInteresesCO----
+
+			INSERT INTO [dbo].TasaInteresesCO(ID,
+											  TasaInteres)
+
+			SELECT id, tasaInteres
+			FROM OPENXML (@hdoc,'Datos/TasaInteresesCO/TasaInteresCO', 2)
+				WITH(
+					id INT '@Id' ,
+					tasaInteres FLOAT '@TasaInteres'
+				);
+
 		COMMIT
 	END TRY
 
