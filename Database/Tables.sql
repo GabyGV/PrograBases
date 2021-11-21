@@ -12,6 +12,14 @@ BEGIN TRY
 	DROP TABLE Usuario
 	DROP TABLE Usuarios_Ver
 
+	DROP TABLE Evento
+	DROP TABLE TipoEvento
+	DROP TABLE MovimientoCO
+	DROP TABLE MovimientoIntCO
+	DROP TABLE CuentaObjetivo
+	DROP TABLE TipoMovimientoCO
+	DROP TABLE TasaInteresesCO
+
 	DROP TABLE Movimientos
 	DROP TABLE EstadoCuenta
 	DROP TABLE Beneficiario
@@ -173,6 +181,72 @@ BEGIN TRY
 	  Venta INT NOT NULL,
 	  Fecha DATE NOT NULL
 	);
+
+	CREATE TABLE CuentaObjetivo
+	(
+		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+		CuentaMaestra INT NOT NULL,
+		CuentaObjetivo INT NOT NULL,
+		MontoMensual MONEY NOT NULL,
+		DiaDeAhorro INT NOT NULL,
+		Descripcion VARCHAR(128) NOT NULL,
+
+		FOREIGN KEY (CuentaMaestra) REFERENCES Cuenta(ID)
+	);
+
+	CREATE TABLE TipoMovimientoCO
+	(
+		ID INT PRIMARY KEY NOT NULL,
+		Operacion INT NOT NULL,
+		Nombre VARCHAR(64) NOT NULL
+	);
+
+	CREATE TABLE MovimientoCO
+	(
+		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+		Fecha DATE NOT NULL,
+		Monto MONEY NOT NULL,
+		NuevoSaldo MONEY NOT NULL,
+		IDTipoMovimientoCO INT NOT NULL,
+		IDCuentaObjetivo INT NOT NULL,
+
+		FOREIGN KEY (IDTipoMovimientoCO) REFERENCES TipoMovimientoCO(ID),
+		FOREIGN KEY (IDCuentaObjetivo) REFERENCES CuentaObjetivo(ID)
+	);
+
+	CREATE TABLE MovimientoIntCO
+	(
+		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+		Fecha DATE NOT NULL,
+		Monto MONEY NOT NULL,
+		NuevoIntSaldo MONEY NOT NULL,
+		IDCuentaObjetivo INT NOT NULL,
+
+		FOREIGN KEY (IDCuentaObjetivo) REFERENCES CuentaObjetivo(ID)
+	);
+
+	CREATE TABLE TasaInteresesCO
+	(
+		ID INT PRIMARY KEY NOT NULL,
+		TasaInteres FLOAT NOT NULL
+	);
+
+	CREATE TABLE TipoEvento
+	(
+		ID INT PRIMARY KEY NOT NULL,
+		Nombre VARCHAR(64) NOT NULL
+	);
+
+	CREATE TABLE Evento
+	(
+		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+		XMLAntes VARCHAR(128) NOT NULL,
+		XMLDespues VARCHAR(128) NOT NULL,
+		TipoEvento INT NOT NULL,
+
+		FOREIGN KEY (TipoEvento) REFERENCES TipoEvento(ID)
+	);
+
 
 END TRY
 BEGIN CATCH
