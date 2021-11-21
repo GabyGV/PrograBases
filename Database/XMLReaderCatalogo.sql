@@ -130,6 +130,18 @@ BEGIN
 					tasaInteres FLOAT '@TasaInteres'
 				);
 
+--TipoEventos----
+
+			INSERT INTO [dbo].TipoEventos(ID,
+										  Nombre)
+
+			SELECT id, nombre
+			FROM OPENXML (@hdoc,'Datos/TipoEventos/TipoEvento', 2)
+				WITH(
+					id INT '@Id' ,
+					nombre VARCHAR(64) '@Nombre'
+				);
+
 		COMMIT
 	END TRY
 
