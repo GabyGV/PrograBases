@@ -21,12 +21,12 @@ namespace WebPrograBases
 
         protected void btnConsultaMulta_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("ConsultaMulta.aspx");
         }
 
         protected void btnConsultarBeneficiarios_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("ConsultaBeneficiarios.aspx");
         }
     }
 }
