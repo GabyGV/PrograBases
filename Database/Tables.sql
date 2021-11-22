@@ -156,6 +156,14 @@ BEGIN TRY
 	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
 	);
 		
+	CREATE TABLE Tipo_CambioDolar
+	(
+	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	  Compra INT NOT NULL,
+	  Venta INT NOT NULL,
+	  Fecha DATE NOT NULL
+	);
+
 	CREATE TABLE Movimientos
 	(
 	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
@@ -165,25 +173,19 @@ BEGIN TRY
 	  Fecha DATE NOT NULL,
 	  Cambio VARCHAR(32) NOT NULL,
 
+	  IDTipoCambioDolar INT,
 	  IDMoneda INT NOT NULL,
 	  IDNumeroCuenta INT NOT NULL,
 	  IDTMovimiento INT NOT NULL,
 	  IDEstadoCuenta INT  NOT NULL,
+	  FOREIGN KEY (IDTipoCambioDolar) REFERENCES Tipo_CambioDolar(ID),
 	  FOREIGN KEY (IDMoneda) REFERENCES Tipo_Moneda(ID_TMoneda),
 	  FOREIGN KEY (IDNumeroCuenta) REFERENCES Cuenta(ID),
 	  FOREIGN KEY (IDTMovimiento) REFERENCES Tipo_Movimiento(ID),
 	  FOREIGN KEY (IDEstadoCuenta) REFERENCES EstadoCuenta(ID)
 	);
 
-	CREATE TABLE Tipo_CambioDolar
-	(
-	  ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
-	  Compra INT NOT NULL,
-	  Venta INT NOT NULL,
-	  Fecha DATE NOT NULL
-	);
-	
-	
+
 	CREATE TABLE TasaInteresesCO
 	(
 		ID INT PRIMARY KEY NOT NULL,
@@ -201,8 +203,10 @@ BEGIN TRY
 		FechaInicial DATE NOT NULL,
 		FechaFinal DATE NOT NULL,
 		Descripcion VARCHAR(128) NOT NULL,
+		IDTasaInteresesCO INT,
 
-		FOREIGN KEY (CuentaMaestra) REFERENCES Cuenta(ID)
+		FOREIGN KEY (CuentaMaestra) REFERENCES Cuenta(ID),
+		FOREIGN KEY (IDTasaInteresesCO) REFERENCES TasaInteresesCO(ID)
 	);
 
 	CREATE TABLE TipoMovimientoCO
