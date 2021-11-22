@@ -511,6 +511,15 @@ BEGIN
 				
 					EXEC [dbo].[ProcesarCO] @DiaDeCierre
 
+					INSERT @Operaciones (id)
+					SELECT E.ID
+					FROM EstadoCuenta E
+					WHERE (E.FechaFin <= @fechaActual) AND (E.Activo = 1);
+
+					SET @IdMin = 1;
+					SET @IdActual = @IdMin;
+					SELECT @IdMax = MAX(O.elemento) FROM @Operaciones O 
+
 					WHILE (@IdActual <= @IdMax)
 						BEGIN
 							
