@@ -697,8 +697,8 @@ BEGIN TRY
 
 
 	SELECT C.NumeroCuenta,
-			SUM(E.CantOperacionesATM) / 12,
-			E.Fecha
+			AVG(E.CantOperacionesATM),
+			MAX(E.CantOperacionesATM)
 	FROM Cuenta c
 	INNER JOIN EstadoCuenta E
 	ON C.ID = E.IDNumeroCuenta
@@ -720,7 +720,7 @@ Procedimiento ConsultarBeneficiarios
 Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
-*/
+
 IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarBeneficiarios 
@@ -745,4 +745,4 @@ BEGIN CATCH
 	PRINT error_message()
 	return -1
 END CATCH
-GO 
+GO */
