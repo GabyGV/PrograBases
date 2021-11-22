@@ -643,18 +643,106 @@ BEGIN CATCH
 END CATCH
 GO 
 
-----Pruebas
-/*
-USE [PrograBases]
-
-SELECT E.Fecha
-	, E.SaldoMinimo
-	, E.SaldoInicio
-	, E.SaldoFinal
-	, E.CantOperacionesATM
-	, E. CantOperacionesCajeroHumano
-FROM EstadoCuenta E
-INNER JOIN Cuenta C
-ON C.ID = E.IDNumeroCuenta
-WHERE (C.NumeroCuenta = 11024586)
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento desactivarCuenta
+Objetivo: Desactivar una cuenta
+	Entradas : El número de cuenta 
+	Salidas  : NA
 */
+IF OBJECT_ID('desactivarCuenta') IS NOT NULL
+BEGIN 
+DROP PROC desactivarCuenta 
+END
+GO
+CREATE PROCEDURE desactivarCuenta
+	 @inNumCuenta INT
+AS
+BEGIN TRY 
+	UPDATE Cuenta 
+	SET Activo = 0
+	WHERE (Cuenta.NumeroCuenta = @inNumCuenta)
+
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al desactivar Cuenta', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ConsultarMultaPorATM
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+*/
+IF OBJECT_ID('ConsultarMultaPorATM') IS NOT NULL
+BEGIN 
+DROP PROC ConsultarMultaPorATM 
+END
+GO
+CREATE PROCEDURE ConsultarMultaPorATM
+	 @inNumDias INT
+AS
+BEGIN TRY 
+
+	DECLARE @FechaFinal DATE
+	SET @FechaFinal = (SELECT MAX Fecha from tbl.Eventos)
+	
+	DECLARE @FechaInicial DATE
+	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))
+
+
+	SELECT C.NumeroCuenta,
+			AVG(E.CantOperacionesATM),
+			MAX(E.CantOperacionesATM)
+	FROM Cuenta c
+	INNER JOIN EstadoCuenta E
+	ON C.ID = E.IDNumeroCuenta
+	INNER JOIN TipoCuentaAhorro T
+	ON C.IDTCuenta = T.ID_TCuenta
+	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar la multa por ATM', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
+
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ConsultarBeneficiarios
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+
+IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
+BEGIN 
+DROP PROC ConsultarBeneficiarios 
+END
+GO
+CREATE PROCEDURE ConsultarBeneficiarios
+AS
+BEGIN TRY 
+
+
+
+	SELECT B.ID_Beneficiario,
+			
+	FROM Beneficiario B
+	INNER JOIN Cuenta C
+	ON B.IDNumeroCuenta = C.ID
+	WHERE ()
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar beneficiarios', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO */

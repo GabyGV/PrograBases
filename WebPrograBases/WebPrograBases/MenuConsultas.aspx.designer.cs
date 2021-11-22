@@ -11,7 +11,7 @@ namespace WebPrograBases
 {
 
 
-    public partial class Segunda
+    public partial class MenuConsultas
     {
 
         /// <summary>
@@ -24,66 +24,66 @@ namespace WebPrograBases
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// lblUserDetails control.
+        /// lblTitulo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUserDetails;
+        protected global::System.Web.UI.WebControls.Label lblTitulo;
 
         /// <summary>
-        /// lblIdUsuario control.
+        /// Label1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblIdUsuario;
+        protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// lblNumCuenta control.
+        /// btnConsultaNegativo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNumCuenta;
+        protected global::System.Web.UI.WebControls.Button btnConsultaNegativo;
 
         /// <summary>
-        /// btnEstadosCuenta control.
+        /// Label2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnEstadosCuenta;
+        protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// btnConfiguracion control.
+        /// btnConsultaMulta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConfiguracion;
+        protected global::System.Web.UI.WebControls.Button btnConsultaMulta;
 
         /// <summary>
-        /// btnBeneficiarios control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnBeneficiarios;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// btnAgregarBeneficiarios control.
+        /// btnConsultarBeneficiarios control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAgregarBeneficiarios;
+        protected global::System.Web.UI.WebControls.Button btnConsultarBeneficiarios;
     }
 }

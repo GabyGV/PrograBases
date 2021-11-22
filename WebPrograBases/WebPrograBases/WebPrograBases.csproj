@@ -68,7 +68,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AgregarBeneficiario.aspx" />
+    <Content Include="Configuracion.aspx" />
+    <Content Include="ConsultaBeneficiarios.aspx" />
+    <Content Include="ConsultaMulta.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="MenuConsultas.aspx" />
     <Content Include="MostrarBeneficiarios.aspx" />
     <Content Include="MostrarCuenta.aspx" />
     <Content Include="Principal.aspx" />
@@ -83,8 +87,36 @@
     <Compile Include="AgregarBeneficiario.aspx.designer.cs">
       <DependentUpon>AgregarBeneficiario.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Configuracion.aspx.cs">
+      <DependentUpon>Configuracion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Configuracion.aspx.designer.cs">
+      <DependentUpon>Configuracion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaBeneficiarios.aspx.cs">
+      <DependentUpon>ConsultaBeneficiarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultaBeneficiarios.aspx.designer.cs">
+      <DependentUpon>ConsultaBeneficiarios.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaMulta.aspx.cs">
+      <DependentUpon>ConsultaMulta.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultaMulta.aspx.designer.cs">
+      <DependentUpon>ConsultaMulta.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="MenuConsultas.aspx.cs">
+      <DependentUpon>MenuConsultas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MenuConsultas.aspx.designer.cs">
+      <DependentUpon>MenuConsultas.aspx</DependentUpon>
     </Compile>
     <Compile Include="MostrarBeneficiarios.aspx.cs">
       <DependentUpon>MostrarBeneficiarios.aspx</DependentUpon>

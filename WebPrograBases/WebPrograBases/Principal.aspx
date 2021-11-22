@@ -29,7 +29,7 @@
         </tr>
         <tr>
             <td>
-                </td>
+                &nbsp;</td>
             <td>
                 <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" /></td>
         </tr>
@@ -40,6 +40,9 @@
         </tr>
     </table>
         </div>
+        <p style="text-align:right">
+            <asp:Button ID="btnConsultas" runat="server" Text="Consultas de administrador" OnClick="btnConsultas_Click"/>
+        </p>
     </form>
 </body>
 </html>

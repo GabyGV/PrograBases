@@ -11,7 +11,7 @@ namespace WebPrograBases
 {
 
 
-    public partial class MostrarCuenta
+    public partial class ConsultaMulta
     {
 
         /// <summary>
@@ -24,48 +24,30 @@ namespace WebPrograBases
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ddnumCuenta control.
+        /// txtCantDias control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddnumCuenta;
+        protected global::System.Web.UI.WebControls.TextBox txtCantDias;
 
         /// <summary>
-        /// btnConsultar control.
+        /// btnBuscar control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConsultar;
+        protected global::System.Web.UI.WebControls.Button btnBuscar;
 
         /// <summary>
-        /// EstadoCuenta control.
+        /// ConsultaPorMulta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView EstadoCuenta;
-
-        /// <summary>
-        /// lblMov control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMov;
-
-        /// <summary>
-        /// tblMovimientos control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView tblMovimientos;
+        protected global::System.Web.UI.WebControls.GridView ConsultaPorMulta;
     }
 }
