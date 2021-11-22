@@ -357,10 +357,11 @@ BEGIN
 					INSERT INTO [dbo].CuentaObjetivo(CuentaMaestra,
 													 CuentaObjetivo,
 													 MontoMensual,
+													 FechaInicial,
 													 FechaFinal,
 													 DiaDeAhorro,
 													 Descripcion)
-					SELECT T.cuentaMaestra, T.numeroCO, T.montoAhorrar, T.fechaFinal, T.diaAhorro, T.descripcion
+					SELECT T.cuentaMaestra, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion
 					FROM @TemporalAgregarCO T
 					WHERE T.FechaTemp = @fechaActual;
 
@@ -511,8 +512,8 @@ BEGIN
 							WHERE EstadoCuenta.ID = @IdEstadoCuenta
 						END
 		-----------------------------------------------------------------------	
-
-
+						---------------- Store Procedure -----------------------------------------------------	
+						
 					
 						SET @IdActual = @IdActual + 1
 					END

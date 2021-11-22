@@ -182,6 +182,14 @@ BEGIN TRY
 	  Venta INT NOT NULL,
 	  Fecha DATE NOT NULL
 	);
+	
+	
+	CREATE TABLE TasaInteresesCO
+	(
+		ID INT PRIMARY KEY NOT NULL,
+		TasaInteres FLOAT NOT NULL
+	);
+
 
 	CREATE TABLE CuentaObjetivo
 	(
@@ -190,6 +198,7 @@ BEGIN TRY
 		CuentaObjetivo VARCHAR(32) NOT NULL,
 		MontoMensual MONEY NOT NULL,
 		DiaDeAhorro INT NOT NULL,
+		FechaInicial DATE NOT NULL,
 		FechaFinal DATE NOT NULL,
 		Descripcion VARCHAR(128) NOT NULL,
 
@@ -227,12 +236,6 @@ BEGIN TRY
 		IDCuentaObjetivo INT NOT NULL,
 
 		FOREIGN KEY (IDCuentaObjetivo) REFERENCES CuentaObjetivo(ID)
-	);
-
-	CREATE TABLE TasaInteresesCO
-	(
-		ID INT PRIMARY KEY NOT NULL,
-		TasaInteres FLOAT NOT NULL
 	);
 
 	CREATE TABLE TipoEvento
