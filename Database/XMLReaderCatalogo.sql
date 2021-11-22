@@ -132,7 +132,7 @@ BEGIN
 
 --TipoEventos----
 
-			INSERT INTO [dbo].TipoEventos(ID,
+			INSERT INTO [dbo].TipoEvento(ID,
 										  Nombre)
 
 			SELECT id, nombre

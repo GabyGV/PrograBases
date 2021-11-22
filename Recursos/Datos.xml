@@ -6238,6 +6238,7 @@
     <Movimientos Descripcion="Retiro ATM Sucursal Lindora" IdMoneda="1" Monto="15000" NumeroCuenta="11620444" Tipo="6" />
     <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="1" Monto="15000" NumeroCuenta="11118897" Tipo="6" />
     <Movimientos Descripcion="Soda Cahuita" IdMoneda="1" Monto="28900" NumeroCuenta="11118897" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-17">
@@ -6335,6 +6336,7 @@
     <Movimientos Descripcion="Retiro ATM Sucursal Barrio Mexico" IdMoneda="2" Monto="60" NumeroCuenta="11620444" Tipo="6" />
     <Movimientos Descripcion="Soda Perez" IdMoneda="1" Monto="3500" NumeroCuenta="11118897" Tipo="4" />
     <Movimientos Descripcion="Pago Seguridad" IdMoneda="1" Monto="75000" NumeroCuenta="11118897" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-20">
@@ -6448,6 +6450,7 @@
     <Movimientos Descripcion="Bomba Guadalupe" IdMoneda="1" Monto="15620" NumeroCuenta="11327131" Tipo="4" />
     <Movimientos Descripcion="Entrada estadio Morera Soto" IdMoneda="2" Monto="55" NumeroCuenta="11047707" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal San Pedro" IdMoneda="1" Monto="10000" NumeroCuenta="11047707" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal San Pedro" IdMoneda="1" Monto="8990" NumeroCuenta="11047707" Tipo="6" />
     <Movimientos Descripcion="Pago Seguridad" IdMoneda="2" Monto="75" NumeroCuenta="11047707" Tipo="4" />
     <Movimientos Descripcion="Uber Eats" IdMoneda="1" Monto="3500" NumeroCuenta="11912657" Tipo="4" />
     <Movimientos Descripcion="Ferreteria Amanecer" IdMoneda="2" Monto="55" NumeroCuenta="11912657" Tipo="4" />
@@ -6457,6 +6460,7 @@
     <Movimientos Descripcion="Pali Cartago" IdMoneda="2" Monto="65" NumeroCuenta="11912657" Tipo="4" />
     <Movimientos Descripcion="Pulperia las rosas" IdMoneda="1" Monto="6570" NumeroCuenta="11405188" Tipo="4" />
     <Movimientos Descripcion="Heladeria Malavasi" IdMoneda="2" Monto="15" NumeroCuenta="11405188" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Cahuita" IdMoneda="2" Monto="50" NumeroCuenta="11405188" Tipo="6" />
     <Movimientos Descripcion="Retiro ATM Sucursal San Pedro" IdMoneda="1" Monto="50000" NumeroCuenta="11316046" Tipo="6" />
     <Movimientos Descripcion="Prima Moto" IdMoneda="2" Monto="150" NumeroCuenta="11316046" Tipo="4" />
     <Movimientos Descripcion="Deposito Sucursal heredia" IdMoneda="1" Monto="500000" NumeroCuenta="11717598" Tipo="1" />
@@ -6497,6 +6501,7 @@
     <Movimientos Descripcion="Retiro Sucursal Santa Ana" IdMoneda="2" Monto="42" NumeroCuenta="11000001" Tipo="7" />
     <Movimientos Descripcion="McDonalds Heredia" IdMoneda="1" Monto="5400" NumeroCuenta="11592082" Tipo="4" />
     <Movimientos Descripcion="Taller Julian" IdMoneda="1" Monto="21000" NumeroCuenta="11592082" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Guadalupe" IdMoneda="1" Monto="7000" NumeroCuenta="11592082" Tipo="6" />
     <Movimientos Descripcion="Retiro ATM Sucursal Santa Ana" IdMoneda="2" Monto="50" NumeroCuenta="11024586" Tipo="6" />
     <Movimientos Descripcion="Soda Cahuita" IdMoneda="1" Monto="5080" NumeroCuenta="11024586" Tipo="4" />
     <Movimientos Descripcion="El Lagar San Ramon" IdMoneda="1" Monto="5780" NumeroCuenta="11665553" Tipo="4" />
@@ -6535,6 +6540,7 @@
     <Movimientos Descripcion="Pulperia El Sol" IdMoneda="1" Monto="3688" NumeroCuenta="11089786" Tipo="4" />
     <Movimientos Descripcion="Pulperia La liga" IdMoneda="1" Monto="3500" NumeroCuenta="11007789" Tipo="4" />
     <Movimientos Descripcion="Pulperia El Amor Verdadero" IdMoneda="1" Monto="38889" NumeroCuenta="11007789" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-24">
@@ -6581,11 +6587,13 @@
     <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="1" Monto="15000" NumeroCuenta="11118897" Tipo="6" />
     <Movimientos Descripcion="Retiro ATM Sucursal Barrio Mexico" IdMoneda="2" Monto="35" NumeroCuenta="11118897" Tipo="6" />
     <Movimientos Descripcion="Libreria Internacional" IdMoneda="1" Monto="14328" NumeroCuenta="11118897" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-25">
     <TipoCambioDolares Compra="613" Venta="630"/>
     <Movimientos Descripcion="Retiro ATM Sucursal Cahuita" IdMoneda="1" Monto="4000" NumeroCuenta="11000001" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Santa Barbara" IdMoneda="1" Monto="8000" NumeroCuenta="11000001" Tipo="6" />
     <Movimientos Descripcion="Pulperia Andys" IdMoneda="1" Monto="3000" NumeroCuenta="11000001" Tipo="4" />
     <Movimientos Descripcion="Bar Einstein" IdMoneda="1" Monto="7500" NumeroCuenta="11592082" Tipo="4" />
     <Movimientos Descripcion="Leggins Moncho" IdMoneda="1" Monto="5000" NumeroCuenta="11592082" Tipo="4" />
@@ -6626,6 +6634,7 @@
   <FechaOperacion Fecha="2022-01-26">
     <TipoCambioDolares Compra="613" Venta="630"/>
     <Movimientos Descripcion="Retiro ATM Sucursal Santa Ana" IdMoneda="1" Monto="7000" NumeroCuenta="11000001" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Santa Calra" IdMoneda="1" Monto="17000" NumeroCuenta="11000001" Tipo="6" />
     <Movimientos Descripcion="Barberia el look" IdMoneda="1" Monto="3000" NumeroCuenta="11000001" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal Heredia" IdMoneda="1" Monto="2500" NumeroCuenta="11592082" Tipo="6" />
     <Movimientos Descripcion="Concentrados El Gordo" IdMoneda="1" Monto="5000" NumeroCuenta="11665553" Tipo="4" />
@@ -6635,6 +6644,8 @@
     <Movimientos Descripcion="Compra Pulperia Leones" IdMoneda="2" Monto="12" NumeroCuenta="11047707" Tipo="4" />
     <Movimientos Descripcion="Bar Einstein" IdMoneda="1" Monto="15000" NumeroCuenta="11405188" Tipo="4" />
     <Movimientos Descripcion="Uber Eats" IdMoneda="1" Monto="5680" NumeroCuenta="11405188" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Cahuita" IdMoneda="2" Monto="150" NumeroCuenta="11405188" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Cahuita" IdMoneda="1" Monto="22200" NumeroCuenta="11405188" Tipo="6" />
     <Movimientos Descripcion="Pulperia el chino" IdMoneda="1" Monto="3500" NumeroCuenta="11316046" Tipo="4" />
     <Movimientos Descripcion="Pago Seguridad" IdMoneda="1" Monto="98000" NumeroCuenta="11316046" Tipo="4" />
     <Movimientos Descripcion="Crispy Wings" IdMoneda="1" Monto="8700" NumeroCuenta="11717598" Tipo="4" />
@@ -6669,6 +6680,7 @@
     <Movimientos Descripcion="Mega Super Moravia" IdMoneda="1" Monto="25000" NumeroCuenta="13587799" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="1" Monto="25000" NumeroCuenta="12789458" Tipo="6" />
     <Movimientos Descripcion="Pago Seguridad" IdMoneda="1" Monto="75000" NumeroCuenta="12789458" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="10" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-27">
@@ -6680,6 +6692,7 @@
     <Movimientos Descripcion="Prima Moto" IdMoneda="1" Monto="75000" NumeroCuenta="11327131" Tipo="4" />
     <Movimientos Descripcion="Pago Alquiler" IdMoneda="2" Monto="300" NumeroCuenta="11327131" Tipo="4" />
     <Movimientos Descripcion="Pequeno Mundo Moravia" IdMoneda="2" Monto="15" NumeroCuenta="11047707" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal San Pedro" IdMoneda="1" Monto="20000" NumeroCuenta="11047707" Tipo="6" />
     <Movimientos Descripcion="Cevicheria Andrea" IdMoneda="2" Monto="6" NumeroCuenta="11047707" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal Cahuita" IdMoneda="2" Monto="200" NumeroCuenta="11405188" Tipo="6" />
     <Movimientos Descripcion="Correos Costa Rica" IdMoneda="1" Monto="5000" NumeroCuenta="11405188" Tipo="4" />
@@ -6724,6 +6737,7 @@
     <TipoCambioDolares Compra="612" Venta="629"/>
     <Movimientos Descripcion="Soda Tipica Alfre" IdMoneda="1" Monto="3500" NumeroCuenta="11000001" Tipo="4" />
     <Movimientos Descripcion="Prima Moto" IdMoneda="1" Monto="35000" NumeroCuenta="11000001" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Santa Ana" IdMoneda="1" Monto="7000" NumeroCuenta="11000001" Tipo="6" />
     <Movimientos Descripcion="Compra Pulperia Leones" IdMoneda="1" Monto="6875" NumeroCuenta="11592082" Tipo="4" />
     <Movimientos Descripcion="Uber Eats" IdMoneda="1" Monto="5000" NumeroCuenta="11024586" Tipo="4" />
     <Movimientos Descripcion="Supermercado Coopeagri" IdMoneda="1" Monto="7850" NumeroCuenta="11024586" Tipo="4" />
@@ -6756,6 +6770,7 @@
     <Movimientos Descripcion="Ferreteria Amanecer" IdMoneda="1" Monto="35800" NumeroCuenta="13587799" Tipo="4" />
     <Movimientos Descripcion="MaxiPali Cahuita" IdMoneda="1" Monto="3580" NumeroCuenta="12789458" Tipo="4" />
     <Movimientos Descripcion="Tienda de ropa Koaj" IdMoneda="1" Monto="35000" NumeroCuenta="12789458" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="55" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-29">
@@ -6775,6 +6790,7 @@
     <Movimientos Descripcion="Pulperia las rosas" IdMoneda="1" Monto="2580" NumeroCuenta="11717598" Tipo="4" />
     <Movimientos Descripcion="Transferencia Pago " IdMoneda="2" Monto="1500" NumeroCuenta="11656323" Tipo="3" />
     <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="500" NumeroCuenta="11656323" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
     <Movimientos Descripcion="Pequeno Mundo Moravia" IdMoneda="1" Monto="4000" NumeroCuenta="11010717" Tipo="4" />
     <Movimientos Descripcion="Farmacia San Pedro" IdMoneda="1" Monto="1500" NumeroCuenta="11010717" Tipo="4" />
     <Movimientos Descripcion="Cevicheria Marcelos" IdMoneda="1" Monto="2600" NumeroCuenta="11010717" Tipo="4" />
@@ -6821,6 +6837,7 @@
     <Movimientos Descripcion="Pali Cartago" IdMoneda="1" Monto="35000" NumeroCuenta="11946763" Tipo="4" />
     <Movimientos Descripcion="Tienda Alfredito" IdMoneda="1" Monto="26000" NumeroCuenta="11946763" Tipo="4" />
     <Movimientos Descripcion="Bomba Guapiles" IdMoneda="1" Monto="12000" NumeroCuenta="11592082" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Guadalupe" IdMoneda="1" Monto="7000" NumeroCuenta="11592082" Tipo="6" />
     <Movimientos Descripcion="Burguer King San Pedro" IdMoneda="2" Monto="12" NumeroCuenta="11024586" Tipo="4" />
     <Movimientos Descripcion="McDonalds Alajuela" IdMoneda="1" Monto="2800" NumeroCuenta="11118897" Tipo="4" />
     <Movimientos Descripcion="Pago Luz" IdMoneda="1" Monto="28000" NumeroCuenta="11118897" Tipo="4" />
@@ -6835,6 +6852,7 @@
     <Movimientos Descripcion="Alquiler Cuadraciclo" IdMoneda="1" Monto="85000" NumeroCuenta="12789458" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal Heredia" IdMoneda="2" Monto="25" NumeroCuenta="11089786" Tipo="6" />
     <Movimientos Descripcion="Ferreteria Amanecer" IdMoneda="1" Monto="35000" NumeroCuenta="11089786" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <FechaOperacion Fecha="2022-01-31">
@@ -6869,23 +6887,84 @@
     <Movimientos Descripcion="Correos Costa Rica" IdMoneda="1" Monto="5600" NumeroCuenta="11089786" Tipo="4" />
     <Movimientos Descripcion="Retiro ATM Sucursal Pavas" IdMoneda="1" Monto="25000" NumeroCuenta="11089786" Tipo="6" />
     <Movimientos Descripcion="Cinepolis Lincoln Plaza" IdMoneda="1" Monto="24000" NumeroCuenta="11089786" Tipo="4" />
+    <Movimientos Descripcion="Retiro ATM Guadalupe" IdMoneda="1" Monto="7000" NumeroCuenta="11592082" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="15" NumeroCuenta="11656323" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="25" NumeroCuenta="11656323" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="5" NumeroCuenta="11656323" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="47" NumeroCuenta="11656323" Tipo="6" />
+    <Movimientos Descripcion="Retiro ATM Sucursal Moin" IdMoneda="2" Monto="33" NumeroCuenta="11656323" Tipo="6" />
   </FechaOperacion>
 
   <Usuarios>
-    <Usuario EsAdministrador="0" Pass="Asd1234" Usuario="czuñiga" ValorDocumentoIdentidad="105711321" />
-    <Usuario EsAdministrador="0" Pass="LaFacil" Usuario="jaguero" ValorDocumentoIdentidad="117370445" />
-    <Usuario EsAdministrador="0" Pass="159797530a" Usuario="vmata" ValorDocumentoIdentidad="143062990" />
-    <Usuario EsAdministrador="0" Pass="love45" Usuario="ulljose" ValorDocumentoIdentidad="163482829" />
+    <Usuario EsAdministrador="0" Pass="love45" Usuario="aguer0u" ValorDocumentoIdentidad="117370445" />
+    <Usuario EsAdministrador="0" Pass="sacafrav" Usuario="Osvilxd" ValorDocumentoIdentidad="12738545"/>
+    <Usuario EsAdministrador="0" Pass="0584hr" Usuario="Lacub4n4" ValorDocumentoIdentidad="144488000"/>
+    <Usuario EsAdministrador="0" Pass="MROrzc0" Usuario="MarcoOrozco" ValorDocumentoIdentidad="153816920"/>
+    <Usuario EsAdministrador="0" Pass="MRSGuad4" Usuario="Guada" ValorDocumentoIdentidad="105711321"/>
+    <Usuario EsAdministrador="0" Pass="hebhejdne" Usuario="VJuanaOviedo" ValorDocumentoIdentidad="195864670"/>
+    <Usuario EsAdministrador="0" Pass="VIlamefnwe12" Usuario="VillaWolf" ValorDocumentoIdentidad="145019786"/>
+    <Usuario EsAdministrador="0" Pass="sfddfsdffds" Usuario="AnaHernandez" ValorDocumentoIdentidad="149892757"/>
+    <Usuario EsAdministrador="0" Pass="Floweeeers" Usuario="JoseFlowers" ValorDocumentoIdentidad="179934028"/>
+    <Usuario EsAdministrador="0" Pass="Rubenejfn1334" Usuario="RubenCubero" ValorDocumentoIdentidad="167231980"/>
+    <Usuario EsAdministrador="0" Pass="12345678" Usuario="Ull04" ValorDocumentoIdentidad="163482829"/>
+    <Usuario EsAdministrador="0" Pass="12345678" Usuario="Vict0r" ValorDocumentoIdentidad="143217478"/>
+    <Usuario EsAdministrador="0" Pass="12351678" Usuario="Agustin51" ValorDocumentoIdentidad="182157649"/>
+    <Usuario EsAdministrador="0" Pass="uawfnqw" Usuario="Aracelinda" ValorDocumentoIdentidad="117359964"/>
+    <Usuario EsAdministrador="0" Pass="bar13222134" Usuario="Barrant3s" ValorDocumentoIdentidad="123168420"/>
+    <Usuario EsAdministrador="0" Pass="frstsww" Usuario="Alexander" ValorDocumentoIdentidad="160713985"/>
+    <Usuario EsAdministrador="0" Pass="Valekilda" Usuario="ValentinaMata" ValorDocumentoIdentidad="143062990"/>
+    <Usuario EsAdministrador="0" Pass="10354755" Usuario="luishram" ValorDocumentoIdentidad="11779988" />
+    <Usuario EsAdministrador="0" Pass="asd1234" Usuario="edu13perz" ValorDocumentoIdentidad="11259637" />
+    <Usuario EsAdministrador="0" Pass="klok123" Usuario="vickytres18" ValorDocumentoIdentidad="10078987" />
+    <Usuario EsAdministrador="0" Pass="5555spin" Usuario="josespin19" ValorDocumentoIdentidad="12233889" />
+    <Usuario EsAdministrador="0" Pass="r1o9vi19" Usuario="greirov88" ValorDocumentoIdentidad="13378945" />
+    <Usuario EsAdministrador="0" Pass="koltheripper19" Usuario="miguelav10" ValorDocumentoIdentidad="19865478" />
+    <Usuario EsAdministrador="0" Pass="asd123jh" Usuario="arcelupe" ValorDocumentoIdentidad="110839943" />
+    <Usuario EsAdministrador="0" Pass="im20uhm" Usuario="serranoalb" ValorDocumentoIdentidad="161104984" />
+    <Usuario EsAdministrador="0" Pass="19991213" Usuario="icesabel" ValorDocumentoIdentidad="125000522" />
+    <Usuario EsAdministrador="0" Pass="romrom01" Usuario="arcerom" ValorDocumentoIdentidad="131927856" />
+    <Usuario EsAdministrador="0" Pass="99999999" Usuario="matalluis" ValorDocumentoIdentidad="108487167" />
+    <Usuario EsAdministrador="0" Pass="912837465" Usuario="robles11" ValorDocumentoIdentidad="139329273" />
+    <Usuario EsAdministrador="0" Pass="987654321" Usuario="gar991" ValorDocumentoIdentidad="174808854" />
+    <Usuario EsAdministrador="0" Pass="f1gksd2" Usuario="antocas11" ValorDocumentoIdentidad="123485695" />
+    <Usuario EsAdministrador="0" Pass="fu81jj" Usuario="gabrr" ValorDocumentoIdentidad="100673640" />
+    <Usuario EsAdministrador="0" Pass="18sknka" Usuario="kingmarco" ValorDocumentoIdentidad="139813320" />
     <Usuario EsAdministrador="1" Pass="MyPass123*" Usuario="fquiros" ValorDocumentoIdentidad="106030039" />
   </Usuarios>
 
   <Usuarios_Ver>
-    <UsuarioPuedeVer NumeroCuenta="11592082" Usuario="czuñiga" />
-    <UsuarioPuedeVer NumeroCuenta="11316046" Usuario="vmata" />
-    <UsuarioPuedeVer NumeroCuenta="11024586" Usuario="czuñiga" />
-    <UsuarioPuedeVer NumeroCuenta="11665553" Usuario="czuñiga" />
-    <UsuarioPuedeVer NumeroCuenta="11000001" Usuario="jaguero" />
-    <UsuarioPuedeVer NumeroCuenta="11912657" Usuario="ulljose" />
+    <UsuarioPuedeVer NumeroCuenta="11000001" Usuario="aguer0u" />
+    <UsuarioPuedeVer NumeroCuenta="11592082" Usuario="Guada" />
+    <UsuarioPuedeVer NumeroCuenta="11024586" Usuario="Guada" />
+    <UsuarioPuedeVer NumeroCuenta="11665553" Usuario="Guada" />
+    <UsuarioPuedeVer NumeroCuenta="11327131" Usuario="VJuanaOviedo" />
+    <UsuarioPuedeVer NumeroCuenta="11047707" Usuario="VJuanaOviedo" />
+    <UsuarioPuedeVer NumeroCuenta="11620444" Usuario="RubenCubero" />
+    <UsuarioPuedeVer NumeroCuenta="11912657" Usuario="Ull04" />
+    <UsuarioPuedeVer NumeroCuenta="11405188" Usuario="Vict0r" />
+    <UsuarioPuedeVer NumeroCuenta="11912657" Usuario="Agustin51" />
+    <UsuarioPuedeVer NumeroCuenta="11717598" Usuario="Aracelinda" />
+    <UsuarioPuedeVer NumeroCuenta="11620444" Usuario="Barrant3s" />
+    <UsuarioPuedeVer NumeroCuenta="11010717" Usuario="kingmarco" />
+    <UsuarioPuedeVer NumeroCuenta="11208369" Usuario="kingmarco" />
+    <UsuarioPuedeVer NumeroCuenta="11117419" Usuario="gabrr" />
+    <UsuarioPuedeVer NumeroCuenta="11260649" Usuario="antocas11" />
+    <UsuarioPuedeVer NumeroCuenta="11385711" Usuario="gar991" />
+    <UsuarioPuedeVer NumeroCuenta="11743285" Usuario="robles11" />
+    <UsuarioPuedeVer NumeroCuenta="11373328" Usuario="robles11" />
+    <UsuarioPuedeVer NumeroCuenta="11335073" Usuario="matalluis" />
+    <UsuarioPuedeVer NumeroCuenta="11383961" Usuario="arcerom" />
+    <UsuarioPuedeVer NumeroCuenta="11688942" Usuario="icesabel" />
+    <UsuarioPuedeVer NumeroCuenta="11718078" Usuario="serranoalb" />
+    <UsuarioPuedeVer NumeroCuenta="11946763" Usuario="arcelupe" />
+    <UsuarioPuedeVer NumeroCuenta="11118897" Usuario="miguelav10" />
+    <UsuarioPuedeVer NumeroCuenta="11007789" Usuario="greirov88" />
+    <UsuarioPuedeVer NumeroCuenta="12300778" Usuario="josespin19" />
+    <UsuarioPuedeVer NumeroCuenta="13587799" Usuario="vickytres18" />
+    <UsuarioPuedeVer NumeroCuenta="12789458" Usuario="edu13perz" />
+    <UsuarioPuedeVer NumeroCuenta="11089786" Usuario="luishram" />
+    <UsuarioPuedeVer NumeroCuenta="11656323" Usuario="ValentinaMata" />
+    <UsuarioPuedeVer NumeroCuenta="11316046" Usuario="ValentinaMata" />
   </Usuarios_Ver>
 
 </Datos>

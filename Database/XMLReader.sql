@@ -52,6 +52,14 @@ BEGIN
 											   venta INT,
 											   FechaTemp DATE);
 
+			DECLARE @TemporalAgregarCO table (cuentaMaestra INT,
+											  descripcion VARCHAR(100),
+											  diaAhorro INT,
+											  fechaFinal DATE,
+											  montoAhorrar MONEY,
+											  numeroCO INT,
+											  FechaTemp DATE);
+
 			DECLARE @TemporalUsuario table (usuario VARCHAR(16), 
 											pass VARCHAR(16),
 											valorDocId INT, 
@@ -208,6 +216,28 @@ BEGIN
 					fechaLeida VARCHAR(40) '../@Fecha'
 				);
 
+--AgregarCo----
+
+			INSERT INTO @TemporalAgregarCO (cuentaMaestra, 
+											descripcion,
+											diaAhorro,
+											fechaFinal,
+											montoAhorrar,
+											numeroCO,
+											FechaTemp)
+
+			SELECT CuentaMaestra, Descripcion, DiaAhorro, FechaFinal, MontoAhorrar, NumeroCO, fechaLeida
+			FROM OPENXML (@hdoc,'Datos/FechaOperacion/AgregarCO', 2)
+				WITH(
+					CuentaMaestra INT '@CuentaMaestra',
+					Descripcion VARCHAR(100) '@Descripcion',
+					DiaAhorro INT '@DiadeAhorro',
+					FechaFinal DATE '@FechaFinal',
+					MontoAhorrar MONEY '@MontoAhorrar',
+					NumeroCO INT '@NumeroCO',
+					fechaLeida VARCHAR(40) '../@Fecha'
+				);
+
 --Usuarios----
 
 			INSERT INTO @TemporalUsuario (usuario, 
@@ -320,6 +350,18 @@ BEGIN
 													   Fecha)
 					SELECT T.compra, T.venta, T.FechaTemp
 					FROM @TemporalTipoCambio T
+					WHERE T.FechaTemp = @fechaActual;
+
+	--AgregarCO-------------------------------------------------------
+
+					INSERT INTO [dbo].CuentaObjetivo(CuentaMaestra,
+													 CuentaObjetivo,
+													 MontoMensual,
+													 FechaFinal,
+													 DiaDeAhorro,
+													 Descripcion)
+					SELECT T.cuentaMaestra, T.numeroCO, T.montoAhorrar, T.fechaFinal, T.diaAhorro, T.descripcion
+					FROM @TemporalAgregarCO T
 					WHERE T.FechaTemp = @fechaActual;
 
 	--Movimientos------------------------------------------------------

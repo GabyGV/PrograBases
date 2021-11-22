@@ -32,6 +32,7 @@ BEGIN TRY
 	DROP TABLE Tipo_Movimiento
 	DROP TABLE Tipo_CambioDolar
 
+	--USE [PrograBases]
 	CREATE TABLE TipoDocIdentidad
 	(
 	  ID_TDoc INT PRIMARY KEY NOT NULL,
@@ -186,9 +187,10 @@ BEGIN TRY
 	(
 		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 		CuentaMaestra INT NOT NULL,
-		CuentaObjetivo INT NOT NULL,
+		CuentaObjetivo VARCHAR(32) NOT NULL,
 		MontoMensual MONEY NOT NULL,
 		DiaDeAhorro INT NOT NULL,
+		FechaFinal DATE NOT NULL,
 		Descripcion VARCHAR(128) NOT NULL,
 
 		FOREIGN KEY (CuentaMaestra) REFERENCES Cuenta(ID)
@@ -207,6 +209,7 @@ BEGIN TRY
 		Fecha DATE NOT NULL,
 		Monto MONEY NOT NULL,
 		NuevoSaldo MONEY NOT NULL,
+		Descripcion VARCHAR(100) NOT NULL,
 		IDTipoMovimientoCO INT NOT NULL,
 		IDCuentaObjetivo INT NOT NULL,
 
@@ -219,7 +222,8 @@ BEGIN TRY
 		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 		Fecha DATE NOT NULL,
 		Monto MONEY NOT NULL,
-		NuevoIntSaldo MONEY NOT NULL,
+		NuevoIntAcumulado MONEY NOT NULL,
+		Descripcion VARCHAR(100) NOT NULL,
 		IDCuentaObjetivo INT NOT NULL,
 
 		FOREIGN KEY (IDCuentaObjetivo) REFERENCES CuentaObjetivo(ID)
@@ -243,6 +247,8 @@ BEGIN TRY
 		XMLAntes VARCHAR(128) NOT NULL,
 		XMLDespues VARCHAR(128) NOT NULL,
 		TipoEvento INT NOT NULL,
+		IDUser INT NOT NULL,
+		Fecha DATE NOT NULL,
 
 		FOREIGN KEY (TipoEvento) REFERENCES TipoEvento(ID)
 	);
