@@ -11,7 +11,7 @@ namespace WebPrograBases
 {
 
 
-    public partial class Principal
+    public partial class MenuConsultas
     {
 
         /// <summary>
@@ -24,6 +24,15 @@ namespace WebPrograBases
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
+        /// lblTitulo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblTitulo;
+
+        /// <summary>
         /// Label1 control.
         /// </summary>
         /// <remarks>
@@ -33,13 +42,13 @@ namespace WebPrograBases
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
-        /// txtUserName control.
+        /// btnConsultaNegativo control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUserName;
+        protected global::System.Web.UI.WebControls.Button btnConsultaNegativo;
 
         /// <summary>
         /// Label2 control.
@@ -51,39 +60,30 @@ namespace WebPrograBases
         protected global::System.Web.UI.WebControls.Label Label2;
 
         /// <summary>
-        /// txtPassword control.
+        /// btnConsultaMulta control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected global::System.Web.UI.WebControls.Button btnConsultaMulta;
 
         /// <summary>
-        /// btnLogin control.
+        /// Label3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.Label Label3;
 
         /// <summary>
-        /// lblErrorMessage control.
+        /// btnConsultarBeneficiarios control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorMessage;
-
-        /// <summary>
-        /// btnConsultas control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnConsultas;
+        protected global::System.Web.UI.WebControls.Button btnConsultarBeneficiarios;
     }
 }

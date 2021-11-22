@@ -4,7 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Configuración</title>
+    <style>
+        body{
+            background-color:#B9BFFF;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
