@@ -16,10 +16,6 @@
         <div>
             <h1>Bienvenido(a)</h1>
             <asp:Label ID="lblUserDetails" runat="server" Text=""></asp:Label>
-        <br />
-            <asp:Label ID="lblIdUsuario" runat="server" Text=""></asp:Label>
-        <br />
-            <asp:Label ID="lblNumCuenta" runat="server" Text=""></asp:Label>
         </div>
         <div>
             <p>

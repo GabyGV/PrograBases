@@ -17,9 +17,7 @@ namespace WebPrograBases
                 Response.Redirect("login.aspx");
             lblUserDetails.Text = "Username : " + Session["username"];
             Session["idPersona"] = optenerIDPersona();
-            lblIdUsuario.Text = "ID : " + Session["idPersona"];
             Session["numCuenta"] = optenerNumCuenta();
-            lblNumCuenta.Text = "Cuenta : " + Session["numCuenta"];
             Session["EsAdministrador"] = esAdmin();
         }
 
