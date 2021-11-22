@@ -724,7 +724,7 @@ BEGIN TRY
 	INNER JOIN TipoCuentaAhorro T
 	ON C.IDTCuenta = T.ID_TCuenta
 	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos) and (E.CantOperacionesATM = @MaxATM)
-	GROUP BY C.ID
+	GROUP BY C.ID, E.FechaFin
 
 
 
