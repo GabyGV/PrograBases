@@ -745,6 +745,11 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
 */
+CREATE VIEW DineroTotal
+AS
+SELECT C.Saldo
+FROM Cuenta C;
+
 IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarBeneficiarios 
@@ -755,12 +760,12 @@ AS
 BEGIN TRY 
 
 	SELECT B.ID_Beneficiario,
-			SUM(B.Porcentaje),
+			SUM(B.Porcentaje) as CantDinero,
 			C.NumeroCuenta
 	FROM Beneficiario B
 	INNER JOIN Cuenta C
 	ON B.IDNumeroCuenta = C.ID
-	GROUP BY B.ID_Beneficiario, C.ID
+	GROUP BY B.ID_Beneficiario, C.NumeroCuenta
 
 END TRY
 BEGIN CATCH
