@@ -69,6 +69,7 @@
   <ItemGroup>
     <Content Include="AgregarBeneficiario.aspx" />
     <Content Include="Configuracion.aspx" />
+    <Content Include="ConsultaBeneficiarios.aspx" />
     <Content Include="ConsultaMulta.aspx" />
     <Content Include="Global.asax" />
     <Content Include="MenuConsultas.aspx" />
@@ -92,6 +93,13 @@
     </Compile>
     <Compile Include="Configuracion.aspx.designer.cs">
       <DependentUpon>Configuracion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaBeneficiarios.aspx.cs">
+      <DependentUpon>ConsultaBeneficiarios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultaBeneficiarios.aspx.designer.cs">
+      <DependentUpon>ConsultaBeneficiarios.aspx</DependentUpon>
     </Compile>
     <Compile Include="ConsultaMulta.aspx.cs">
       <DependentUpon>ConsultaMulta.aspx</DependentUpon>

@@ -13,5 +13,11 @@ namespace WebPrograBases
         {
 
         }
+
+        protected void lnkSelect_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
+
 }

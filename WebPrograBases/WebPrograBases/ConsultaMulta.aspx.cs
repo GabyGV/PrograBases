@@ -32,5 +32,10 @@ namespace WebPrograBases
                 ConsultaPorMulta.DataBind();
             }
         }
+
+        protected void lnkSelect_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
