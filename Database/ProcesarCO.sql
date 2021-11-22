@@ -47,8 +47,19 @@ BEGIN
 	SELECT @mes = DATEDIFF (month, C.FechaFinal, C.fechaInicial)
 					FROM @TemporalCO C
 					WHERE C.id = @lo
-	Select @monto = C.MontoMensual FROM CuentaObjetivo C
-	SELECT @montoActual = M.NuevoIntAcumulado FROM MovimientoIntCO M
+
+	Select @monto = C.MontoMensual 
+					FROM @TemporalCO C
+					WHERE C.id = @lo
+
+	SELECT @montoActual = M.NuevoIntAcumulado 
+					FROM MovimientoIntCO M
+					INNER JOIN CuentaObjetivo C
+					ON C.ID = M.IDCuentaObjetivo
+					INNER JOIN @TemporalCO T
+					ON T.cuentaObjetivo = C.CuentaObjetivo
+					WHERE M.IDCuentaObjetivo = C.ID
+
 	SELECT @porcentaje = T.TasaInteres FROM TasaInteresesCO T
 						 WHERE T.ID = @mes 
 

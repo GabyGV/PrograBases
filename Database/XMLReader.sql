@@ -351,6 +351,21 @@ BEGIN
 					ON T.cuentaMaestra = C.NumeroCuenta
 					WHERE T.FechaTemp = @fechaActual;
 
+	--MovimientoIntCO-------------------------------------------------------
+				
+					INSERT INTO [dbo].MovimientoIntCO(Fecha,
+													 Monto,
+													 NuevoIntAcumulado,
+													 Descripcion,
+													 IDCuentaObjetivo)
+					SELECT T.FechaTemp, 0, 0, T.descripcion, CO.ID
+					FROM @TemporalAgregarCO T
+					INNER JOIN Cuenta C
+					ON T.cuentaMaestra = C.ID
+					INNER JOIN CuentaObjetivo CO
+					ON CO.CuentaObjetivo = T.numeroCO
+					WHERE (T.FechaTemp = @fechaActual);
+
 	--Movimientos------------------------------------------------------
 					
 					INSERT @Operaciones (id)
