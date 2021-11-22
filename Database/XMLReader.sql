@@ -103,6 +103,7 @@ BEGIN
 			DECLARE @fechaMinima DATE
 			DECLARE @fechaMaxima DATE
 			DECLARE @DiaDeCierre INT
+			DECLARE @DiaDeCO INT
 
 			SELECT @Varios = C
 			FROM OPENROWSET (BULK 'C:\Recursos\Datos.xml', SINGLE_BLOB) AS Varios(C)
@@ -344,8 +345,10 @@ BEGIN
 													 FechaFinal,
 													 DiaDeAhorro,
 													 Descripcion)
-					SELECT T.cuentaMaestra, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion
+					SELECT C.ID, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion
 					FROM @TemporalAgregarCO T
+					INNER JOIN Cuenta C
+					ON T.cuentaMaestra = C.NumeroCuenta
 					WHERE T.FechaTemp = @fechaActual;
 
 	--Movimientos------------------------------------------------------
@@ -495,7 +498,7 @@ BEGIN
 							WHERE EstadoCuenta.ID = @IdEstadoCuenta
 						END
 		-----------------------------------------------------------------------	
-						---------------- Store Procedure -----------------------------------------------------	
+							
 						
 					
 						SET @IdActual = @IdActual + 1
@@ -505,16 +508,8 @@ BEGIN
 
 
 	--Store Procedures -------------------------------------------------
-
-					INSERT @Operaciones (id)
-					SELECT E.ID
-					FROM EstadoCuenta E
-					WHERE (E.FechaFin <= @fechaActual) AND (E.Activo = 1);
-
-					SET @IdMin = 1;
-					SET @IdActual = @IdMin;
-					SELECT @IdMax = MAX(O.elemento) FROM @Operaciones O 
-					
+				
+					EXEC [dbo].[ProcesarCO] @DiaDeCierre
 
 					WHILE (@IdActual <= @IdMax)
 						BEGIN
