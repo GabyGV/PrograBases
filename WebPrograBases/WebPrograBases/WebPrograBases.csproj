@@ -71,6 +71,7 @@
     <Content Include="Configuracion.aspx" />
     <Content Include="ConsultaBeneficiarios.aspx" />
     <Content Include="ConsultaMulta.aspx" />
+    <Content Include="ConsultaNegativo.aspx" />
     <Content Include="Global.asax" />
     <Content Include="MenuConsultas.aspx" />
     <Content Include="MostrarBeneficiarios.aspx" />
@@ -107,6 +108,13 @@
     </Compile>
     <Compile Include="ConsultaMulta.aspx.designer.cs">
       <DependentUpon>ConsultaMulta.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultaNegativo.aspx.cs">
+      <DependentUpon>ConsultaNegativo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConsultaNegativo.aspx.designer.cs">
+      <DependentUpon>ConsultaNegativo.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

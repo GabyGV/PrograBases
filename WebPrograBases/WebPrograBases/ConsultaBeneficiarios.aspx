@@ -31,7 +31,7 @@
                         <asp:BoundField DataField="CantCuentas" HeaderText ="Cantidad de cuentas" />
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("Fecha") %>' OnClick="lnkSelect_Click"/>
+                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("NumDocIdentidad") %>' OnClick="lnkSelect_Click"/>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

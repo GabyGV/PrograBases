@@ -16,7 +16,7 @@ namespace WebPrograBases
 
         protected void btnConsultaNegativo_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("ConsultaNegativo.aspx");
         }
 
         protected void btnConsultaMulta_Click(object sender, EventArgs e)

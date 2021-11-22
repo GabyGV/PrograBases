@@ -716,15 +716,15 @@ BEGIN TRY
 					WHERE (E.CantOperacionesATM = @MaxATM))
 
 	SELECT C.ID,
-			AVG(E.CantOperacionesATM) as Promedio,
-			E.FechaFin as FechaMax
+			AVG(E.CantOperacionesATM) as Promedio--,
+			--E.FechaFin as FechaMax
 	FROM Cuenta C
 	INNER JOIN EstadoCuenta E
 	ON C.ID = E.IDNumeroCuenta
 	INNER JOIN TipoCuentaAhorro T
 	ON C.IDTCuenta = T.ID_TCuenta
-	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos) and (E.CantOperacionesATM = @MaxATM)
-	GROUP BY C.ID
+	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)-- and (E.CantOperacionesATM = @MaxATM)
+	GROUP BY C.ID--, E.FechaFin
 
 
 
@@ -744,7 +744,7 @@ Procedimiento ConsultarBeneficiarios
 Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
-
+*/
 IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarBeneficiarios 
@@ -754,18 +754,44 @@ CREATE PROCEDURE ConsultarBeneficiarios
 AS
 BEGIN TRY 
 
-	DECLARE @tblPorcentajes 
-
 	SELECT B.ID_Beneficiario,
-			
+			SUM(B.Porcentaje),
+			C.NumeroCuenta
 	FROM Beneficiario B
 	INNER JOIN Cuenta C
 	ON B.IDNumeroCuenta = C.ID
-	WHERE ()
+	GROUP BY B.ID_Beneficiario, C.ID
 
 END TRY
 BEGIN CATCH
 	RAISERROR('Error al consultar beneficiarios', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO 
+
+EXECUTE ConsultarBeneficiarios
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ConsultarRetirosNegativos
+Objetivo: Retornar todas las cuentas asociadas a un usuario
+	Entradas : El ID del usuario 
+	Salidas  : Los numeros de cuenta
+
+IF OBJECT_ID('ConsultarRetirosNegativos') IS NOT NULL
+BEGIN 
+DROP PROC ConsultarBeneficiarios 
+END
+GO
+CREATE PROCEDURE ConsultarRetirosNegativos
+AS
+BEGIN TRY 
+
+
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error al consultar retiros negativos', 16, 1) WITH NOWAIT;
 	PRINT error_message()
 	return -1
 END CATCH
