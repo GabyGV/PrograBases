@@ -41,12 +41,12 @@
             <div>
                 <asp:GridView ID="ConsultaPorMulta" runat="server" AutoGenerateColumns="false" >
                     <Columns>
-                        <asp:BoundField DataField="NumCuenta" HeaderText ="Número de cuenta" />
+                        <asp:BoundField DataField="ID" HeaderText ="ID de cuenta" />
                         <asp:BoundField DataField="Promedio" HeaderText ="Promedio de operaciones ATM" />
-                        <asp:BoundField DataField="FechaMayorCant" HeaderText ="Fecha con la mayor cantidad de operaciones ATM" />
+                        <asp:BoundField DataField="FechaMax" HeaderText ="Fecha con la mayor cantidad de operaciones ATM" />
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("Fecha") %>' OnClick="lnkSelect_Click"/>
+                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("ID") %>' OnClick="lnkSelect_Click"/>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

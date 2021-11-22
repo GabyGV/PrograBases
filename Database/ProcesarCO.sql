@@ -66,7 +66,7 @@ BEGIN
 
 
 	COMMIT 
-	Set @lo=@hi+1
+	Set @lo=@lo+1
 
 END
 

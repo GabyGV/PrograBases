@@ -679,6 +679,7 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
 */
+USE [PrograBases]
 IF OBJECT_ID('ConsultarMultaPorATM') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarMultaPorATM 
@@ -688,23 +689,44 @@ CREATE PROCEDURE ConsultarMultaPorATM
 	 @inNumDias INT
 AS
 BEGIN TRY 
-
+/*
 	DECLARE @FechaFinal DATE
 	SET @FechaFinal = (SELECT MAX Fecha from tbl.Eventos)
 	
 	DECLARE @FechaInicial DATE
-	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))
+	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))*/
+	/*
+	DECLARE @Promedio FLOAT
+	SET @Promedio = (SELECT AVG(E.CantOperacionesATM)
+					FROM Cuenta C
+					INNER JOIN EstadoCuenta E
+					ON C.ID = E.IDNumeroCuenta)*/
+	
+	DECLARE @MaxATM INT
+	SET @MaxATM = (SELECT MAX(E.CantOperacionesATM)
+					FROM Cuenta C
+					INNER JOIN EstadoCuenta E
+					ON C.ID = E.IDNumeroCuenta)
 
+	DECLARE @FechaMax DATE
+	SET @FechaMax = (SELECT TOP 1 E.FechaFin
+					FROM Cuenta C
+					INNER JOIN EstadoCuenta E
+					ON C.ID = E.IDNumeroCuenta
+					WHERE (E.CantOperacionesATM = @MaxATM))
 
-	SELECT C.NumeroCuenta,
-			AVG(E.CantOperacionesATM),
-			MAX(E.CantOperacionesATM)
-	FROM Cuenta c
+	SELECT C.ID,
+			AVG(E.CantOperacionesATM) as Promedio,
+			E.FechaFin as FechaMax
+	FROM Cuenta C
 	INNER JOIN EstadoCuenta E
 	ON C.ID = E.IDNumeroCuenta
 	INNER JOIN TipoCuentaAhorro T
 	ON C.IDTCuenta = T.ID_TCuenta
-	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)
+	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos) and (E.CantOperacionesATM = @MaxATM)
+	GROUP BY C.ID
+
+
 
 END TRY
 BEGIN CATCH
@@ -713,6 +735,8 @@ BEGIN CATCH
 	return -1
 END CATCH
 GO 
+
+EXECute ConsultarMultaPorATM 1
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 
@@ -730,7 +754,7 @@ CREATE PROCEDURE ConsultarBeneficiarios
 AS
 BEGIN TRY 
 
-
+	DECLARE @tblPorcentajes 
 
 	SELECT B.ID_Beneficiario,
 			
