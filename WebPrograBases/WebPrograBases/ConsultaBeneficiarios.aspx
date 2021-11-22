@@ -25,7 +25,7 @@
             <div>
                 <asp:GridView ID="ConsultaPorBeneficiario" runat="server" AutoGenerateColumns="false" >
                     <Columns>
-                        <asp:BoundField DataField="NumDocIdentidad" HeaderText ="Número de documento de identidad" />
+                        <asp:BoundField DataField="ID_Beneficiario" HeaderText ="Número de ID de beneficiario" />
                         <asp:BoundField DataField="CantDinero" HeaderText ="Cantidad de dinero a recibir" />
                         <asp:BoundField DataField="NumCuentaMayor" HeaderText ="Número de cuenta con mayor aporte" />
                         <asp:BoundField DataField="CantCuentas" HeaderText ="Cantidad de cuentas" />

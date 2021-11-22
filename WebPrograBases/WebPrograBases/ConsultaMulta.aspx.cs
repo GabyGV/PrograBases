@@ -19,7 +19,6 @@ namespace WebPrograBases
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             int dias = Convert.ToInt32(this.txtCantDias.Text);
-            //revisar in and out y nombre
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();
