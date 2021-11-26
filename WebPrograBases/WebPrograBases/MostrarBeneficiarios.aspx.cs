@@ -29,7 +29,7 @@ namespace WebPrograBases
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("VerBeneficiarios", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.Int).Value = Session["numCuenta"];
+                sql_cmnd.Parameters.AddWithValue("@inIDCuenta", SqlDbType.Int).Value = Session["numCuenta"];
                 dtbl.Load(sql_cmnd.ExecuteReader());
             }
             if (dtbl.Rows.Count > 0)
@@ -94,7 +94,7 @@ namespace WebPrograBases
                         sqlCon.Open();
                         SqlCommand sql_cmnd = new SqlCommand("ActualizarBeneficiarios", sqlCon);
                         sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                        sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
                         sql_cmnd.Parameters.AddWithValue("@inNombre", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtNombre") as TextBox).Text.Trim());
                         sql_cmnd.Parameters.AddWithValue("@inIDParentezco", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtIDParentezco") as TextBox).Text.Trim()));
                         sql_cmnd.Parameters.AddWithValue("@inPorcentaje", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtPorcentaje") as TextBox).Text.Trim()));
@@ -128,7 +128,7 @@ namespace WebPrograBases
                     sqlCon.Open();
                     SqlCommand sql_cmnd = new SqlCommand("EliminarBeneficiario", sqlCon);
                     sql_cmnd.CommandType = CommandType.StoredProcedure;
-                    sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32(tblBeneficiarios.DataKeys[e.RowIndex].Value.ToString()));
+                    sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", Convert.ToInt32(tblBeneficiarios.DataKeys[e.RowIndex].Value.ToString()));
                     sql_cmnd.ExecuteNonQuery();
                     PopulateGridview();
                     lblSuccessMessage.Text = "El beneficiario fue eliminado exitosamente.";
@@ -154,7 +154,7 @@ namespace WebPrograBases
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
                 sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.NVarChar).Value = Session["numCuenta"];
                 sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.NVarChar).Value = entrada;
-                sql_cmnd.Parameters.AddWithValue("@inValorDocIndentidad", SqlDbType.NVarChar).Value = doc;
+                sql_cmnd.Parameters.AddWithValue("@inIDDocIndentidad", SqlDbType.NVarChar).Value = doc;
                 try
                 {
                     porcentaje = Convert.ToInt32(sql_cmnd.ExecuteScalar());

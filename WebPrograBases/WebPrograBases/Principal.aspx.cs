@@ -19,22 +19,7 @@ namespace WebPrograBases
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            /*
-            using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
-            {
-                sqlCon.Open();
-                string query = "SELECT COUNT(1) FROM Usuario WHERE Username=@IN_username AND Pass=@IN_password";
-                SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                sqlCmd.Parameters.AddWithValue("@IN_username", txtUserName.Text.Trim());
-                sqlCmd.Parameters.AddWithValue("@IN_password", txtPassword.Text.Trim());
-                int count = Convert.ToInt32(sqlCmd.ExecuteScalar());
-                if (count == 1)
-                {
-                    Session["username"] = txtUserName.Text.Trim();
-                    Response.Redirect("Segunda.aspx");
-                }
-                else { lblErrorMessage.Visible = true; }
-            }*/
+           
             using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
             {
                 sqlCon.Open();

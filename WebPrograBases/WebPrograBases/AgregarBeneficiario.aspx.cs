@@ -28,7 +28,7 @@ namespace WebPrograBases
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("VerBeneficiariosMini", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.Int).Value = Session["numCuenta"];
+                sql_cmnd.Parameters.AddWithValue("@inIDCuenta", SqlDbType.Int).Value = Session["numCuenta"];
                 dtbl.Load(sql_cmnd.ExecuteReader());
             }
             if (dtbl.Rows.Count > 0)
@@ -63,7 +63,7 @@ namespace WebPrograBases
                             SqlCommand sql_cmnd = new SqlCommand("AgregarBeneficiario", sqlCon);
                             sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
                             sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.Int).Value = Convert.ToInt32(TextBox0.Text.Trim());
-                            sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox1.Text.Trim());
+                            sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox1.Text.Trim());
                             sql_cmnd.Parameters.AddWithValue("@inIDNumeroCuenta", SqlDbType.Int).Value = Convert.ToInt32(TextBox2.Text.Trim());
                             sql_cmnd.Parameters.AddWithValue("@inIDParentezco", SqlDbType.Int).Value = Convert.ToInt32(TextBox3.Text.Trim());
                             sql_cmnd.ExecuteNonQuery();
@@ -101,7 +101,7 @@ namespace WebPrograBases
                     sqlCon.Open();
                     SqlCommand sql_cmnd = new SqlCommand("AgregarPersona", sqlCon);
                     sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                    sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox18.Text.Trim());
+                    sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox18.Text.Trim());
                     sql_cmnd.Parameters.AddWithValue("@inNombre", SqlDbType.NVarChar).Value = TextBox17.Text.Trim();
                     sql_cmnd.Parameters.AddWithValue("@inFechaNacimiento", SqlDbType.NVarChar).Value = TextBox16.Text.Trim();
                     sql_cmnd.Parameters.AddWithValue("@inEmail", SqlDbType.NVarChar).Value = TextBox15.Text.Trim();
@@ -131,7 +131,7 @@ namespace WebPrograBases
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("CountBeneficiarios", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumCuenta", SqlDbType.Int).Value = Session["numCuenta"];
+                sql_cmnd.Parameters.AddWithValue("@inIDCuenta", SqlDbType.Int).Value = Session["numCuenta"];
                 cantidad = Convert.ToInt32(sql_cmnd.ExecuteScalar());
                 sqlCon.Close();
 
@@ -148,9 +148,9 @@ namespace WebPrograBases
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("SumarPorcentajes", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inNumeroCuenta", SqlDbType.NVarChar).Value = Session["numCuenta"];
+                sql_cmnd.Parameters.AddWithValue("@inIDCuenta", SqlDbType.NVarChar).Value = Session["numCuenta"];
                 sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.NVarChar).Value = entrada;
-                sql_cmnd.Parameters.AddWithValue("@inValorDocIndentidad", SqlDbType.NVarChar).Value = doc;
+                sql_cmnd.Parameters.AddWithValue("@inIDDocIndentidad", SqlDbType.NVarChar).Value = doc;
                 try
                 {
                     porcentaje = Convert.ToInt32(sql_cmnd.ExecuteScalar());

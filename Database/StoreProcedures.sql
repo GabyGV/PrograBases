@@ -85,12 +85,12 @@ DROP PROC CountBeneficiarios
 END
 GO
 CREATE PROCEDURE CountBeneficiarios
-	 @inNumCuenta INT
+	 @inIDCuenta INT
 AS
 BEGIN TRY 
 	SELECT COUNT(B.ID_Beneficiario)
 	FROM Beneficiario B
-	WHERE (B.IDNumeroCuenta = @inNumCuenta AND B.Activo = 1)
+	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.Activo = 1)
 
 END TRY
 BEGIN CATCH
@@ -99,6 +99,8 @@ BEGIN CATCH
 	return -1
 END CATCH
 GO
+
+
 
 
 
@@ -115,12 +117,12 @@ DROP PROC VerNumeroCuenta
 END
 GO
 CREATE PROCEDURE VerNumeroCuenta
-	 @inValorDocumentoIdentidad INT
+	 @inIDDocumentoIdentidad INT
 AS
 BEGIN TRY 
-	SELECT C.NumeroCuenta
+	SELECT C.ID
 	FROM Cuenta C
-	WHERE (C.IDValorDocIdentidad = @inValorDocumentoIdentidad)
+	WHERE (C.IDValorDocIdentidad = @inIDDocumentoIdentidad)
 
 END TRY
 BEGIN CATCH
@@ -144,7 +146,7 @@ DROP PROC VerBeneficiarios
 END
 GO
 CREATE PROCEDURE VerBeneficiarios
-	 @inNumeroCuenta INT
+	 @inIDCuenta INT
 AS
 BEGIN TRY 
 	SELECT P.Nombre,
@@ -157,8 +159,8 @@ BEGIN TRY
 		   P.Telefono2
 	FROM Beneficiario B
 	INNER JOIN Persona P
-	ON P.ValorDocIdentidad = B.IDValorDocIdentidad
-	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.Activo = 1)
+	ON P.ID = B.IDValorDocIdentidad
+	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.Activo = 1)
 
 END TRY
 BEGIN CATCH
@@ -182,7 +184,7 @@ DROP PROC VerBeneficiariosMini
 END
 GO
 CREATE PROCEDURE VerBeneficiariosMini
-	 @inNumeroCuenta INT
+	 @inIDCuenta INT
 AS
 BEGIN TRY 
 	SELECT B.Porcentaje,
@@ -190,7 +192,7 @@ BEGIN TRY
 		   B.IDNumeroCuenta,
 		   B.IDParentezco
 	FROM Beneficiario B
-	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.Activo = 1)
+	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.Activo = 1)
 
 END TRY
 BEGIN CATCH
@@ -214,12 +216,12 @@ DROP PROC EliminarBeneficiario
 END
 GO
 CREATE PROCEDURE EliminarBeneficiario
-	 @inValorDocumentoIdentidad INT
+	 @inIDDocumentoIdentidad INT
 AS
 BEGIN TRY 
 	UPDATE Beneficiario
 	SET Activo = 0
-	WHERE (IDValorDocIdentidad = @inValorDocumentoIdentidad)
+	WHERE (IDValorDocIdentidad = @inIDDocumentoIdentidad)
 
 END TRY
 BEGIN CATCH
@@ -243,7 +245,7 @@ DROP PROC ActualizarBeneficiarios
 END
 GO
 CREATE PROCEDURE ActualizarBeneficiarios
-	@inValorDocumentoIdentidad INT,
+	@inIDDocumentoIdentidad INT,
 	@inNombre VARCHAR(64),
 	@inIDParentezco INT,
 	@inPorcentaje INT,
@@ -261,13 +263,13 @@ BEGIN TRY
 		Email = @inEmail,
 		Telefono1 = @inTelefono1,
 		Telefono2 = @inTelefono2
-	WHERE (ValorDocIdentidad = @inValorDocumentoIdentidad)
+	WHERE (ValorDocIdentidad = @inValorDocIdentidad)
 
 	UPDATE Beneficiario
 	SET IDParentezco = @inIDParentezco,
 		Porcentaje = @inPorcentaje,
 		IDValorDocIdentidad = @inValorDocIdentidad
-	WHERE (IDValorDocIdentidad = @inValorDocumentoIdentidad)
+	WHERE (IDValorDocIdentidad = @inIDDocumentoIdentidad)
 		
 END TRY
 BEGIN CATCH
@@ -292,7 +294,7 @@ END
 GO
 CREATE PROCEDURE AgregarBeneficiario
 	 @inPorcentaje INT,
-	 @inValorDocumentoIdentidad INT,
+	 @inIDDocumentoIdentidad INT,
 	 @inIDNumeroCuenta INT,
 	 @inIDParentezco INT
 AS
@@ -303,7 +305,7 @@ BEGIN TRY
 						IDParentezco,
 						Activo)
 	VALUES(@inPorcentaje,
-		   @inValorDocumentoIdentidad,
+		   @inIDDocumentoIdentidad,
 		   @inIDNumeroCuenta,
 		   @inIDParentezco,
 		   1)
@@ -405,13 +407,13 @@ DROP PROC SumarPorcentajes
 END
 GO
 CREATE PROCEDURE SumarPorcentajes
-	 @inNumeroCuenta INT,
-	 @inValorDocIndentidad INT
+	 @inIDCuenta INT,
+	 @inIDDocIndentidad INT
 AS
 BEGIN TRY 
 	SELECT SUM(B.Porcentaje)
 	FROM Beneficiario B
-	WHERE (B.IDNumeroCuenta = @inNumeroCuenta AND B.IDValorDocIdentidad != @inValorDocIndentidad)
+	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.IDValorDocIdentidad != @inIDDocIndentidad)
 
 END TRY
 BEGIN CATCH
@@ -680,6 +682,20 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Salidas  : Los numeros de cuenta
 */
 USE [PrograBases]
+CREATE VIEW FechaMaxima
+AS
+SELECT MAX(E.Fecha) as FechaMax,
+		C.NumeroCuenta as NumCuenta
+FROM Cuenta C
+INNER JOIN EstadoCuenta E
+ON C.ID = E.IDNumeroCuenta
+WHERE(CONCAT(E.CantOperacionesATM, '-', E.IDNumeroCuenta) in 
+	(SELECT CONCAT(MAX(E2.CantOperacionesATM), '-', E2.IDNumeroCuenta) FROM EstadoCuenta E2 GROUP BY (E2.IDNumeroCuenta)))
+GROUP BY C.NumeroCuenta
+
+
+
+USE [PrograBases]
 IF OBJECT_ID('ConsultarMultaPorATM') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarMultaPorATM 
@@ -691,7 +707,7 @@ AS
 BEGIN TRY 
 /*
 	DECLARE @FechaFinal DATE
-	SET @FechaFinal = (SELECT MAX Fecha from tbl.Eventos)
+	SET @FechaFinal = (SELECT MAX Fecha from Evento)
 	
 	DECLARE @FechaInicial DATE
 	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))*/
@@ -702,29 +718,26 @@ BEGIN TRY
 					INNER JOIN EstadoCuenta E
 					ON C.ID = E.IDNumeroCuenta)*/
 	
-	DECLARE @MaxATM INT
-	SET @MaxATM = (SELECT MAX(E.CantOperacionesATM)
-					FROM Cuenta C
-					INNER JOIN EstadoCuenta E
-					ON C.ID = E.IDNumeroCuenta)
+	
 
-	DECLARE @FechaMax DATE
-	SET @FechaMax = (SELECT TOP 1 E.FechaFin
-					FROM Cuenta C
-					INNER JOIN EstadoCuenta E
-					ON C.ID = E.IDNumeroCuenta
-					WHERE (E.CantOperacionesATM = @MaxATM))
+	/*SELECT E.Fecha
+	FROM Cuenta C
+	INNER JOIN EstadoCuenta E
+	ON C.ID = E.IDNumeroCuenta
+	WHERE(E.CantOperacionesATM = (SELECT MAX(E2.CantOperacionesATM) FROM EstadoCuenta E2 WHERE (E2.IDNumeroCuenta = C.ID)))*/
 
 	SELECT C.ID,
-			AVG(E.CantOperacionesATM) as Promedio--,
-			--E.FechaFin as FechaMax
+			AVG(E.CantOperacionesATM) as Promedio,
+			CONCAT(MONTH(F.FechaMax), '/', YEAR(F.FechaMax)) AS FechaMax
 	FROM Cuenta C
 	INNER JOIN EstadoCuenta E
 	ON C.ID = E.IDNumeroCuenta
 	INNER JOIN TipoCuentaAhorro T
 	ON C.IDTCuenta = T.ID_TCuenta
-	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)-- and (E.CantOperacionesATM = @MaxATM)
-	GROUP BY C.ID--, E.FechaFin
+	INNER JOIN FechaMaxima F
+	ON C.NumeroCuenta = F.NumCuenta
+	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)
+	GROUP BY C.ID, F.FechaMax
 
 
 
@@ -736,7 +749,6 @@ BEGIN CATCH
 END CATCH
 GO 
 
-EXECute ConsultarMultaPorATM 1
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 
@@ -745,10 +757,7 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
 */
-CREATE VIEW DineroTotal
-AS
-SELECT C.Saldo
-FROM Cuenta C;
+
 
 IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
 BEGIN 
@@ -759,13 +768,21 @@ CREATE PROCEDURE ConsultarBeneficiarios
 AS
 BEGIN TRY 
 
-	SELECT B.ID_Beneficiario,
-			SUM(B.Porcentaje) as CantDinero,
-			C.NumeroCuenta
+	SELECT B.ID_Beneficiario
 	FROM Beneficiario B
 	INNER JOIN Cuenta C
 	ON B.IDNumeroCuenta = C.ID
 	GROUP BY B.ID_Beneficiario, C.NumeroCuenta
+
+	SELECT B.IDNumeroCuenta,
+			B.IDValorDocIdentidad,
+			MAX(B.Porcentaje) as Porcentaje
+	FROM Beneficiario B
+	WHERE(CONCAT(B.Porcentaje, '-', B.IDValorDocIdentidad) in (SELECT CONCAT(MAX(B2.Porcentaje), '-', B2.IDVAlorDocIdentidad) 
+																FROM Beneficiario B2 GROUP BY B2.IDValorDocIdentidad))
+	GROUP BY B.IDNumeroCuenta, B.IDValorDocIdentidad
+
+
 
 END TRY
 BEGIN CATCH

@@ -54,7 +54,7 @@ namespace WebPrograBases
                 sqlCon.Open();
                 SqlCommand sql_cmnd = new SqlCommand("VerNumeroCuenta", sqlCon);
                 sql_cmnd.CommandType = CommandType.StoredProcedure;
-                sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Session["idPersona"].ToString();
+                sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", SqlDbType.Int).Value = Session["idPersona"].ToString();
                 numCuenta = Convert.ToInt32(sql_cmnd.ExecuteScalar());
                 sqlCon.Close();
             }

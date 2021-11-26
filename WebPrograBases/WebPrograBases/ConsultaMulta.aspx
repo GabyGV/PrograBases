@@ -43,7 +43,7 @@
                     <Columns>
                         <asp:BoundField DataField="ID" HeaderText ="ID de cuenta" />
                         <asp:BoundField DataField="Promedio" HeaderText ="Promedio de operaciones ATM" />
-                        <%--<asp:BoundField DataField="FechaMax" HeaderText ="Fecha con la mayor cantidad de operaciones ATM" />--%>
+                        <asp:BoundField DataField="FechaMax" HeaderText ="Fecha con la mayor cantidad de operaciones ATM" />
                         <asp:TemplateField>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("ID") %>' OnClick="lnkSelect_Click"/>

@@ -599,7 +599,7 @@ BEGIN
 								SET Saldo = @SaldoActual
 								WHERE Cuenta.ID = @IdCuenta
 							
-							---- INSERTAR NUENO ESTADO DE CUENTA ---------------------------
+							---- INSERTAR NUEVO ESTADO DE CUENTA ---------------------------
 							
 								INSERT INTO [dbo].EstadoCuenta( Fecha,
 																FechaFin,	
