@@ -782,6 +782,14 @@ BEGIN TRY
 																FROM Beneficiario B2 GROUP BY B2.IDValorDocIdentidad))
 	GROUP BY B.IDNumeroCuenta, B.IDValorDocIdentidad
 
+	SELECT B.IDValorDocIdentidad,
+			COUNT(B.IDNumeroCuenta) as CantidadCuentas
+	FROM Beneficiario B
+	GROUP BY B.IDValorDocIdentidad
+
+
+
+
 
 
 END TRY
