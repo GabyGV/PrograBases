@@ -25,13 +25,13 @@
             <div>
                 <asp:GridView ID="ConsultaPorBeneficiario" runat="server" AutoGenerateColumns="false" >
                     <Columns>
-                        <asp:BoundField DataField="ID_Beneficiario" HeaderText ="Número de ID de beneficiario" />
-                        <asp:BoundField DataField="CantDinero" HeaderText ="Cantidad de dinero a recibir" />
-                        <asp:BoundField DataField="NumCuentaMayor" HeaderText ="Número de cuenta con mayor aporte" />
-                        <asp:BoundField DataField="CantCuentas" HeaderText ="Cantidad de cuentas" />
+                        <asp:BoundField DataField="IDValorDocIdentidad" HeaderText ="Número de ID de beneficiario" />
+                        <asp:BoundField DataField="CantidadCuentas" HeaderText ="Cantidad de cuentas" />
+                        <asp:BoundField DataField="DineroTotal" HeaderText ="Cantidad de dinero a recibir" />
+                        <asp:BoundField DataField="CuentaMayorPorcentaje" HeaderText ="Cuenta con mayor aporte" />
                         <asp:TemplateField>
                             <ItemTemplate>
-                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("NumDocIdentidad") %>' OnClick="lnkSelect_Click"/>
+                                <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("IDValorDocIdentidad") %>' OnClick="lnkSelect_Click"/>
                             </ItemTemplate>
                         </asp:TemplateField>
                     </Columns>

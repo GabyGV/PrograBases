@@ -294,18 +294,24 @@ END
 GO
 CREATE PROCEDURE AgregarBeneficiario
 	 @inPorcentaje INT,
-	 @inIDDocumentoIdentidad INT,
+	 @inValorDocumentoIdentidad INT,
 	 @inIDNumeroCuenta INT,
 	 @inIDParentezco INT
 AS
 BEGIN TRY 
+	
+	DECLARE @PIDDocumentoIdentidad INT
+	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
+									FROM Persona P
+									WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad))
+
 	INSERT Beneficiario(Porcentaje,
 						IDValorDocIdentidad,
 						IDNumeroCuenta,
 						IDParentezco,
 						Activo)
 	VALUES(@inPorcentaje,
-		   @inIDDocumentoIdentidad,
+		   @PIDDocumentoIdentidad,
 		   @inIDNumeroCuenta,
 		   @inIDParentezco,
 		   1)
@@ -681,21 +687,7 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
 */
-USE [PrograBases]
-CREATE VIEW FechaMaxima
-AS
-SELECT MAX(E.Fecha) as FechaMax,
-		C.NumeroCuenta as NumCuenta
-FROM Cuenta C
-INNER JOIN EstadoCuenta E
-ON C.ID = E.IDNumeroCuenta
-WHERE(CONCAT(E.CantOperacionesATM, '-', E.IDNumeroCuenta) in 
-	(SELECT CONCAT(MAX(E2.CantOperacionesATM), '-', E2.IDNumeroCuenta) FROM EstadoCuenta E2 GROUP BY (E2.IDNumeroCuenta)))
-GROUP BY C.NumeroCuenta
 
-
-
-USE [PrograBases]
 IF OBJECT_ID('ConsultarMultaPorATM') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarMultaPorATM 
@@ -758,7 +750,6 @@ Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Salidas  : Los numeros de cuenta
 */
 
-
 IF OBJECT_ID('ConsultarBeneficiarios') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarBeneficiarios 
@@ -768,29 +759,16 @@ CREATE PROCEDURE ConsultarBeneficiarios
 AS
 BEGIN TRY 
 
-	SELECT B.ID_Beneficiario
+	SELECT B.IDValorDocIdentidad,
+			COUNT(C.ID) AS CantidadCuentas,
+			SUM(C.Saldo * (0.01 * B.Porcentaje)) AS DineroTotal,
+			P.IDNumeroCuenta AS CuentaMayorPorcentaje
 	FROM Beneficiario B
 	INNER JOIN Cuenta C
 	ON B.IDNumeroCuenta = C.ID
-	GROUP BY B.ID_Beneficiario, C.NumeroCuenta
-
-	SELECT B.IDNumeroCuenta,
-			B.IDValorDocIdentidad,
-			MAX(B.Porcentaje) as Porcentaje
-	FROM Beneficiario B
-	WHERE(CONCAT(B.Porcentaje, '-', B.IDValorDocIdentidad) in (SELECT CONCAT(MAX(B2.Porcentaje), '-', B2.IDVAlorDocIdentidad) 
-																FROM Beneficiario B2 GROUP BY B2.IDValorDocIdentidad))
-	GROUP BY B.IDNumeroCuenta, B.IDValorDocIdentidad
-
-	SELECT B.IDValorDocIdentidad,
-			COUNT(B.IDNumeroCuenta) as CantidadCuentas
-	FROM Beneficiario B
-	GROUP BY B.IDValorDocIdentidad
-
-
-
-
-
+	INNER JOIN PorcentajeMaximo P
+	ON B.IDValorDocIdentidad = P.IDValorDocIdentidad
+	GROUP BY B.IDValorDocIdentidad, P.IDNumeroCuenta
 
 END TRY
 BEGIN CATCH

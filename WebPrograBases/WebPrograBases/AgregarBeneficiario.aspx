@@ -47,10 +47,10 @@
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Valor Documento de Identidad">
                         <ItemTemplate>
-                            <asp:Label ID="Label7" Text='<%# Bind("IDValorDocIdentidad") %>' runat="server"></asp:Label>
+                            <asp:Label ID="Label7" Text='<%# Bind("ValorDocIdentidad") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="txtIDValorDocIdentidad" Text='<%# Bind("IDValorDocIdentidad") %>' runat="server" />
+                            <asp:TextBox ID="txtIDValorDocIdentidad" Text='<%# Bind("ValorDocIdentidad") %>' runat="server" />
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Numero Cuenta">

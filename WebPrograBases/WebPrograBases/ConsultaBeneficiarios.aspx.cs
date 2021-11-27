@@ -13,7 +13,7 @@ namespace WebPrograBases
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            /*
+            
             if (!IsPostBack)
             {
                 using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
@@ -26,7 +26,7 @@ namespace WebPrograBases
                     ConsultaPorBeneficiario.DataSource = dtbl;
                     ConsultaPorBeneficiario.DataBind();
                 }
-            }*/
+            }
         }
 
         protected void lnkSelect_Click(object sender, EventArgs e)
