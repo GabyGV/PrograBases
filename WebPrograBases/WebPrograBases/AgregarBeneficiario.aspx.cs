@@ -46,8 +46,8 @@ namespace WebPrograBases
 
         protected void btnBeneficiario1_Click(object sender, EventArgs e)
         {
-            int doc = Convert.ToInt32(TextBox1.Text.Trim());
-            int entrada = Convert.ToInt32(TextBox0.Text.Trim());
+            int doc = Convert.ToInt32(txtDocIdentidadB.Text.Trim());
+            int entrada = Convert.ToInt32(txtPorcentaje.Text.Trim());
             int porcen = validarPorcentaje(entrada, doc);
 
             if (porcen < 100)
@@ -62,10 +62,10 @@ namespace WebPrograBases
                             sqlCon.Open();
                             SqlCommand sql_cmnd = new SqlCommand("AgregarBeneficiario", sqlCon);
                             sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                            sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.Int).Value = Convert.ToInt32(TextBox0.Text.Trim());
-                            sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox1.Text.Trim());
-                            sql_cmnd.Parameters.AddWithValue("@inIDNumeroCuenta", SqlDbType.Int).Value = Convert.ToInt32(TextBox2.Text.Trim());
-                            sql_cmnd.Parameters.AddWithValue("@inIDParentezco", SqlDbType.Int).Value = Convert.ToInt32(TextBox3.Text.Trim());
+                            sql_cmnd.Parameters.AddWithValue("@inPorcentaje", SqlDbType.Int).Value = Convert.ToInt32(txtPorcentaje.Text.Trim());
+                            sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(txtDocIdentidadB.Text.Trim());
+                            sql_cmnd.Parameters.AddWithValue("@inIDNumeroCuenta", SqlDbType.Int).Value = Convert.ToInt32(txtNumCuenta.Text.Trim());
+                            sql_cmnd.Parameters.AddWithValue("@inIDParentezco", SqlDbType.Int).Value = Convert.ToInt32(txtParentezco.Text.Trim());
                             sql_cmnd.ExecuteNonQuery();
                             tblAgregarBeneficiarios.EditIndex = -1;
                             PopulateGridview();
@@ -94,6 +94,7 @@ namespace WebPrograBases
 
         protected void btnAgregarPersona_Click(object sender, EventArgs e)
         {
+            DateTime fecha = this.Calendar1.SelectedDate;
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))
@@ -101,13 +102,13 @@ namespace WebPrograBases
                     sqlCon.Open();
                     SqlCommand sql_cmnd = new SqlCommand("AgregarPersona", sqlCon);
                     sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                    sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(TextBox18.Text.Trim());
-                    sql_cmnd.Parameters.AddWithValue("@inNombre", SqlDbType.NVarChar).Value = TextBox17.Text.Trim();
-                    sql_cmnd.Parameters.AddWithValue("@inFechaNacimiento", SqlDbType.NVarChar).Value = TextBox16.Text.Trim();
-                    sql_cmnd.Parameters.AddWithValue("@inEmail", SqlDbType.NVarChar).Value = TextBox15.Text.Trim();
-                    sql_cmnd.Parameters.AddWithValue("@inTelefono1", SqlDbType.NVarChar).Value = TextBox14.Text.Trim();
-                    sql_cmnd.Parameters.AddWithValue("@inTelefono2", SqlDbType.NVarChar).Value = TextBox13.Text.Trim();
-                    sql_cmnd.Parameters.AddWithValue("@inTDocumento", SqlDbType.Int).Value = Convert.ToInt32(TextBox12.Text.Trim());
+                    sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", SqlDbType.Int).Value = Convert.ToInt32(txtDocIdentidadP.Text.Trim());
+                    sql_cmnd.Parameters.AddWithValue("@inNombre", SqlDbType.NVarChar).Value = txtNombre.Text.Trim();
+                    sql_cmnd.Parameters.AddWithValue("@inFechaNacimiento", SqlDbType.NVarChar).Value = txtFechaNacimiento.Text.Trim();
+                    sql_cmnd.Parameters.AddWithValue("@inEmail", SqlDbType.NVarChar).Value = txtEmail.Text.Trim();
+                    sql_cmnd.Parameters.AddWithValue("@inTelefono1", SqlDbType.NVarChar).Value = txtTelefono1.Text.Trim();
+                    sql_cmnd.Parameters.AddWithValue("@inTelefono2", SqlDbType.NVarChar).Value = txtTelefono2.Text.Trim();
+                    sql_cmnd.Parameters.AddWithValue("@inTDocumento", SqlDbType.Int).Value = Convert.ToInt32(txtTipoDocumento.Text.Trim());
                     sql_cmnd.ExecuteNonQuery();
                     tblAgregarBeneficiarios.EditIndex = -1;
                     PopulateGridview();
@@ -117,7 +118,7 @@ namespace WebPrograBases
             }
             catch (Exception ex)
             {
-                Label2.Text = "Estas trippeando bro";
+                Label2.Text = "Algo salió muy mal";
                 Label2.Text = ex.Message;
             }
         }
@@ -165,5 +166,6 @@ namespace WebPrograBases
 
             return porcentaje;
         }
+
     }
 }

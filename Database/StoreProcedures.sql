@@ -188,10 +188,12 @@ CREATE PROCEDURE VerBeneficiariosMini
 AS
 BEGIN TRY 
 	SELECT B.Porcentaje,
-		   B.IDValorDocIdentidad,
+		   P.ValorDocIdentidad as ValorDocIdentidad,
 		   B.IDNumeroCuenta,
 		   B.IDParentezco
 	FROM Beneficiario B
+	INNER JOIN Persona P
+	ON B.IDValorDocIdentidad = P.ID
 	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.Activo = 1)
 
 END TRY
@@ -245,7 +247,7 @@ DROP PROC ActualizarBeneficiarios
 END
 GO
 CREATE PROCEDURE ActualizarBeneficiarios
-	@inIDDocumentoIdentidad INT,
+	@inValorDocumentoIdentidad INT,
 	@inNombre VARCHAR(64),
 	@inIDParentezco INT,
 	@inPorcentaje INT,
@@ -256,6 +258,13 @@ CREATE PROCEDURE ActualizarBeneficiarios
 	@inTelefono2 VARCHAR(64)
 AS
 BEGIN TRY 
+
+	DECLARE @PIDDocumentoIdentidad INT
+	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
+									FROM Persona P
+									WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad))
+
+
 	UPDATE Persona
 	SET ValorDocIdentidad = @inValorDocIdentidad,
 		Nombre = @inNombre,
@@ -269,7 +278,7 @@ BEGIN TRY
 	SET IDParentezco = @inIDParentezco,
 		Porcentaje = @inPorcentaje,
 		IDValorDocIdentidad = @inValorDocIdentidad
-	WHERE (IDValorDocIdentidad = @inIDDocumentoIdentidad)
+	WHERE (IDValorDocIdentidad = @PIDDocumentoIdentidad)
 		
 END TRY
 BEGIN CATCH
@@ -388,8 +397,8 @@ CREATE PROCEDURE BuscarPersona
 AS
 BEGIN TRY 
 	SELECT COUNT(1)
-	FROM Persona C
-	WHERE (C.ValorDocIdentidad = @inValorDocumentoIdentidad)
+	FROM Persona P
+	WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad)
 
 END TRY
 BEGIN CATCH
@@ -438,26 +447,32 @@ Objetivo: Actualizar porcentajes de los beneficiarios
 	Entradas : ID's de los mismo junto con su porcentaje
 	Salidas  : Confirmacion de cambios aplicados
 */
---IF OBJECT_ID('ActualizarPorcentaje') IS NOT NULL
---BEGIN 
---DROP PROC EliminarBeneficiario 
---END
---GO
---CREATE PROCEDURE EliminarBeneficiario
---	 @inValorDocumentoIdentidad INT
---AS
---BEGIN TRY 
---	UPDATE Beneficiario
---	SET Activo = 0
---	WHERE (IDValorDocIdentidad = @inValorDocumentoIdentidad)
+IF OBJECT_ID('EliminarBeneficiario') IS NOT NULL
+BEGIN 
+DROP PROC EliminarBeneficiario 
+END
+GO
+CREATE PROCEDURE EliminarBeneficiario
+	 @inValorDocumentoIdentidad INT
+AS
+BEGIN TRY 
 
---END TRY
---BEGIN CATCH
---	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
---	PRINT error_message()
---	return -1
---END CATCH
---GO
+	DECLARE @PIDDocumentoIdentidad INT
+	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
+									FROM Persona P
+									WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad))
+
+	UPDATE Beneficiario
+	SET Activo = 0
+	WHERE (IDValorDocIdentidad = @PIDDocumentoIdentidad)
+
+END TRY
+BEGIN CATCH
+	RAISERROR('Error en la insercion de datos', 16, 1) WITH NOWAIT;
+	PRINT error_message()
+	return -1
+END CATCH
+GO
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 

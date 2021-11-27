@@ -22,7 +22,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <asp:GridView ID="tblAgregarBeneficiarios" runat="server" AutoGenerateColumns="false" DataKeyNames="IDValorDocIdentidad"
+            <asp:GridView ID="tblAgregarBeneficiarios" runat="server" AutoGenerateColumns="false" DataKeyNames="ValorDocIdentidad"
                                ShowHeaderWhenEmpty="true"
 
                 BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" Width="660px">
@@ -50,7 +50,7 @@
                             <asp:Label ID="Label7" Text='<%# Bind("ValorDocIdentidad") %>' runat="server"></asp:Label>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:TextBox ID="txtIDValorDocIdentidad" Text='<%# Bind("ValorDocIdentidad") %>' runat="server" />
+                            <asp:TextBox ID="txtValorDocIdentidad" Text='<%# Bind("ValorDocIdentidad") %>' runat="server" />
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Numero Cuenta">
@@ -83,16 +83,16 @@
                 <Colums>
                     <tr>
                         <th class="auto-style2"><p>Porcentaje</p></th>
-                        <th class="auto-style2"> <asp:TextBox ID="TextBox0" Text='' runat="server" /></th>
+                        <th class="auto-style2"> <asp:TextBox ID="txtPorcentaje" Text='' runat="server"  /></th>
                         <th class="auto-style2"></th>
                         <th class="auto-style2"><p>Documento Identidad</p></th>
-                        <th class="auto-style2"> <asp:TextBox ID="TextBox1" Text='' runat="server" /></th>
+                        <th class="auto-style2"> <asp:TextBox ID="txtDocIdentidadB" Text='' runat="server" /></th>
                         <th class="auto-style2"></th>
                         <th class="auto-style2"><p>Numero Cuenta</p></th>
-                        <th class="auto-style2"> <asp:TextBox ID="TextBox2" Text='' runat="server" /></th>
+                        <th class="auto-style2"> <asp:TextBox ID="txtNumCuenta" Text='' runat="server" /></th>
                         <th class="auto-style2"></th>
                         <th class="auto-style2"><p>Parentezco</p></th>
-                        <th class="auto-style2"> <asp:TextBox ID="TextBox3" Text='' runat="server" /></th>
+                        <th class="auto-style2"> <asp:TextBox ID="txtParentezco" Text='' runat="server" /></th>
                         <th class="auto-style2"></th>
                     </tr>
                 </Colums>
@@ -114,13 +114,15 @@
                      <th><p> Tipo Documento</p></th>
                  </tr>
                   <tr>
-                     <th><asp:TextBox ID="TextBox18" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox17" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox16" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox15" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox14" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox13" Text='' runat="server" /></th>
-                     <th><asp:TextBox ID="TextBox12" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtDocIdentidadP" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtNombre" Text='' runat="server" /></th>
+                     <th>
+                         <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
+                         <asp:TextBox ID="txtFechaNacimiento" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtEmail" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtTelefono1" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtTelefono2" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtTipoDocumento" Text='' runat="server" /></th>
                  </tr>
              </table>
             <p>

@@ -94,7 +94,7 @@ namespace WebPrograBases
                         sqlCon.Open();
                         SqlCommand sql_cmnd = new SqlCommand("ActualizarBeneficiarios", sqlCon);
                         sql_cmnd.CommandType = CommandType.StoredProcedure; //cambiar nombres de parámetros
-                        sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
+                        sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtValorDocIdentidad") as TextBox).Text.Trim()));
                         sql_cmnd.Parameters.AddWithValue("@inNombre", (tblBeneficiarios.Rows[e.RowIndex].FindControl("txtNombre") as TextBox).Text.Trim());
                         sql_cmnd.Parameters.AddWithValue("@inIDParentezco", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtIDParentezco") as TextBox).Text.Trim()));
                         sql_cmnd.Parameters.AddWithValue("@inPorcentaje", Convert.ToInt32((tblBeneficiarios.Rows[e.RowIndex].FindControl("txtPorcentaje") as TextBox).Text.Trim()));
