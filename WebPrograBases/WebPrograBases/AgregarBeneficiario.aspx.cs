@@ -94,7 +94,7 @@ namespace WebPrograBases
 
         protected void btnAgregarPersona_Click(object sender, EventArgs e)
         {
-            DateTime fecha = this.Calendar1.SelectedDate;
+            //DateTime fecha = this.Calendar1.SelectedDate;
             try
             {
                 using (SqlConnection sqlCon = new SqlConnection(connectionString))

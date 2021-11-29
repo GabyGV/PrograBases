@@ -309,17 +309,22 @@ CREATE PROCEDURE AgregarBeneficiario
 AS
 BEGIN TRY 
 	
+	DECLARE @FechaActual DATE
+	SET @FechaActual = (SELECT GETDATE())
+
 	DECLARE @PIDDocumentoIdentidad INT
 	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
 									FROM Persona P
 									WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad))
 
 	INSERT Beneficiario(Porcentaje,
+						Fecha,
 						IDValorDocIdentidad,
 						IDNumeroCuenta,
 						IDParentezco,
 						Activo)
 	VALUES(@inPorcentaje,
+		   @FechaActual,
 		   @PIDDocumentoIdentidad,
 		   @inIDNumeroCuenta,
 		   @inIDParentezco,
@@ -356,12 +361,17 @@ CREATE PROCEDURE AgregarPersona
 	@inTDocumento INT
 AS
 BEGIN TRY 
+	
+	DECLARE @FechaActual DATE
+	SET @FechaActual = (SELECT GETDATE())
+
 	INSERT Persona(ValorDocIdentidad,
 				   Nombre,
 				   FechaNacimiento,
 				   Email,
 				   Telefono1,
 				   Telefono2,
+				   Fecha,
 				   IDTDoc)
 	VALUES(@inValorDocumentoIdentidad,
 		   @inNombre,
@@ -369,6 +379,7 @@ BEGIN TRY
 		   @inEmail,
 		   @inTelefono1,
 		   @inTelefono2,
+		   @FechaActual,
 		   @inTDocumento)
 
 END TRY

@@ -344,8 +344,9 @@ BEGIN
 													 FechaInicial,
 													 FechaFinal,
 													 DiaDeAhorro,
-													 Descripcion)
-					SELECT C.ID, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion
+													 Descripcion,
+													 Activo)
+					SELECT C.ID, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion, 1
 					FROM @TemporalAgregarCO T
 					INNER JOIN Cuenta C
 					ON T.cuentaMaestra = C.NumeroCuenta
