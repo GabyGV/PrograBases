@@ -723,27 +723,27 @@ CREATE PROCEDURE ConsultarMultaPorATM
 	 @inNumDias INT
 AS
 BEGIN TRY 
-/*
+
 	DECLARE @FechaFinal DATE
-	SET @FechaFinal = (SELECT MAX Fecha from Evento)
+	SET @FechaFinal = (SELECT MAX(E.Fecha) FROM Evento E)
 	
 	DECLARE @FechaInicial DATE
-	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))*/
-	/*
-	DECLARE @Promedio FLOAT
-	SET @Promedio = (SELECT AVG(E.CantOperacionesATM)
-					FROM Cuenta C
-					INNER JOIN EstadoCuenta E
-					ON C.ID = E.IDNumeroCuenta)*/
+	SET @FechaInicial = (SELECT DATEADD(DAY, -@inNumDias, @FechaFinal))
 	
-	
+	DECLARE @TemporalATM table (ID INT,
+								CantidadOperacionesATM INT)
 
-	/*SELECT E.Fecha
+	INSERT INTO @TemporalATM(ID,
+							CantidadOperacionesATM)
+
+	SELECT C.ID,
+			COUNT(M.ID) as CantidadOperacionesATM
 	FROM Cuenta C
-	INNER JOIN EstadoCuenta E
-	ON C.ID = E.IDNumeroCuenta
-	WHERE(E.CantOperacionesATM = (SELECT MAX(E2.CantOperacionesATM) FROM EstadoCuenta E2 WHERE (E2.IDNumeroCuenta = C.ID)))*/
-
+	INNER JOIN Movimientos M
+	ON C.ID = M.IDNumeroCuenta
+	WHERE((M.IDTMovimiento = 2) or (M.IDTMovimiento = 6)) and ((@FechaInicial <= M.Fecha) and (M.Fecha <= @FechaFinal))
+	GROUP BY C.ID
+	
 	SELECT C.ID,
 			AVG(E.CantOperacionesATM) as Promedio,
 			CONCAT(MONTH(F.FechaMax), '/', YEAR(F.FechaMax)) AS FechaMax
@@ -754,7 +754,9 @@ BEGIN TRY
 	ON C.IDTCuenta = T.ID_TCuenta
 	INNER JOIN FechaMaxima F
 	ON C.NumeroCuenta = F.NumCuenta
-	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos)
+	INNER JOIN @TemporalATM ATM
+	ON C.ID = ATM.ID
+	WHERE (E.CantOperacionesATM > T.NumRetiros_Automaticos) and (ATM.CantidadOperacionesATM >= 5)
 	GROUP BY C.ID, F.FechaMax
 
 
@@ -767,6 +769,7 @@ BEGIN CATCH
 END CATCH
 GO 
 
+EXECUTE ConsultarMultaPorATM 10
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 

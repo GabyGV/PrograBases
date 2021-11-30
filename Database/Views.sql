@@ -1,6 +1,6 @@
 --------------------------------------------------------------------------------------------------------------------------
 /* 
-Procedimiento FechaMaxima
+Vista FechaMaxima
 Objetivo: Retornar la fecha en la que se realizó la mayor cantidad de operaciones ATM por cada cuenta
 */
 
@@ -25,7 +25,7 @@ GROUP BY C.NumeroCuenta
 
 --------------------------------------------------------------------------------------------------------------------------
 /* 
-Procedimiento PorcentajeMaximo
+Vista PorcentajeMaximo
 Objetivo: Retornar la cuenta en la que el beneficiario tiene su mayor porcentaje
 */
 
@@ -44,3 +44,4 @@ FROM Beneficiario B
 WHERE(CONCAT(B.Porcentaje, '-', B.IDValorDocIdentidad) in (SELECT CONCAT(MAX(B2.Porcentaje), '-', B2.IDVAlorDocIdentidad) 
 															FROM Beneficiario B2 GROUP BY B2.IDValorDocIdentidad))
 GROUP BY B.IDNumeroCuenta, B.IDValorDocIdentidad
+
