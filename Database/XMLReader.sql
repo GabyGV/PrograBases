@@ -512,7 +512,7 @@ BEGIN
 
 	--Store Procedures -------------------------------------------------
 				
-					EXEC [dbo].[ProcesarCO] @DiaDeCierre, @fechaActual
+					--EXEC [dbo].[ProcesarCO] @DiaDeCierre, @fechaActual
 
 					INSERT @Operaciones (id)
 					SELECT E.ID

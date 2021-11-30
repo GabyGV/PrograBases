@@ -68,7 +68,7 @@ BEGIN
 								IDTipoMovimientoCO,
 								IDCuentaObjetivo,
 								Logrado)
-			SELECT @inFecha, (C.Saldo * @porcentaje), ((C.Saldo * @porcentaje) + CO.Saldo), 'Interes por Ahorro', 2, CO.ID, 1
+			SELECT @inFecha, (CO.Saldo * @porcentaje), ((CO.Saldo * @porcentaje) + CO.Saldo), 'Interes por Ahorro', 2, CO.ID, 1
 			FROM CuentaObjetivo CO
 			WHERE CO.ID = @lo
 
@@ -92,12 +92,12 @@ BEGIN
 					WHERE CO.ID = @lo
 
 					UPDATE CuentaObjetivo
-					SET C.Saldo = C.Saldo + @monto
+					SET Saldo = Saldo + @monto
 					FROM CuentaObjetivo C
 					WHERE C.ID = @lo
 
 					UPDATE Cuenta
-					SET Saldo = Saldo - @monto
+					SET Cuenta.Saldo = Cuenta.Saldo - @monto
 					FROM Cuenta
 					INNER JOIN CuentaObjetivo C
 					ON C.CuentaMaestra = Cuenta.ID
