@@ -21,7 +21,7 @@ BEGIN TRY
 		SELECT C.IDValorDocIdentidad,
 			   C.IDTCuenta,
 			   C.NumeroCuenta,
-			   C.FechaCreacion,
+			   C.Fecha,
 			   C.Saldo
 		FROM Cuenta C
 
@@ -29,7 +29,7 @@ BEGIN TRY
 		SELECT C.IDValorDocIdentidad,
 			   C.IDTCuenta,
 			   C.NumeroCuenta,
-			   C.FechaCreacion,
+			   C.Fecha,
 			   C.Saldo
 		FROM Cuenta C
 		WHERE (C.IDValorDocIdentidad = @inDocumentoIdentidad)
@@ -814,7 +814,7 @@ Procedimiento ConsultarRetirosNegativos
 Objetivo: Retornar todas las cuentas asociadas a un usuario
 	Entradas : El ID del usuario 
 	Salidas  : Los numeros de cuenta
-
+*/
 IF OBJECT_ID('ConsultarRetirosNegativos') IS NOT NULL
 BEGIN 
 DROP PROC ConsultarBeneficiarios 
@@ -823,8 +823,20 @@ GO
 CREATE PROCEDURE ConsultarRetirosNegativos
 AS
 BEGIN TRY 
+		
 
-
+		SELECT CO.CuentaObjetivo as Codigo,
+				CO.ID,
+				CO.Descripcion,
+				COUNT(M.ID) as CantidadRetiros,
+				(CO.MontoMensual * DATEDIFF(year, CO.FechaInicial, CO.FechaFinal)) as MontoTodosRetiros,
+				--CO.Saldo as MontoRetirosDebidos
+				--
+		FROM CuentaObjetivo CO
+		INNER JOIN MovimientoCO M
+		ON CO.ID = M.IDCuentaObjetivo
+		WHERE(M.IDTipoMovimientoCO = 1)
+		GROUP BY CO.ID, CO.CuentaObjetivo, CO.Descripcion
 
 END TRY
 BEGIN CATCH
@@ -832,4 +844,4 @@ BEGIN CATCH
 	PRINT error_message()
 	return -1
 END CATCH
-GO */
+GO 
