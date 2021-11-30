@@ -45,10 +45,15 @@ AS
 BEGIN
 	BEGIN TRY
 		
+		DECLARE @XML VARCHAR(300) = (SELECT ins.ID_Beneficiario, ins.IDNumeroCuenta, ins.Porcentaje, ins.IDValorDocIdentidad, ins.IDParentezco, ins.Fecha, ins.Activo
+						FROM INSERTED ins
+						FOR XML RAW('user'), ROOT('UserDetails'))
+
 		INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-		SELECT 1, ins.ID_Beneficiario, ins.Fecha
+								 Fecha,
+								 XMLDespues)
+		SELECT 1, ins.ID_Beneficiario, ins.Fecha, @XML
 		FROM INSERTED ins
 
 	END TRY
@@ -70,13 +75,18 @@ CREATE TRIGGER trg_BeneficiarioUpdate
 AS 
 BEGIN
 	BEGIN TRY
+
+	DECLARE @XML VARCHAR(300) = (SELECT ins.ID_Beneficiario, ins.IDNumeroCuenta, ins.Porcentaje, ins.IDValorDocIdentidad, ins.IDParentezco, ins.Fecha, ins.Activo
+						FROM INSERTED ins
+						FOR XML RAW('user'), ROOT('UserDetails'))
 		
 		IF((SELECT ins.Activo FROM INSERTED ins) = 0)
 			BEGIN
 				INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-				SELECT 3, ins.ID_Beneficiario, ins.Fecha
+								 Fecha,
+								 XMLAntes)
+				SELECT 3, ins.ID_Beneficiario, ins.Fecha, @XML
 				FROM INSERTED ins
 			END	
 		
@@ -84,8 +94,10 @@ BEGIN
 			BEGIN
 				INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-				SELECT 2, ins.ID_Beneficiario, ins.Fecha
+								 Fecha,
+								 XMLAntes,
+								 XMLDespues)
+				SELECT 2, ins.ID_Beneficiario, ins.Fecha, @XML, @XML
 				FROM INSERTED ins
 			END
 
@@ -108,11 +120,16 @@ CREATE TRIGGER trg_CuentaObjetivoInsert
 AS 
 BEGIN
 	BEGIN TRY
+
+		DECLARE @XML VARCHAR(300) = (SELECT ins.ID, ins.CuentaMaestra, ins.CuentaObjetivo, ins.MontoMensual, ins.Saldo, ins.FechaInicial, ins.FechaFinal, ins.Descripcion, ins.IDTasaInteresesCO, ins.Activo
+						FROM INSERTED ins
+						FOR XML RAW('user'), ROOT('UserDetails'))
 		
 		INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-		SELECT 4, ins.ID, ins.FechaInicial
+								 Fecha,
+								 XMLDespues)
+		SELECT 4, ins.ID, ins.FechaInicial, @XML
 		FROM INSERTED ins
 
 	END TRY
@@ -135,12 +152,17 @@ AS
 BEGIN
 	BEGIN TRY
 		
+		DECLARE @XML VARCHAR(300) = (SELECT ins.ID, ins.CuentaMaestra, ins.CuentaObjetivo, ins.MontoMensual, ins.Saldo, ins.FechaInicial, ins.FechaFinal, ins.Descripcion, ins.IDTasaInteresesCO, ins.Activo
+						FROM INSERTED ins
+						FOR XML RAW('user'), ROOT('UserDetails'))
+
 		IF((SELECT ins.Activo FROM INSERTED ins) = 0)
 			BEGIN
 				INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-				SELECT 6, ins.ID, ins.FechaFinal
+								 Fecha,
+								 XMLAntes)
+				SELECT 6, ins.ID, ins.FechaFinal, @XML
 				FROM INSERTED ins
 			END	
 		
@@ -148,8 +170,10 @@ BEGIN
 			BEGIN
 				INSERT INTO [dbo].Evento(TipoEvento,
 								 IDUser,
-								 Fecha)
-				SELECT 5, ins.ID, ins.FechaInicial
+								 Fecha,
+								 XMLAntes,
+								 XMLDespues)
+				SELECT 5, ins.ID, ins.FechaInicial, @XML, @XML
 				FROM INSERTED ins
 			END
 
