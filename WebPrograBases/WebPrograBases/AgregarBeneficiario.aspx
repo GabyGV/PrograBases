@@ -116,9 +116,7 @@
                   <tr>
                      <th><asp:TextBox ID="txtDocIdentidadP" Text='' runat="server" /></th>
                      <th><asp:TextBox ID="txtNombre" Text='' runat="server" /></th>
-                     <th>
-                         <asp:Calendar ID="Calendar1" runat="server"></asp:Calendar>
-                         <asp:TextBox ID="txtFechaNacimiento" Text='' runat="server" /></th>
+                     <th><asp:TextBox ID="txtFechaNacimiento" Text='' runat="server" /></th>
                      <th><asp:TextBox ID="txtEmail" Text='' runat="server" /></th>
                      <th><asp:TextBox ID="txtTelefono1" Text='' runat="server" /></th>
                      <th><asp:TextBox ID="txtTelefono2" Text='' runat="server" /></th>
