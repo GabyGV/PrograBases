@@ -5,7 +5,7 @@ BEGIN
 DROP PROC ProcesarCO 
 END
 GO
-CREATE PROCEDURE ProcesarCO @inDay INT
+CREATE PROCEDURE ProcesarCO @inDay INT, @inFecha DATE
 AS
 BEGIN TRY 
 
@@ -13,70 +13,115 @@ DECLARE @lo INT
 DECLARE @hi INT
 DECLARE @monto MONEY
 DECLARE @montoActual MONEY
+DECLARE @intereses MONEY
 DECLARE @mes INT
 DECLARE @porcentaje FLOAT
 DECLARE @date DATE
 
-DECLARE @TemporalCO TABLE(id INT IDENTITY(1,1) ,
-							cuentaMaestra INT,
-							cuentaObjetivo INT,
-							montoMensual INT,
-							diaAhorro INT,
-							fechaInicial DATE,
-							fechaFinal DATE,
-							descripcion VARCHAR(100))
-INSERT @TemporalCO( cuentaMaestra ,
-					cuentaObjetivo ,
-					montoMensual ,
-					diaAhorro ,
-					fechaInicial,
-					fechaFinal ,
-					descripcion )
-SELECT C.CuentaMaestra, C.CuentaObjetivo, C.MontoMensual, C.DiaDeAhorro, C.FechaInicial, C.FechaFinal, C.Descripcion
-FROM dbo.CuentaObjetivo C
-WHERE C.DiaDeAhorro = @inDay
 
-
-
-SELECT @hi = MAX(id) FROM @TemporalCO 
-SELECT @lo = MIN(id) FROM @TemporalCO 
+SELECT @hi = MAX(ID) FROM CuentaObjetivo 
+SELECT @lo = MIN(ID) FROM CuentaObjetivo 
 
 WHILE @lo<@hi 
 BEGIN
 	
-	SELECT @mes = DATEDIFF (month, C.FechaFinal, C.fechaInicial)
-					FROM @TemporalCO C
-					WHERE C.id = @lo
+	IF((SELECT DATEPART(DAY, C.FechaInicial) FROM CuentaObjetivo C WHERE C.ID = @lo) = @inDay)
+	BEGIN
 
-	Select @monto = C.MontoMensual 
-					FROM @TemporalCO C
-					WHERE C.id = @lo
+		SELECT @mes = DATEDIFF (month, C.FechaFinal, C.fechaInicial)
+						FROM CuentaObjetivo C
+						WHERE C.ID = @lo
 
-	SELECT @montoActual = M.NuevoIntAcumulado 
-					FROM MovimientoIntCO M
+		Select @monto = C.MontoMensual 
+						FROM CuentaObjetivo C
+						WHERE C.ID = @lo
+
+		SELECT @montoActual = C.Saldo
+						FROM Cuenta C
+						INNER JOIN CuentaObjetivo CO
+						ON C.ID = CO.CuentaMaestra
+						WHERE C.ID = @lo
+
+		SELECT @porcentaje = T.TasaInteres 
+							 FROM TasaInteresesCO T
+							 WHERE T.ID = @mes 
+
+		SELECT @intereses = (C.Saldo * @porcentaje)
+							FROM CuentaObjetivo C
+							WHERE C.ID = @lo
+
+		BEGIN TRANSACTION
+
+		
+			INSERT MovimientoIntCO(Fecha,
+								   Monto,
+								   Descripcion,
+								   IDCuentaObjetivo)
+			SELECT @inFecha, (C.Saldo * @porcentaje) , 'Intereses', C.ID
+			FROM CuentaObjetivo C
+			WHERE C.ID = @lo;
+
+			INSERT MovimientoCO(Fecha,
+								Monto,
+								NuevoSaldo,
+								Descripcion,
+								IDTipoMovimientoCO,
+								IDCuentaObjetivo,
+								Logrado)
+			SELECT @inFecha, (C.Saldo * @porcentaje), ((C.Saldo * @porcentaje) + CO.Saldo), 'Interes por Ahorro', 2, CO.ID, 1
+			FROM CuentaObjetivo CO
+			WHERE CO.ID = @lo
+
+			UPDATE CuentaObjetivo
+			SET Saldo = Saldo + @intereses
+			FROM CuentaObjetivo
+			WHERE ID = @lo
+		
+			IF(@montoActual >= @monto)
+				BEGIN
+				
+					INSERT MovimientoCO(Fecha,
+										Monto,
+										NuevoSaldo,
+										Descripcion,
+										IDTipoMovimientoCO,
+										IDCuentaObjetivo,
+										Logrado)
+					SELECT @inFecha, @monto, (@monto + CO.Saldo), 'Credito por Ahorro', 1, CO.ID, 1
+					FROM CuentaObjetivo CO
+					WHERE CO.ID = @lo
+
+					UPDATE CuentaObjetivo
+					SET C.Saldo = C.Saldo + @monto
+					FROM CuentaObjetivo C
+					WHERE C.ID = @lo
+
+					UPDATE Cuenta
+					SET Saldo = Saldo - @monto
+					FROM Cuenta
 					INNER JOIN CuentaObjetivo C
-					ON C.ID = M.IDCuentaObjetivo
-					INNER JOIN @TemporalCO T
-					ON T.cuentaObjetivo = C.CuentaObjetivo
-					WHERE M.IDCuentaObjetivo = C.ID
+					ON C.CuentaMaestra = Cuenta.ID
+					WHERE C.ID = @lo
 
-	SELECT @porcentaje = T.TasaInteres FROM TasaInteresesCO T
-						 WHERE T.ID = @mes 
+				END
+			ELSE
+				BEGIN
 
-	BEGIN TRANSACTION
+					INSERT MovimientoCO(Fecha,
+										Monto,
+										NuevoSaldo,
+										Descripcion,
+										IDTipoMovimientoCO,
+										IDCuentaObjetivo,
+										Logrado)
+					SELECT @inFecha, @monto, CO.Saldo, 'Credito por Ahorro Fallido', 1, CO.ID, 0
+					FROM CuentaObjetivo CO
+					WHERE CO.ID = @lo
+				
+				END
 
-
-
- 		UPDATE MovimientoIntCO
-		SET Monto = NuevoIntAcumulado, NuevoIntAcumulado = @montoActual + ( @monto * @porcentaje )
-		FROM @TemporalCO T
-		WHERE @lo = T.id
-
-
-
-
-
-	COMMIT 
+			COMMIT 
+	END
 	Set @lo=@lo+1
 
 END
