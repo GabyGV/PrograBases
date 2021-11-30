@@ -15,7 +15,7 @@ DECLARE @monto MONEY
 DECLARE @montoActual MONEY
 DECLARE @intereses MONEY
 DECLARE @mes INT
-DECLARE @porcentaje FLOAT
+DECLARE @porcentaje MONEY
 DECLARE @date DATE
 
 
@@ -28,7 +28,7 @@ BEGIN
 	IF((SELECT DATEPART(DAY, C.FechaInicial) FROM CuentaObjetivo C WHERE C.ID = @lo) = @inDay)
 	BEGIN
 
-		SELECT @mes = DATEDIFF (month, C.FechaFinal, C.fechaInicial)
+		SELECT @mes = DATEDIFF (month, C.FechaInicial, C.FechaFinal)
 						FROM CuentaObjetivo C
 						WHERE C.ID = @lo
 
@@ -49,9 +49,6 @@ BEGIN
 		SELECT @intereses = (C.Saldo * @porcentaje)
 							FROM CuentaObjetivo C
 							WHERE C.ID = @lo
-
-		BEGIN TRANSACTION
-
 		
 			INSERT MovimientoIntCO(Fecha,
 								   Monto,
@@ -119,8 +116,6 @@ BEGIN
 					WHERE CO.ID = @lo
 				
 				END
-
-			COMMIT 
 	END
 	Set @lo=@lo+1
 
