@@ -448,12 +448,12 @@ CREATE PROCEDURE SumarPorcentajes
 	 @inIDDocIndentidad INT
 AS
 BEGIN TRY 
-	
+	/*
 	DECLARE @PIDDocumentoIdentidad INT
 	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
 									FROM Persona P
 									WHERE (P.ValorDocIdentidad = @inIDDocIndentidad))
-/*
+
 	DECLARE @PorcentajeTotal table (ID INT,
 									Total INT)
 	INSERT INTO @PorcentajeTotal(ID, Total)

@@ -45,9 +45,9 @@
                         <asp:BoundField DataField="Promedio" HeaderText ="Promedio de operaciones ATM" />
                         <asp:BoundField DataField="FechaMax" HeaderText ="Fecha con la mayor cantidad de operaciones ATM" />
                         <asp:TemplateField>
-                            <ItemTemplate>
+                            <%--<ItemTemplate>
                                 <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("ID") %>' OnClick="lnkSelect_Click"/>
-                            </ItemTemplate>
+                            </ItemTemplate>--%>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>

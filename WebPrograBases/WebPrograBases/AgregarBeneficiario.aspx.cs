@@ -50,7 +50,7 @@ namespace WebPrograBases
             int entrada = Convert.ToInt32(txtPorcentaje.Text.Trim());
             int porcen = validarPorcentaje(entrada, doc);
 
-            if (porcen < 100)
+            if (porcen <= 100)
             {
                 if (contBeneficiarios() < 3)
                 {
@@ -140,6 +140,7 @@ namespace WebPrograBases
 
             return cantidad;
         }
+
         private int validarPorcentaje(int entrada, int doc)
         {
             int porcentaje = 0;
@@ -168,6 +169,27 @@ namespace WebPrograBases
             }
 
             return porcentaje;
+        }
+
+        private int validarPorcentaje2(int entrada, int doc)
+        {
+            int porcentaje = 0;
+            
+            foreach(TableRow row in tblAgregarBeneficiarios.Rows)
+            {
+                foreach(TableCell cell in row.Cells)
+                {
+                    foreach(Control ctrl in cell.Controls)
+                    {
+                        if (ctrl.ID == "txtPorcentaje")
+                        {
+                            porcentaje = porcentaje + Convert.ToInt32((TextBox)ctrl);
+                        }
+                    }
+                }
+            }
+
+            return porcentaje + entrada;
         }
 
     }

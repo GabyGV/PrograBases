@@ -30,9 +30,9 @@
                         <asp:BoundField DataField="DineroTotal" HeaderText ="Cantidad de dinero a recibir" />
                         <asp:BoundField DataField="CuentaMayorPorcentaje" HeaderText ="Cuenta con mayor aporte" />
                         <asp:TemplateField>
-                            <ItemTemplate>
+                            <%--<ItemTemplate>
                                 <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("IDValorDocIdentidad") %>' OnClick="lnkSelect_Click"/>
-                            </ItemTemplate>
+                            </ItemTemplate>--%>
                         </asp:TemplateField>
                     </Columns>
                 </asp:GridView>

@@ -255,9 +255,9 @@ BEGIN TRY
 		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 		XMLAntes VARCHAR(300),
 		XMLDespues VARCHAR(300),
-		TipoEvento INT NOT NULL,
-		IDUser INT NOT NULL,
-		Fecha DATE NOT NULL,
+		TipoEvento INT,
+		IDUser INT,
+		Fecha DATE,
 
 		FOREIGN KEY (TipoEvento) REFERENCES TipoEvento(ID)
 	);
