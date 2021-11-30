@@ -199,6 +199,7 @@ BEGIN TRY
 		CuentaMaestra INT NOT NULL,
 		CuentaObjetivo VARCHAR(32) NOT NULL,
 		MontoMensual MONEY NOT NULL,
+		Saldo MONEY NOT NULL,
 		DiaDeAhorro INT NOT NULL,
 		FechaInicial DATE NOT NULL,
 		FechaFinal DATE NOT NULL,
@@ -226,6 +227,7 @@ BEGIN TRY
 		Descripcion VARCHAR(100) NOT NULL,
 		IDTipoMovimientoCO INT NOT NULL,
 		IDCuentaObjetivo INT NOT NULL,
+		Logrado INT NOT NULL,
 
 		FOREIGN KEY (IDTipoMovimientoCO) REFERENCES TipoMovimientoCO(ID),
 		FOREIGN KEY (IDCuentaObjetivo) REFERENCES CuentaObjetivo(ID)
@@ -236,7 +238,6 @@ BEGIN TRY
 		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
 		Fecha DATE NOT NULL,
 		Monto MONEY NOT NULL,
-		NuevoIntAcumulado MONEY NOT NULL,
 		Descripcion VARCHAR(100) NOT NULL,
 		IDCuentaObjetivo INT NOT NULL,
 

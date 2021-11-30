@@ -341,31 +341,18 @@ BEGIN
 					INSERT INTO [dbo].CuentaObjetivo(CuentaMaestra,
 													 CuentaObjetivo,
 													 MontoMensual,
+													 Saldo,
 													 FechaInicial,
 													 FechaFinal,
 													 DiaDeAhorro,
 													 Descripcion,
 													 Activo)
-					SELECT C.ID, T.numeroCO, T.montoAhorrar, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion, 1
+					SELECT C.ID, T.numeroCO, T.montoAhorrar, 0, T.FechaTemp, T.fechaFinal, T.diaAhorro, T.descripcion, 1
 					FROM @TemporalAgregarCO T
 					INNER JOIN Cuenta C
 					ON T.cuentaMaestra = C.NumeroCuenta
 					WHERE T.FechaTemp = @fechaActual;
 
-	--MovimientoIntCO-------------------------------------------------------
-				
-					INSERT INTO [dbo].MovimientoIntCO(Fecha,
-													 Monto,
-													 NuevoIntAcumulado,
-													 Descripcion,
-													 IDCuentaObjetivo)
-					SELECT T.FechaTemp, 0, 0, T.descripcion, CO.ID
-					FROM @TemporalAgregarCO T
-					INNER JOIN Cuenta C
-					ON T.cuentaMaestra = C.ID
-					INNER JOIN CuentaObjetivo CO
-					ON CO.CuentaObjetivo = T.numeroCO
-					WHERE (T.FechaTemp = @fechaActual);
 
 	--Movimientos------------------------------------------------------
 					
@@ -525,7 +512,7 @@ BEGIN
 
 	--Store Procedures -------------------------------------------------
 				
-					EXEC [dbo].[ProcesarCO] @DiaDeCierre
+					EXEC [dbo].[ProcesarCO] @DiaDeCierre, @fechaActual
 
 					INSERT @Operaciones (id)
 					SELECT E.ID
