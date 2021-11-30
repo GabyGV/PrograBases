@@ -128,7 +128,7 @@ namespace WebPrograBases
                     sqlCon.Open();
                     SqlCommand sql_cmnd = new SqlCommand("EliminarBeneficiario", sqlCon);
                     sql_cmnd.CommandType = CommandType.StoredProcedure;
-                    sql_cmnd.Parameters.AddWithValue("@inIDDocumentoIdentidad", Convert.ToInt32(tblBeneficiarios.DataKeys[e.RowIndex].Value.ToString()));
+                    sql_cmnd.Parameters.AddWithValue("@inValorDocumentoIdentidad", Convert.ToInt32(tblBeneficiarios.DataKeys[e.RowIndex].Value.ToString()));
                     sql_cmnd.ExecuteNonQuery();
                     PopulateGridview();
                     lblSuccessMessage.Text = "El beneficiario fue eliminado exitosamente.";
@@ -138,7 +138,7 @@ namespace WebPrograBases
             catch (Exception ex)
             {
                 lblSuccessMessage.Text = "";
-                //lblErrorMessage.Text = ex.Message;
+                lblErrorMessage.Text = ex.Message;
                 Console.WriteLine(ex.StackTrace);
             }
         }

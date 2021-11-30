@@ -12,7 +12,7 @@ namespace WebPrograBases
     public partial class ConsultaNegativo : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
-        { /*
+        { 
             if (!IsPostBack)
             {
                 using (SqlConnection sqlCon = new SqlConnection("Initial Catalog = PrograBases; Data Source=localhost;Integrated Security=SSPI;"))
@@ -25,7 +25,7 @@ namespace WebPrograBases
                     ConsultaPorNegativos.DataSource = dtbl;
                     ConsultaPorNegativos.DataBind();
                 }
-            }*/
+            }
         }
 
         protected void lnkSelect_Click(object sender, EventArgs e)

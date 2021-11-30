@@ -221,9 +221,15 @@ CREATE PROCEDURE EliminarBeneficiario
 	 @inIDDocumentoIdentidad INT
 AS
 BEGIN TRY 
+
+	DECLARE @PIDDocumentoIdentidad INT
+	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
+									FROM Persona P
+									WHERE (P.ValorDocIdentidad = @inIDDocumentoIdentidad))
+
 	UPDATE Beneficiario
 	SET Activo = 0
-	WHERE (IDValorDocIdentidad = @inIDDocumentoIdentidad)
+	WHERE (IDValorDocIdentidad = @PIDDocumentoIdentidad)
 
 END TRY
 BEGIN CATCH
@@ -272,12 +278,12 @@ BEGIN TRY
 		Email = @inEmail,
 		Telefono1 = @inTelefono1,
 		Telefono2 = @inTelefono2
-	WHERE (ValorDocIdentidad = @inValorDocIdentidad)
+	WHERE (ID = @PIDDocumentoIdentidad)
 
 	UPDATE Beneficiario
 	SET IDParentezco = @inIDParentezco,
 		Porcentaje = @inPorcentaje,
-		IDValorDocIdentidad = @inValorDocIdentidad
+		IDValorDocIdentidad = @PIDDocumentoIdentidad
 	WHERE (IDValorDocIdentidad = @PIDDocumentoIdentidad)
 		
 END TRY
@@ -317,6 +323,11 @@ BEGIN TRY
 									FROM Persona P
 									WHERE (P.ValorDocIdentidad = @inValorDocumentoIdentidad))
 
+	DECLARE @PIDNumeroCuenta INT
+	SET @PIDNumeroCuenta = (SELECT C.ID as PIDNumeroCuenta 
+							FROM Cuenta C
+							WHERE (C.NumeroCuenta = @inIDNumeroCuenta))
+
 	INSERT Beneficiario(Porcentaje,
 						Fecha,
 						IDValorDocIdentidad,
@@ -326,7 +337,7 @@ BEGIN TRY
 	VALUES(@inPorcentaje,
 		   @FechaActual,
 		   @PIDDocumentoIdentidad,
-		   @inIDNumeroCuenta,
+		   @PIDNumeroCuenta,
 		   @inIDParentezco,
 		   1)
 
@@ -437,9 +448,27 @@ CREATE PROCEDURE SumarPorcentajes
 	 @inIDDocIndentidad INT
 AS
 BEGIN TRY 
+	
+	DECLARE @PIDDocumentoIdentidad INT
+	SET @PIDDocumentoIdentidad = (SELECT P.ID as PIDDocumentoIdentidad 
+									FROM Persona P
+									WHERE (P.ValorDocIdentidad = @inIDDocIndentidad))
+/*
+	DECLARE @PorcentajeTotal table (ID INT,
+									Total INT)
+	INSERT INTO @PorcentajeTotal(ID, Total)
+	SELECT B.IDNumeroCuenta as ID,
+			SUM(B.Porcentaje) as Total
+	FROM Beneficiario B
+	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.IDValorDocIdentidad != @PIDDocumentoIdentidad)
+	GROUP BY B.IDNumeroCuenta
+
+	SELECT P.Total
+	FROM @PorcentajeTotal P*/
+
 	SELECT SUM(B.Porcentaje)
 	FROM Beneficiario B
-	WHERE (B.IDNumeroCuenta = @inIDCuenta AND B.IDValorDocIdentidad != @inIDDocIndentidad)
+	WHERE(B.IDNumeroCuenta = @inIDCuenta)-- AND B.IDValorDocIdentidad != @PIDDocumentoIdentidad)
 
 END TRY
 BEGIN CATCH
@@ -824,19 +853,43 @@ CREATE PROCEDURE ConsultarRetirosNegativos
 AS
 BEGIN TRY 
 		
-
-		SELECT CO.CuentaObjetivo as Codigo,
-				CO.ID,
+		DECLARE @TemporalRetirosFallidos table (ID INT,
+												Codigo INT,
+												Descripcion varchar(128),
+												CantidadRetiros INT,
+												MontoReal INT)
+		
+		INSERT INTO @TemporalRetirosFallidos(ID,
+											Codigo,
+											Descripcion,
+											CantidadRetiros,
+											MontoReal)
+		SELECT CO.ID,
+				CO.CuentaObjetivo as Codigo,
 				CO.Descripcion,
-				COUNT(M.ID) as CantidadRetiros,
-				(CO.MontoMensual * DATEDIFF(year, CO.FechaInicial, CO.FechaFinal)) as MontoTodosRetiros,
-				--CO.Saldo as MontoRetirosDebidos
-				--
+				SUM(M.Logrado) as CantidadRetiros,
+				CO.Saldo as MontoReal
 		FROM CuentaObjetivo CO
 		INNER JOIN MovimientoCO M
 		ON CO.ID = M.IDCuentaObjetivo
-		WHERE(M.IDTipoMovimientoCO = 1)
-		GROUP BY CO.ID, CO.CuentaObjetivo, CO.Descripcion
+		WHERE(M.Logrado = 1) and (M.IDTipoMovimientoCO = 1)
+		GROUP BY CO.ID, CO.CuentaObjetivo, CO.Descripcion, CO.Saldo
+
+		SELECT R.ID,
+				R.Codigo,
+				R.Descripcion,
+				R.CantidadRetiros,
+				SUM(M.IDTipoMovimientoCO) as CantidadRetirosFallidos,
+				R.MontoReal,
+				(CO.MontoMensual * DATEDIFF(year, CO.FechaInicial, CO.FechaFinal)) as MontoTodosRetiros
+		FROM @TemporalRetirosFallidos R
+		INNER JOIN MovimientoCO M
+		ON R.ID = M.IDCuentaObjetivo
+		INNER JOIN CuentaObjetivo CO
+		ON R.ID = CO.ID
+		WHERE(M.Logrado = 0) and (M.IDTipoMovimientoCO = 1)
+		GROUP BY R.ID, R.Codigo, R.Descripcion, R.CantidadRetiros, R.MontoReal, CO.MontoMensual, CO.FechaInicial, CO.FechaFinal
+
 
 END TRY
 BEGIN CATCH

@@ -159,6 +159,9 @@ namespace WebPrograBases
                 }
                 catch (Exception ex)
                 {
+                    this.lblErrorMessage.Text = "Error al calcular porcentajes";
+                    this.lblErrorMessage.Text = ex.Message;
+                    this.lblErrorMessage.Visible = true;
                     porcentaje = entrada;
                 }
                 sqlCon.Close();

@@ -26,18 +26,18 @@
             <div>
                 <asp:GridView ID="ConsultaPorNegativos" runat="server" AutoGenerateColumns="false" >
                     <Columns>
-                        <asp:BoundField DataField="NumCuenta" HeaderText ="Número de cuenta" />
-                        <asp:BoundField DataField="IDCuentaO" HeaderText ="ID de cuenta objetivo" />
+                        <asp:BoundField DataField="ID" HeaderText ="ID de cuenta objetivo" />
+                        <asp:BoundField DataField="Codigo" HeaderText ="Código de cuenta objetivo" />
                         <asp:BoundField DataField="Descripcion" HeaderText ="Descripción" />
-                        <asp:BoundField DataField="CantRetirosRealizados" HeaderText ="Cantidad de retiros realizados" />
-                        <asp:BoundField DataField="CantRetirosIntentos" HeaderText ="Cantidad de intentos de retiros" />
+                        <asp:BoundField DataField="CantidadRetiros" HeaderText ="Cantidad de retiros realizados" />
+                        <asp:BoundField DataField="CantidadRetirosFallidos" HeaderText ="Cantidad de retiros fallidos" />
                         <asp:BoundField DataField="MontoReal" HeaderText ="Monto real" />
-                        <asp:BoundField DataField="MontoConRetiros" HeaderText ="Monto con intentos de retiro" />
-                        <asp:TemplateField>
+                        <asp:BoundField DataField="MontoTodosRetiros" HeaderText ="Monto con todos los retiros" />
+                        <%--<asp:TemplateField>
                             <ItemTemplate>
                                 <asp:LinkButton ID="lnkSelect" Text="Más detalles" runat="server" CommandArgument='<%# Eval("NumCuenta") %>' OnClick="lnkSelect_Click"/>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                     </Columns>
                 </asp:GridView>
             </div>
