@@ -367,7 +367,9 @@ BEGIN
 
 					WHILE (@IdActual <= @IdMax)
 					BEGIN
-		---- Seteo de datos -------------------------------------------------------------------
+
+
+		---- SETEO DE DATOS -------------------------------------------------------------------
 						SET @IdMovimiento = (SELECT M.id
 										     FROM @TemporalMovimientos M
 											 INNER JOIN @Operaciones O
@@ -415,7 +417,7 @@ BEGIN
 											FROM EstadoCuenta E
 											WHERE E.ID = @IdEstadoCuenta)
 						
-						
+						---CONVERSION---
 						IF ((@TipoMonedaCuenta = 1) AND (@TipoMonedaMovimiento = 2))
 							BEGIN
 								SET @Cambio = 'Dolares a Colones'
@@ -503,7 +505,6 @@ BEGIN
 		-----------------------------------------------------------------------	
 							
 						
-					
 						SET @IdActual = @IdActual + 1
 					END
 					
@@ -511,7 +512,15 @@ BEGIN
 
 
 	--Store Procedures -------------------------------------------------
-					
+					--------En caso de que la fecha termine en un día que el siguiente mes no tiene se declara como primer día del siguiente mes---------------------------
+					DECLARE @fechaCierre DATE
+					SET @fechaCierre = DATEADD(month, 1, @fechaActual)
+
+					IF (DAY(@fechaActual) > DAY(EOMONTH(@fechaCierre)))
+						SET @fechaCierre = (SELECT DATEADD(day, 1, @fechaCierre))
+
+					SET @DiaDeCierre = (SELECT DAY(@fechaCierre))
+				--------------------------------------------------------------------------------	
 					EXEC [dbo].[ProcesarCO] @inDay = @DiaDeCierre, @inFecha = @fechaActual
 
 					INSERT @Operaciones (id)
@@ -588,7 +597,7 @@ BEGIN
 								WHERE Cuenta.ID = @IdCuenta
 							
 							---- INSERTAR NUEVO ESTADO DE CUENTA ---------------------------
-							
+								--AGREGAR FECHA FINAL
 								INSERT INTO [dbo].EstadoCuenta( Fecha,
 																FechaFin,	
 																SaldoMinimo,
@@ -598,7 +607,7 @@ BEGIN
 																CantOperacionesCajeroHumano,
 																IDNumeroCuenta,
 																Activo)
-								SELECT @fechaActual, DATEADD(month, 1, @fechaActual), @SaldoActual, @SaldoActual, @SaldoActual, 0, 0, @IdCuenta, 1;
+								SELECT @fechaActual, @fechaCierre, @SaldoActual, @SaldoActual, @SaldoActual, 0, 0, @IdCuenta, 1;
 							END
 
 
@@ -607,7 +616,7 @@ BEGIN
 					
 					DELETE FROM @Operaciones;
 
-	--------------------------------------------------------------------
+	------------------------avanzar en la fecha--------------------------------------------
 
 
 				SELECT @fechaActual = DATEADD(DAY,1,@fechaActual);

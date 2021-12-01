@@ -1,5 +1,13 @@
 USE [PrograBases]
 
+--------------------------------------------------------------------------------------------------------------------------
+/* 
+Procedimiento ProcesarCO
+Objetivo: Procesar los movimientos de las cuentas objetivo
+	Entradas : Dia de Cierre, FechaActual
+*/
+
+
 IF OBJECT_ID('ProcesarCO') IS NOT NULL
 BEGIN 
 DROP PROC ProcesarCO 
@@ -58,6 +66,7 @@ BEGIN
 			FROM CuentaObjetivo C
 			WHERE C.ID = @lo;
 
+			------Insertar el Interés por Ahorro-----------------------------
 			INSERT MovimientoCO(Fecha,
 								Monto,
 								NuevoSaldo,
@@ -73,7 +82,7 @@ BEGIN
 			SET Saldo = Saldo + @intereses
 			FROM CuentaObjetivo
 			WHERE ID = @lo
-		
+		----------------------Conocer si se puede realizar el retiro o si el saldo sería negativo---------------------------------------------------
 			IF(@montoActual >= @monto)
 				BEGIN
 				
