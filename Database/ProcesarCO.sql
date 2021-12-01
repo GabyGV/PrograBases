@@ -25,6 +25,7 @@ DECLARE @intereses MONEY
 DECLARE @mes INT
 DECLARE @porcentaje MONEY
 DECLARE @date DATE
+DECLARE @activo INT
 
 
 SELECT @hi = MAX(ID) FROM CuentaObjetivo 
@@ -32,8 +33,10 @@ SELECT @lo = MIN(ID) FROM CuentaObjetivo
 
 WHILE @lo<@hi 
 BEGIN
-	
-	IF((SELECT DATEPART(DAY, C.FechaInicial) FROM CuentaObjetivo C WHERE C.ID = @lo) = @inDay)
+
+    SET @activo = (SELECT C.Activo FROM CuentaObjetivo C WHERE C.ID = @lo)
+
+    IF(((SELECT DATEPART(DAY, C.FechaInicial) FROM CuentaObjetivo C WHERE C.ID = @lo) = @inDay) AND (@activo = 1))
 	BEGIN
 
 		SELECT @mes = DATEDIFF (month, C.FechaInicial, C.FechaFinal)
@@ -125,6 +128,25 @@ BEGIN
 					WHERE CO.ID = @lo
 				
 				END
+
+            -----------------------------------Redención de cuenta objetivo-----------------------------------------
+			IF((SELECT C.FechaFinal FROM CuentaObjetivo C WHERE C.ID = @lo) >= @inFecha)
+					BEGIN
+
+						UPDATE Cuenta
+						SET Cuenta.Saldo = Cuenta.Saldo + C.Saldo
+						FROM Cuenta
+						INNER JOIN CuentaObjetivo C
+						ON C.CuentaMaestra = Cuenta.ID
+						WHERE C.ID = @lo
+
+						UPDATE CuentaObjetivo
+						SET Saldo = 0, Activo = 0
+						FROM CuentaObjetivo C
+						WHERE C.ID = @lo
+
+					END
+
 	END
 	Set @lo=@lo+1
 
